@@ -149,6 +149,10 @@
                 <span>Items:</span>
                 <span id="summary-items-total">₹0.00</span>
             </div>
+            <div class="summary-row" id="discount-row" style="display: none; color: #b12704;">
+                <span id="discount-label">Discount:</span>
+                <span id="summary-discount">-₹0.00</span>
+            </div>
             <div class="summary-row">
                 <span>Delivery:</span>
                 <span id="summary-delivery">₹0.00</span>
@@ -159,9 +163,10 @@
             </div>
             
             <div class="promo-section">
-                <input type="text" placeholder="Enter Code">
-                <button class="btn btn-secondary-sm">Apply</button>
+                <input type="text" id="coupon-code" placeholder="Enter Code">
+                <button class="btn btn-secondary-sm" onclick="applyCoupon()">Apply</button>
             </div>
+            <div id="coupon-message" class="coupon-msg"></div>
         </div>
     </div>
 </main>

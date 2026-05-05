@@ -65,7 +65,42 @@ if ($action === 'update_quantity') {
 
 if ($action === 'clear') {
     $_SESSION['cart'] = [];
+    unset($_SESSION['applied_coupon']);
     echo json_encode(['success' => true]);
+    exit;
+}
+
+if ($action === 'apply_coupon') {
+    $code = $_POST['code'] ?? '';
+    
+    if (empty($code)) {
+        echo json_encode(['success' => false, 'message' => 'Please enter a coupon code.']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare('SELECT * FROM coupons WHERE code = ? AND (expiry_date IS NULL OR expiry_date >= CURDATE())');
+    $stmt->execute([$code]);
+    $coupon = $stmt->fetch();
+
+    if ($coupon) {
+        // Calculate current total
+        $total = 0;
+        if (!empty($_SESSION['cart'])) {
+            foreach ($_SESSION['cart'] as $item) {
+                $total += (float)$item['price'] * (int)$item['quantity'];
+            }
+        }
+
+        if ($total < (float)$coupon['min_order_amount']) {
+            echo json_encode(['success' => false, 'message' => 'Minimum order amount for this coupon is ₹' . number_format($coupon['min_order_amount'], 2)]);
+            exit;
+        }
+
+        $_SESSION['applied_coupon'] = $coupon;
+        echo json_encode(['success' => true, 'message' => 'Coupon applied successfully!', 'coupon' => $coupon]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Invalid or expired coupon code.']);
+    }
     exit;
 }
 
@@ -84,7 +119,34 @@ if ($action === 'view') {
     foreach ($items as $item) {
         $total += $item['price'] * $item['quantity'];
     }
-    echo json_encode(['items' => $items, 'total' => $total]);
+
+    $discount = 0;
+    $coupon_info = null;
+
+    if (isset($_SESSION['applied_coupon'])) {
+        $coupon = $_SESSION['applied_coupon'];
+        
+        // Re-validate min amount just in case items were removed
+        if ($total >= (float)$coupon['min_order_amount']) {
+            if ($coupon['discount_type'] === 'percentage') {
+                $discount = $total * ((float)$coupon['discount_value'] / 100);
+            } else {
+                $discount = (float)$coupon['discount_value'];
+            }
+            $coupon_info = $coupon;
+        } else {
+            // Remove coupon if min amount not met anymore
+            unset($_SESSION['applied_coupon']);
+        }
+    }
+
+    echo json_encode([
+        'items' => $items, 
+        'total' => $total,
+        'discount' => round($discount, 2),
+        'grand_total' => max(0, round($total - $discount, 2)),
+        'applied_coupon' => $coupon_info
+    ]);
     exit;
 }
 

@@ -27,6 +27,7 @@ if (!empty($_SESSION['cart'])) {
         
         // Clear cart after successful order
         $_SESSION['cart'] = [];
+        unset($_SESSION['applied_coupon']);
         
         echo json_encode(['success' => true, 'message' => 'Order placed successfully! Selected Method: ' . $payment_method]);
     } catch (Exception $e) {

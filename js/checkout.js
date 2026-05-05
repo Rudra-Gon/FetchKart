@@ -31,7 +31,22 @@ async function loadCheckoutData() {
 
         itemsContainer.innerHTML = itemsHtml;
         summaryItemsTotal.textContent = `₹${parseFloat(cartData.total).toFixed(2)}`;
-        summaryGrandTotal.textContent = `₹${parseFloat(cartData.total).toFixed(2)}`;
+        
+        const discountRow = document.getElementById('discount-row');
+        const summaryDiscount = document.getElementById('summary-discount');
+        const discountLabel = document.getElementById('discount-label');
+
+        if (cartData.discount > 0) {
+            discountRow.style.display = 'flex';
+            summaryDiscount.textContent = `-₹${parseFloat(cartData.discount).toFixed(2)}`;
+            if (cartData.applied_coupon) {
+                discountLabel.textContent = `Discount (${cartData.applied_coupon.code}):`;
+            }
+        } else {
+            discountRow.style.display = 'none';
+        }
+
+        summaryGrandTotal.textContent = `₹${parseFloat(cartData.grand_total).toFixed(2)}`;
 
     } catch (error) {
         console.error('Error loading checkout data:', error);
@@ -105,5 +120,37 @@ if (!fullname || !addr1 || !city || !state || !zip) {
         }
     } catch (error) {
         console.error('Error placing order:', error);
+    }
+}
+async function applyCoupon() {
+    const code = document.getElementById('coupon-code').value.trim();
+    const messageEl = document.getElementById('coupon-message');
+    
+    if (!code) {
+        messageEl.textContent = 'Please enter a code.';
+        messageEl.className = 'coupon-msg error';
+        return;
+    }
+
+    try {
+        const response = await fetch('api/cart_actions.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=apply_coupon&code=${encodeURIComponent(code)}`
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            messageEl.textContent = data.message;
+            messageEl.className = 'coupon-msg success';
+            loadCheckoutData(); // Refresh summary
+        } else {
+            messageEl.textContent = data.message;
+            messageEl.className = 'coupon-msg error';
+        }
+    } catch (error) {
+        console.error('Error applying coupon:', error);
     }
 }

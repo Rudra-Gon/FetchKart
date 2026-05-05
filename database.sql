@@ -1,9 +1,8 @@
 -- database.sql
 
-DROP TABLE IF EXISTS `orders`;
-DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `coupons`;
 
-CREATE TABLE `products` (
+CREATE TABLE IF NOT EXISTS `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `price` decimal(10,2) NOT NULL,
@@ -14,7 +13,7 @@ CREATE TABLE `products` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL UNIQUE,
   `password` varchar(255) NOT NULL,
@@ -22,7 +21,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `orders` (
+CREATE TABLE IF NOT EXISTS `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
@@ -32,6 +31,23 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS `coupons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(20) NOT NULL UNIQUE,
+  `discount_type` enum('percentage','fixed') NOT NULL,
+  `discount_value` decimal(10,2) NOT NULL,
+  `min_order_amount` decimal(10,2) DEFAULT 0.00,
+  `expiry_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Insert default admin account if not exists
 INSERT IGNORE INTO `users` (`username`, `password`, `role`) VALUES ('ADMIN', '12345', 'admin');
+
+-- Insert sample coupons
+INSERT IGNORE INTO `coupons` (`code`, `discount_type`, `discount_value`, `min_order_amount`) VALUES 
+('FIRSTFETCH', 'percentage', 75.00, 200.00),
+('FETCHFEST', 'fixed', 100.00, 500.00),
+('ADMINSFETCH', 'percentage', 99.00, 0.00);
+
 -- made by rudra gondhalkar
