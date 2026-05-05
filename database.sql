@@ -53,4 +53,5 @@ INSERT IGNORE INTO `coupons` (`code`, `discount_type`, `discount_value`, `min_or
 ('ADMINSFETCH', 'percentage', 99.00, 0.00);
 
 
+
 -- made by rudra gondhalkar

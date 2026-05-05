@@ -9,13 +9,14 @@ async function checkUserSession() {
         const response = await fetch('api/auth.php?action=check');
         const data = await response.json();
         
-        const headerNav = document.querySelector('nav');
+        const headerNav = document.getElementById('main-nav') || document.querySelector('nav');
         if (data.logged_in) {
             let navLinks = `
                 <span class="user-greeting">Hi, <strong>${data.user.username}</strong> (${data.user.role})</span>
                 <a href="index.html">Home</a>
                 <a href="shop.html">Shop</a>
                 <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
+                <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme">🌙</button>
             `;
             
             if (data.user.role === 'seller') {
@@ -31,9 +32,16 @@ async function checkUserSession() {
                 <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
                 <a href="login.html">Login</a>
                 <a href="signup.html">Signup</a>
+                <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme">🌙</button>
             `;
         }
         
+        // Always try to update theme icon if theme.js is present
+        if (typeof updateToggleIcon === 'function') {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            updateToggleIcon(savedTheme);
+        }
+
         // Always try to update cart counter if it exists
         if (typeof updateCartCounter === 'function') {
             updateCartCounter();

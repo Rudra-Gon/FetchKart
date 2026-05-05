@@ -8,58 +8,60 @@
 </head>
 <body>
 
-<header style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-    <a href="index.html" class="logo" style="font-size: 2rem; margin: 10px 0;">FetchKart</a>
-    <nav id="main-nav" style="width: 100%; display: flex; justify-content: center; gap: 20px;">
+<header>
+    <a href="index.html" class="logo">FetchKart</a>
+    <nav id="main-nav">
         <!-- Dynamic content from auth.js -->
-        <a href="index.html">Home</a>
+        <a href="index.html" class="active">Home</a>
         <a href="shop.html">Shop</a>
         <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
+        <button id="theme-btn" class="theme-toggle" onclick="themeToggle()">🌙</button>
     </nav>
 </header>
 
 <main>
     <!-- Hero Section -->
-    <section class="hero-section" style="text-align: center; padding: 60px 20px;">
+    <section class="hero-section">
         <h1>Welcome to FetchKart</h1>
         <p>Discover the best products from sellers around the world.</p>
-        <a href="shop.html" class="btn" style="padding: 15px 30px; font-size: 1.2rem;">Start Shopping Now</a>
+        <a href="shop.html" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.25rem;">Start Shopping Now</a>
     </section>
 
     <!-- Categories Section -->
-    <section class="categories-preview" style="padding: 40px 20px; text-align: center;">
-        <h2>Trending Categories</h2>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px;">
-            <div class="card" style="width: 150px; padding: 20px;">Fashion</div>
-            <div class="card" style="width: 150px; padding: 20px;">Mobiles</div>
-            <div class="card" style="width: 150px; padding: 20px;">Electronics</div>
-            <div class="card" style="width: 150px; padding: 20px;">Home</div>
-            <div class="card" style="width: 150px; padding: 20px;">Beauty</div>
+    <section class="categories-preview">
+        <h2 style="text-align: center; font-size: 2rem; margin-bottom: 2rem;">Trending Categories</h2>
+        <div class="category-grid">
+            <div class="category-card">Fashion</div>
+            <div class="category-card">Mobiles</div>
+            <div class="category-card">Electronics</div>
+            <div class="category-card">Home</div>
+            <div class="category-card">Beauty</div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features-section" style="display: flex; justify-content: space-around; padding: 40px 20px; background: #f9f9f9; text-align: center;">
-        <div class="feature-item">
+    <section class="features-section">
+        <div class="feature-item" style="text-align: center;">
             <h3>🚀 Fast Delivery</h3>
             <p>Get your items in record time.</p>
         </div>
-        <div class="feature-item">
+        <div class="feature-item" style="text-align: center;">
             <h3>🔒 Secure Payment</h3>
             <p>Your transactions are 100% safe.</p>
         </div>
-        <div class="feature-item">
+        <div class="feature-item" style="text-align: center;">
             <h3>💎 Premium Quality</h3>
             <p>Hand-picked products just for you.</p>
         </div>
     </section>
 </main>
 
-<footer style="text-align: center; padding: 40px; margin-top: 40px; border-top: 1px solid #eee;">
+<footer>
     <p>&copy; 2026 FetchKart. All rights reserved.</p>
     <a href="signup.html?role=seller">Become a Seller</a>
 </footer>
 
+<script src="js/theme.js"></script>
 <script src="js/auth.js"></script>
 </body>
 </html>
