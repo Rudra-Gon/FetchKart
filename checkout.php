@@ -1,64 +1,43 @@
 <?php
-require_once 'includes/db.php';
+session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-
+// Check if cart is empty before checking out
 if (empty($_SESSION['cart'])) {
-    header('Location: products.php');
+    header('Location: index.php');
     exit;
 }
 
-$success = false;
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $total = 0;
-    foreach ($_SESSION['cart'] as $id => $item) {
-        $stmt = $pdo->prepare('SELECT price FROM products WHERE id = ?');
-        $stmt->execute([$id]);
-        $product = $stmt->fetch();
-        if ($product) {
-            $total += $product['price'] * $item['quantity'];
-        }
-    }
-
-    $stmt = $pdo->prepare('INSERT INTO orders (user_id, total) VALUES (?, ?)');
-    $stmt->execute([$_SESSION['user_id'], $total]);
-    $order_id = $pdo->lastInsertId();
-
-    foreach ($_SESSION['cart'] as $id => $item) {
-        $stmt = $pdo->prepare('SELECT price FROM products WHERE id = ?');
-        $stmt->execute([$id]);
-        $product = $stmt->fetch();
-        if ($product) {
-            $stmt_item = $pdo->prepare('INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)');
-            $stmt_item->execute([$order_id, $id, $item['quantity'], $product['price']]);
-        }
-    }
-
-    $_SESSION['cart'] = [];
-    $success = true;
-}
-
-require_once 'includes/header.php';
+// Clear the cart to simulate a successful checkout
+$_SESSION['cart'] = [];
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Success - FetchKart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-<div class="container" style="text-align: center; margin-top: 40px;">
-    <?php if ($success): ?>
-        <h2>Order Placed Successfully!</h2>
-        <p>Thank you for shopping with us. Your barebones order has been recorded.</p>
-        <br>
-        <a href="index.php" class="btn">Return Home</a>
-    <?php else: ?>
-        <h2>Confirm Checkout</h2>
-        <form action="checkout.php" method="POST">
-            <p>You have <?php echo array_sum(array_column($_SESSION['cart'], 'quantity')); ?> items in your cart.</p>
-            <br>
-            <button type="submit" class="btn">Place Order</button>
-        </form>
-    <?php endif; ?>
-</div>
+<header>
+    <a href="index.php" class="logo">Fetch<span>Kart</span></a>
+    <nav>
+        <a href="cart.php">
+            Cart 
+            <span class="cart-count">0</span>
+        </a>
+    </nav>
+</header>
 
-<?php require_once 'includes/footer.php'; ?>
+<main>
+    <div class="checkout-success">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+        <h2>Payment Successful!</h2>
+        <p>Thank you for your order. We've received your request and will begin processing it shortly.</p>
+        <a href="index.php" class="btn">Return to Home</a>
+    </div>
+</main>
+
+</body>
+</html>
