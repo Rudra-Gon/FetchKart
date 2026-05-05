@@ -49,6 +49,8 @@ INSERT IGNORE INTO `coupons` (`code`, `discount_type`, `discount_value`, `min_or
 ('FIRSTFETCH', 'percentage', 75.00, 200.00),
 ('FETCHFEST', 'fixed', 100.00, 500.00),
 ('FASTFETCH', 'fixed', 123.00, 500.00),
+('FETCHTHEDEAL','percentage',50.00,500.00),
 ('ADMINSFETCH', 'percentage', 99.00, 0.00);
+
 
 -- made by rudra gondhalkar
