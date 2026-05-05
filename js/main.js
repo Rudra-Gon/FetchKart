@@ -1,0 +1,192 @@
+// Global variable to store cart count
+let cartCount = 0;
+
+// On page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateCartCounter();
+    
+    // If we are on index.html, load products
+    if (document.getElementById('products-container')) {
+        loadProducts();
+    }
+});
+
+// Fetch products from the PHP API
+async function loadProducts() {
+    try {
+        const response = await fetch('api/get_products.php');
+        const products = await response.json();
+        
+        const container = document.getElementById('products-container');
+        container.innerHTML = '';
+        
+        if (products.error) {
+            container.innerHTML = `<p>Error loading products: ${products.error}</p>`;
+            return;
+        }
+
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            card.innerHTML = `
+                <div class="product-image">${product.icon}</div>
+                <h3 class="product-title">${product.name}</h3>
+                <p class="product-desc">${product.description}</p>
+                <div class="product-footer">
+                    <span class="product-price">$${parseFloat(product.price).toFixed(2)}</span>
+                    <button class="btn" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        document.getElementById('products-container').innerHTML = '<p>Failed to load products. Make sure MySQL is running and the database is imported.</p>';
+    }
+}
+
+// Fetch the cart count and update the header
+async function updateCartCounter() {
+    try {
+        const response = await fetch('api/cart_actions.php?action=count');
+        const data = await response.json();
+        document.getElementById('cart-counter').textContent = data.count || 0;
+    } catch (error) {
+        console.error('Error fetching cart count:', error);
+    }
+}
+
+// Add item to cart
+async function addToCart(productId, productName) {
+    try {
+        const response = await fetch('api/cart_actions.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=add&product_id=${productId}`
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            // Show alert
+            const alertContainer = document.getElementById('alert-container');
+            if (alertContainer) {
+                alertContainer.innerHTML = `<div class="alert-success">Added ${productName} to cart!</div>`;
+                setTimeout(() => { alertContainer.innerHTML = ''; }, 3000);
+            }
+            updateCartCounter();
+        }
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+    }
+}
+
+// Load cart page content
+async function loadCartPage() {
+    try {
+        const response = await fetch('api/cart_actions.php?action=view');
+        const cartData = await response.json();
+        
+        const container = document.getElementById('cart-container');
+        container.innerHTML = '';
+        
+        if (!cartData.items || cartData.items.length === 0) {
+            container.innerHTML = `
+                <p style="text-align: center; padding: 20px 0;">Your cart is currently empty.</p>
+                <div style="text-align: center;">
+                    <a href="index.html" class="btn">Browse Products</a>
+                </div>
+            `;
+            return;
+        }
+
+        let tableHTML = `
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        cartData.items.forEach(item => {
+            const subtotal = item.price * item.quantity;
+            tableHTML += `
+                <tr>
+                    <td>${item.name}</td>
+                    <td>$${parseFloat(item.price).toFixed(2)}</td>
+                    <td>${item.quantity}</td>
+                    <td>$${subtotal.toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-secondary" onclick="removeFromCart(${item.id})">Remove</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tableHTML += `
+                </tbody>
+            </table>
+            <div class="cart-total">Total: $${parseFloat(cartData.total).toFixed(2)}</div>
+            <div class="cart-actions">
+                <a href="index.html" class="btn btn-secondary">Continue Shopping</a>
+                <button class="btn" onclick="checkout()">Proceed to Checkout</button>
+            </div>
+        `;
+        
+        container.innerHTML = tableHTML;
+    } catch (error) {
+        console.error('Error loading cart:', error);
+        document.getElementById('cart-container').innerHTML = '<p>Error loading cart.</p>';
+    }
+}
+
+// Remove item from cart
+async function removeFromCart(productId) {
+    try {
+        const response = await fetch('api/cart_actions.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=remove&product_id=${productId}`
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            updateCartCounter();
+            loadCartPage();
+        }
+    } catch (error) {
+        console.error('Error removing from cart:', error);
+    }
+}
+
+// Handle checkout
+async function checkout() {
+    try {
+        const response = await fetch('api/checkout.php', { method: 'POST' });
+        const data = await response.json();
+        
+        if (data.success) {
+            const container = document.getElementById('cart-container');
+            container.innerHTML = `
+                <div class="checkout-success">
+                    <h2>Payment Successful!</h2>
+                    <p>Thank you for your order.</p>
+                    <a href="index.html" class="btn">Return to Home</a>
+                </div>
+            `;
+            updateCartCounter();
+        }
+    } catch (error) {
+        console.error('Error during checkout:', error);
+    }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - FetchKart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">FetchKart</a>
+    <nav>
+        <a href="cart.html">
+            Cart 
+            <span class="cart-count" id="cart-counter">0</span>
+        </a>
+    </nav>
+</header>
+
+<main>
+    <h1 class="page-title">Shopping Cart</h1>
+    
+    <div class="cart-container" id="cart-container">
+        <p>Loading cart...</p>
+    </div>
+</main>
+
+<script src="js/main.js"></script>
+<script>
+    // Load cart items when on cart page
+    document.addEventListener('DOMContentLoaded', loadCartPage);
+</script>
+</body>
+</html>
