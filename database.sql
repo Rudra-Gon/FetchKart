@@ -34,3 +34,4 @@ CREATE TABLE `orders` (
 
 -- Insert default admin account if not exists
 INSERT IGNORE INTO `users` (`username`, `password`, `role`) VALUES ('ADMIN', '12345', 'admin');
+-- made by rudra gondhalkar
