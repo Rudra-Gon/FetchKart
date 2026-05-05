@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - FetchKart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">FetchKart</a>
+    <nav id="main-nav">
+        <!-- Dynamic content from auth.js -->
+    </nav>
+</header>
+
+<main>
+    <div class="seller-container">
+        <h1 class="page-title">Seller Dashboard</h1>
+        
+        <script>
+            // Strict check: Redirect if not a seller
+            fetch('api/auth.php?action=check')
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.logged_in || data.user.role !== 'seller') {
+                        window.location.href = 'index.html';
+                    }
+                });
+        </script>
+        
+        <div class="dashboard-grid">
+            <!-- Add Product Form -->
+            <div class="card add-product-section">
+                <h2>Add New Product</h2>
+                <form id="add-product-form" onsubmit="handleAddProduct(event)" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category">
+                            <option value="Fashion">Fashion</option>
+                            <option value="Mobiles">Mobiles</option>
+                            <option value="Beauty">Beauty</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Home">Home</option>
+                            <option value="Appliances">Appliances</option>
+                            <option value="Health">Health</option>
+                            <option value="Toys">Toys</option>
+                            <option value="Gifting">Gifting</option>
+                            <option value="Groceries">Groceries</option>
+                            <option value="Books">Books</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Automotive">Automotive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                    <label>Price (₹)</label>
+                    <input type="number" name="price" step="1" required>
+                </div>
+                    <div class="form-group">
+                        <label>Product Description</label>
+                        <textarea name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Photo</label>
+                        <input type="file" name="photo" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn">Upload Product</button>
+                </form>
+                <p id="seller-message"></p>
+            </div>
+
+            <!-- Inventory List -->
+            <div class="card inventory-section">
+                <h2>My Inventory</h2>
+                <div id="inventory-list" class="scroll-table">
+                    <p>Loading inventory...</p>
+                </div>
+            </div>
+
+            <!-- Orders Received -->
+            <div class="card orders-section">
+                <h2>Recent Orders Received</h2>
+                <div id="orders-list" class="scroll-table">
+                    <p>Loading orders...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="js/auth.js"></script>
+<script src="js/seller.js"></script>
+</body>
+</html>

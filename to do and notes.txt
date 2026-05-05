@@ -1,0 +1,24 @@
+The website should be fully functional with basic features
+-Live product updates
+pricings
+customer
+seller
+(order tracking) 
+(online payment)
+backend through php
+visually pleasing design
+light to run 
+accounts
+platform fees 
+
+to dos
+warehouse management importing
+product tracking (intercity[progress bar]/local[map])
+seller account creation options:-
+				warehouse options (service/personal)
+				delivery options  (service/personal)
+				storage type      (service/personal)
+stock management per godown
+checkout page
+product stock management via platform (optional)
+platform charges (optional)

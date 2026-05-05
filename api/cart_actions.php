@@ -46,6 +46,29 @@ if ($action === 'remove') {
     }
 }
 
+if ($action === 'update_quantity') {
+    $product_id = $_POST['product_id'] ?? null;
+    $change = (int)($_POST['change'] ?? 0);
+    
+    if ($product_id && isset($_SESSION['cart'][$product_id])) {
+        $_SESSION['cart'][$product_id]['quantity'] += $change;
+        
+        // Remove if quantity is 0 or less
+        if ($_SESSION['cart'][$product_id]['quantity'] <= 0) {
+            unset($_SESSION['cart'][$product_id]);
+        }
+        
+        echo json_encode(['success' => true]);
+        exit;
+    }
+}
+
+if ($action === 'clear') {
+    $_SESSION['cart'] = [];
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 if ($action === 'count') {
     $count = 0;
     foreach ($_SESSION['cart'] as $item) {

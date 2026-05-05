@@ -1,7 +1,7 @@
 <?php
 // api/db.php
 
-$host = '127.0.0.1';
+$host = 'localhost';
 $db   = 'fetchkart';
 $user = 'root';
 $pass = ''; // Default XAMPP password is empty

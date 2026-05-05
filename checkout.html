@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - FetchKart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="checkout-body">
+
+<header class="checkout-header">
+    <div class="logo-container">
+        <a href="index.html" class="logo">FetchKart</a>
+    </div>
+    <h1>Checkout</h1>
+    <div class="secure-icon">🔒</div>
+</header>
+
+<main class="checkout-container">
+    <div class="checkout-left">
+        <!-- Shipping Address Section -->
+        <section class="checkout-section">
+            <div class="section-header">
+                <span class="step-num">1</span>
+                <h3>Shipping address</h3>
+            </div>
+            <div class="section-content">
+                <div class="address-form" id="address-form">
+                    <div class="form-group">
+                        <label for="ship-fullname">Full Name <span class="required-star">*</span></label>
+                        <input type="text" id="ship-fullname" name="fullname" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ship-address1">Address Line 1 <span class="required-star">*</span></label>
+                        <input type="text" id="ship-address1" name="address1" placeholder="Building, House No., Street" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ship-address2">Address Line 2</label>
+                        <input type="text" id="ship-address2" name="address2" placeholder="Area, Colony, Landmark (optional)">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ship-city">City <span class="required-star">*</span></label>
+                            <input type="text" id="ship-city" name="city" placeholder="City" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ship-state">State <span class="required-star">*</span></label>
+                            <input type="text" id="ship-state" name="state" placeholder="State" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ship-zip">ZIP / Pincode <span class="required-star">*</span></label>
+                            <input type="text" id="ship-zip" name="zip" placeholder="e.g. 380050" required>
+                        </div>
+                        
+                    </div>
+                    <div class="error-text" id="address-error" style="display: none;">Please fill in all required shipping fields.</div>
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label for="ship-instructions">Delivery Instructions</label>
+                    <textarea id="ship-instructions" name="instructions" placeholder="Add any special delivery instructions (optional)" rows="2"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Payment Method Section -->
+        <section class="checkout-section">
+            <div class="section-header">
+                <span class="step-num">2</span>
+                <h3>Payment method</h3>
+            </div>
+            <div class="section-content">
+                <form id="payment-form">
+                    <div class="payment-option unavailable">
+                        <input type="radio" name="payment" id="pay-balance" disabled>
+                        <label for="pay-balance">
+                            <strong>FetchKart Pay Balance ₹0.00</strong>
+                            <span class="error-text">Insufficient balance</span>
+                        </label>
+                    </div>
+
+                    <div class="payment-group-title">Another payment method</div>
+                    
+                    <div class="payment-option">
+                        <input type="radio" name="payment" id="pay-card" value="Credit/Debit Card">
+                        <label for="pay-card">
+                            <strong>Credit or debit card</strong>
+                            <div class="card-icons">💳 (Visa, RuPay, etc.)</div>
+                        </label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" name="payment" id="pay-net" value="Net Banking">
+                        <label for="pay-net">
+                            <strong>Net Banking</strong>
+                            <select class="bank-select">
+                                <option>Choose an Option</option>
+                                <option>SBI</option>
+                                <option>HDFC Bank</option>
+                                <option>ICICI Bank</option>
+                                <option>Axis Bank</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" name="payment" id="pay-upi" value="UPI">
+                        <label for="pay-upi">
+                            <strong>Scan and Pay with UPI</strong>
+                            <p class="help-text">You will need to scan the QR code on the next page.</p>
+                        </label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" name="payment" id="pay-cod" value="Cash on Delivery" checked>
+                        <label for="pay-cod">
+                            <strong>Cash on Delivery (COD)</strong>
+                            <p class="help-text">Pay when you receive the product.</p>
+                        </label>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Review Items Section -->
+        <section class="checkout-section">
+            <div class="section-header">
+                <span class="step-num">3</span>
+                <h3>Review items and delivery</h3>
+            </div>
+            <div id="checkout-items-list" class="section-content">
+                <!-- Loaded via JS -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Sidebar Order Summary -->
+    <div class="checkout-right">
+        <div class="order-summary-card">
+            <button class="btn btn-primary-full" onclick="placeOrder()">Place your order</button>
+            <p class="terms-text">By placing your order, you agree to FetchKart's privacy notice and conditions of use.</p>
+            
+            <hr>
+            
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+                <span>Items:</span>
+                <span id="summary-items-total">₹0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery:</span>
+                <span id="summary-delivery">₹0.00</span>
+            </div>
+            <div class="summary-row total-row">
+                <span>Order Total:</span>
+                <span id="summary-grand-total">₹0.00</span>
+            </div>
+            
+            <div class="promo-section">
+                <input type="text" placeholder="Enter Code">
+                <button class="btn btn-secondary-sm">Apply</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="success-icon">✔️</div>
+            <h2>Order placed successfully!</h2>
+            <p>Thank you for shopping with FetchKart.</p>
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">Go to Home</button>
+        </div>
+    </div>
+
+<script src="js/auth.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>

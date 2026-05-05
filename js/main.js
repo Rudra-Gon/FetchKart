@@ -28,13 +28,23 @@ async function loadProducts() {
         products.forEach(product => {
             const card = document.createElement('div');
             card.className = 'product-card';
+            card.style.cursor = 'pointer';
+            card.onclick = (e) => {
+                if (e.target.tagName !== 'BUTTON') {
+                    window.location.href = `product.html?id=${product.id}`;
+                }
+            };
             
+            const imageHtml = product.image_url 
+                ? `<img src="${product.image_url}" alt="${product.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">`
+                : `<div class="product-image">📦</div>`;
+
             card.innerHTML = `
-                <div class="product-image">${product.icon}</div>
+                ${imageHtml}
                 <h3 class="product-title">${product.name}</h3>
-                <p class="product-desc">${product.description}</p>
+                <p class="product-desc">${product.description.substring(0, 60)}...</p>
                 <div class="product-footer">
-                    <span class="product-price">$${parseFloat(product.price).toFixed(2)}</span>
+                    <span class="product-price">₹${parseFloat(product.price).toFixed(2)}</span>
                     <button class="btn" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
                 </div>
             `;
@@ -42,7 +52,48 @@ async function loadProducts() {
         });
     } catch (error) {
         console.error('Error fetching products:', error);
-        document.getElementById('products-container').innerHTML = '<p>Failed to load products. Make sure MySQL is running and the database is imported.</p>';
+        document.getElementById('products-container').innerHTML = '<p>No products found. Sellers can add products from their dashboard.</p>';
+    }
+}
+
+// Load single product details (Flipkart style)
+async function loadProductDetails(productId) {
+    try {
+        const response = await fetch(`api/get_products.php?id=${productId}`);
+        const product = await response.json();
+        
+        const container = document.getElementById('product-details-container');
+        
+        if (product.error) {
+            container.innerHTML = `<p>${product.error}</p>`;
+            return;
+        }
+
+        const imageHtml = product.image_url 
+            ? `<img src="${product.image_url}" alt="${product.name}" class="detail-img">`
+            : `<div class="detail-img-placeholder">📦</div>`;
+
+        container.innerHTML = `
+            <div class="product-detail-layout">
+                <div class="detail-left">
+                    ${imageHtml}
+                    <div class="detail-actions">
+                        <button class="btn btn-buy" onclick="addToCart(${product.id}, '${product.name}'); window.location.href='cart.html';">Buy Now</button>
+                        <button class="btn btn-cart" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="detail-right">
+                    <h1 class="detail-title">${product.name}</h1>
+                    <div class="detail-price">₹${parseFloat(product.price).toFixed(2)}</div>
+                    <div class="detail-description">
+                        <h3>Product Description</h3>
+                        <p>${product.description}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    } catch (error) {
+        console.error('Error loading product details:', error);
     }
 }
 
@@ -121,9 +172,13 @@ async function loadCartPage() {
             tableHTML += `
                 <tr>
                     <td>${item.name}</td>
-                    <td>$${parseFloat(item.price).toFixed(2)}</td>
-                    <td>${item.quantity}</td>
-                    <td>$${subtotal.toFixed(2)}</td>
+                    <td>₹${parseFloat(item.price).toFixed(2)}</td>
+                    <td class="qty-controls">
+                        <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <span class="qty-val">${item.quantity}</span>
+                        <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                    </td>
+                    <td>₹${subtotal.toFixed(2)}</td>
                     <td>
                         <button class="btn btn-secondary" onclick="removeFromCart(${item.id})">Remove</button>
                     </td>
@@ -134,9 +189,12 @@ async function loadCartPage() {
         tableHTML += `
                 </tbody>
             </table>
-            <div class="cart-total">Total: $${parseFloat(cartData.total).toFixed(2)}</div>
+            <div class="cart-total">Total: ₹${parseFloat(cartData.total).toFixed(2)}</div>
             <div class="cart-actions">
-                <a href="index.html" class="btn btn-secondary">Continue Shopping</a>
+                <div class="left-actions">
+                    <button class="btn btn-danger" onclick="clearCart()">Clear Cart</button>
+                    <a href="index.html" class="btn btn-secondary">Continue Shopping</a>
+                </div>
                 <button class="btn" onclick="checkout()">Proceed to Checkout</button>
             </div>
         `;
@@ -146,6 +204,55 @@ async function loadCartPage() {
         console.error('Error loading cart:', error);
         document.getElementById('cart-container').innerHTML = '<p>Error loading cart.</p>';
     }
+}
+
+// Update quantity (+/-)
+async function updateQuantity(productId, change) {
+    try {
+        const response = await fetch('api/cart_actions.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=update_quantity&product_id=${productId}&change=${change}`
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            updateCartCounter();
+            loadCartPage();
+        }
+    } catch (error) {
+        console.error('Error updating quantity:', error);
+    }
+}
+
+// Clear entire cart
+async function clearCart() {
+    if (!confirm('Are you sure you want to empty your cart?')) return;
+    
+    try {
+        const response = await fetch('api/cart_actions.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=clear`
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            updateCartCounter();
+            loadCartPage();
+        }
+    } catch (error) {
+        console.error('Error clearing cart:', error);
+    }
+}
+
+// Go to checkout page
+function checkout() {
+    window.location.href = 'checkout.html';
 }
 
 // Remove item from cart
@@ -169,24 +276,3 @@ async function removeFromCart(productId) {
     }
 }
 
-// Handle checkout
-async function checkout() {
-    try {
-        const response = await fetch('api/checkout.php', { method: 'POST' });
-        const data = await response.json();
-        
-        if (data.success) {
-            const container = document.getElementById('cart-container');
-            container.innerHTML = `
-                <div class="checkout-success">
-                    <h2>Payment Successful!</h2>
-                    <p>Thank you for your order.</p>
-                    <a href="index.html" class="btn">Return to Home</a>
-                </div>
-            `;
-            updateCartCounter();
-        }
-    } catch (error) {
-        console.error('Error during checkout:', error);
-    }
-}

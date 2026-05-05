@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cart - FetchKart</title>
+    <title>Shop - FetchKart</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,24 +12,24 @@
     <a href="index.html" class="logo">FetchKart</a>
     <nav id="main-nav">
         <!-- Dynamic content from auth.js -->
-        <a href="index.html">Shop</a>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
         <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
     </nav>
 </header>
 
 <main>
-    <h1 class="page-title">Shopping Cart</h1>
+    <h1 class="page-title">Featured Products</h1>
     
-    <div class="cart-container" id="cart-container">
-        <p>Loading cart...</p>
+    <div id="alert-container"></div>
+
+    <div class="products" id="products-container">
+        <!-- Products will be loaded here via JS -->
+        <p>Loading products...</p>
     </div>
 </main>
 
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
-<script>
-    // Load cart items when on cart page
-    document.addEventListener('DOMContentLoaded', loadCartPage);
-</script>
 </body>
 </html>
