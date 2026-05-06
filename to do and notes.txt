@@ -26,5 +26,11 @@ Phase 1: Stock Management
 1. Add 'stock_quantity' to products table [DONE]
 2. Update seller dashboard to manage stock [DONE]
 3. Update checkout to decrement stock on purchase [DONE]
-4. Implement "Out of Stock" UI indicators [DONE]
+4. Implement "Out of Stock" UI indicators (Badges & Gray-out) [DONE]
 5. Implement "Low Stock" marketing messages (if < 50 units) [DONE]
+
+Phase 2: Warehouse/Godown Management
+1. Create 'godowns' table [DONE]
+2. Create Godown Management API (CRUD) [CURRENT STEP]
+3. Add "Manage Godowns" UI to seller dashboard
+4. Assign products to specific godowns

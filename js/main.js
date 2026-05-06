@@ -82,6 +82,10 @@ function renderProducts(products) {
         const isOutOfStock = parseInt(product.stock_quantity) <= 0;
         const stockBadge = isOutOfStock ? `<span class="stock-badge-out">Out of Stock</span>` : '';
         
+        if (isOutOfStock) {
+            card.classList.add('out-of-stock-card');
+        }
+        
         card.innerHTML = `
             ${imageHtml}
             ${stockBadge}

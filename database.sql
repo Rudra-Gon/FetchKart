@@ -62,4 +62,14 @@ INSERT IGNORE INTO `coupons` (`code`, `discount_type`, `discount_value`, `min_or
 
 
 
+CREATE TABLE IF NOT EXISTS `godowns` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `seller_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `capacity` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`seller_id`) REFERENCES users(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- made by rudra gondhalkar

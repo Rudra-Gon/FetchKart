@@ -56,6 +56,18 @@ try {
         }
     }
 
+    // 3. Create 'godowns' table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS `godowns` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `seller_id` int(11) NOT NULL,
+      `name` varchar(100) NOT NULL,
+      `location` varchar(255) DEFAULT NULL,
+      `capacity` int(11) DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      FOREIGN KEY (`seller_id`) REFERENCES users(`id`) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    echo "Ensured 'godowns' table exists.\n";
+
     echo "Migration Completed Successfully!\n";
     echo "You can now delete this file.";
 
