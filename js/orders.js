@@ -10,7 +10,13 @@ async function loadCustomerOrders() {
         const orders = await response.json();
         
         const container = document.getElementById('orders-container');
-        if (orders.length === 0) {
+
+        if (orders.success === false) {
+            container.innerHTML = `<p style="text-align: center; color: #ef4444; padding: 3rem;">Error: ${orders.message}</p>`;
+            return;
+        }
+
+        if (!Array.isArray(orders) || orders.length === 0) {
             container.innerHTML = '<p style="text-align: center; padding: 3rem;">You haven\'t placed any orders yet.</p>';
             return;
         }
@@ -18,12 +24,14 @@ async function loadCustomerOrders() {
         let html = '';
         orders.forEach(order => {
             const orderDate = new Date(order.order_date).toLocaleDateString();
-            const expectedDate = new Date(order.expected_delivery_date).toLocaleDateString();
+            const rawExpected = order.expected_delivery_date;
+            const expectedDate = rawExpected ? new Date(rawExpected).toLocaleDateString() : 'TBD';
+            const status = order.status || 'Pending';
             
             // Tracking logic
             let trackingHtml = '';
             if (order.tracking_type === 'intercity') {
-                const progress = getIntercityProgress(order.status);
+                const progress = getIntercityProgress(status);
                 trackingHtml = `
                     <div class="tracking-section intercity">
                         <h4>Intercity Tracking</h4>
@@ -49,7 +57,7 @@ async function loadCustomerOrders() {
                                 <span class="driver-icon">🚚</span>
                                 <div>
                                     <p><strong>Delivery Partner</strong></p>
-                                    <p class="small text-muted">Out for delivery to ${order.address.split(',')[0]}</p>
+                                    <p class="small text-muted">Out for delivery to ${(order.address || 'your location').split(',')[0]}</p>
                                 </div>
                             </div>
                             <div class="map-placeholder">
@@ -75,7 +83,7 @@ async function loadCustomerOrders() {
                             </div>
                             <div class="header-item">
                                 <label>SHIP TO</label>
-                                <span class="address-hint" title="${order.address}">${order.address.substring(0, 15)}...</span>
+                                <span class="address-hint" title="${order.address || 'No Address'}">${(order.address || 'No Address').substring(0, 15)}...</span>
                             </div>
                         </div>
                         <div class="order-header-id">
@@ -86,7 +94,7 @@ async function loadCustomerOrders() {
                     
                     <div class="order-card-body">
                         <div class="item-status-row">
-                            <h2 class="status-text">${order.status === 'Delivered' ? 'Delivered ' + expectedDate : 'Expected Delivery: ' + expectedDate}</h2>
+                            <h2 class="status-text">${status === 'Delivered' ? 'Delivered ' + expectedDate : 'Expected Delivery: ' + expectedDate}</h2>
                         </div>
                         
                         <div class="item-info-row">
