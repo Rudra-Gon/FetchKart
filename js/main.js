@@ -49,6 +49,14 @@ async function loadProducts() {
         }
 
         renderProducts(allProducts);
+        // Auto-filter by category if URL contains ?category=XYZ
+        const urlParams = new URLSearchParams(window.location.search);
+        const cat = urlParams.get('category');
+        if (cat) {
+            const select = document.getElementById('category-filter');
+            if (select) select.value = cat;
+            filterProducts();
+        }
     } catch (error) {
         console.error('Error fetching products:', error);
         document.getElementById('products-container').innerHTML = '<p>No products found. Sellers can add products from their dashboard.</p>';
