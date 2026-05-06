@@ -43,5 +43,14 @@ if ($action === 'delete_product') {
     exit;
 }
 
+if ($action === 'update_stock') {
+    $id = $_POST['product_id'] ?? null;
+    $new_stock = $_POST['stock'] ?? 0;
+    $stmt = $pdo->prepare('UPDATE products SET stock_quantity = ? WHERE id = ? AND seller_id = ?');
+    $stmt->execute([$new_stock, $id, $seller_id]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 echo json_encode(['error' => 'Invalid action']);
 ?>

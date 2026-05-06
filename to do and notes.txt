@@ -13,13 +13,17 @@ accounts
 platform fees 
 
 to dos
-warehouse management importing
-product tracking (intercity[progress bar]/local[map])
-seller account creation options:-
-				warehouse options (service/personal)
-				delivery options  (service/personal)
-				storage type      (service/personal)
-stock management per godown
-checkout page
-product stock management via platform (optional)
-platform charges (optional)
+✅ Done: Online payment (Razorpay/UPI), Checkout Page, User Accounts, Platform Fees
+
+⏳ Pending Implementation:
+- Order Tracking (Intercity progress bar / Local map)
+- Logistics Options (Service vs Personal integration)
+- Stock Management (Quantity tracking per product)
+- Warehouse/Godown Management (Multiple locations)
+- Data Importing (CSV/JSON for inventory)
+
+Phase 1: Stock Management
+1. Add 'stock_quantity' to products table [DONE]
+2. Update seller dashboard to manage stock [DONE]
+3. Update checkout to decrement stock on purchase [CURRENT STEP]
+4. Implement "Out of Stock" UI indicators

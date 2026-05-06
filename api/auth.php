@@ -22,8 +22,18 @@ if ($action === 'signup') {
             $warehouse = $_POST['warehouse_option'] ?? 'service';
             $delivery = $_POST['delivery_option'] ?? 'service';
             $storage = $_POST['storage_option'] ?? 'service';
-            $stmt = $pdo->prepare('INSERT INTO users (username, password, role, warehouse_option, delivery_option, storage_option) VALUES (?, ?, ?, ?, ?, ?)');
-            $stmt->execute([$username, $password, $role, $warehouse, $delivery, $storage]);
+            
+            try {
+                $stmt = $pdo->prepare('INSERT INTO users (username, password, role, warehouse_option, delivery_option, storage_option) VALUES (?, ?, ?, ?, ?, ?)');
+                $stmt->execute([$username, $password, $role, $warehouse, $delivery, $storage]);
+            } catch (PDOException $inner_e) {
+                // If column doesn't exist, fallback
+                if ($inner_e->getCode() == 23000) {
+                    throw $inner_e; // Re-throw duplicate entry
+                }
+                $stmt = $pdo->prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)');
+                $stmt->execute([$username, $password, $role]);
+            }
         } else {
             $stmt = $pdo->prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)');
             $stmt->execute([$username, $password, $role]);
@@ -33,7 +43,7 @@ if ($action === 'signup') {
         if ($e->getCode() == 23000) {
             echo json_encode(['success' => false, 'message' => 'Username already exists.']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Signup failed.']);
+            echo json_encode(['success' => false, 'message' => 'Signup failed: ' . $e->getMessage()]);
         }
     }
     exit;
@@ -48,9 +58,16 @@ if ($action === 'login') {
         exit;
     }
 
-    $stmt = $pdo->prepare('SELECT id, username, role, warehouse_option, delivery_option, storage_option FROM users WHERE username = ? AND password = ?');
-    $stmt->execute([$username, $password]);
-    $user = $stmt->fetch();
+    try {
+        $stmt = $pdo->prepare('SELECT id, username, role, warehouse_option, delivery_option, storage_option FROM users WHERE username = ? AND password = ?');
+        $stmt->execute([$username, $password]);
+        $user = $stmt->fetch();
+    } catch (PDOException $e) {
+        // Fallback if columns don't exist
+        $stmt = $pdo->prepare('SELECT id, username, role FROM users WHERE username = ? AND password = ?');
+        $stmt->execute([$username, $password]);
+        $user = $stmt->fetch();
+    }
 
     if ($user) {
         $_SESSION['user'] = $user;

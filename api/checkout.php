@@ -22,7 +22,20 @@ if (!empty($_SESSION['cart'])) {
         $stmt = $pdo->prepare('INSERT INTO orders (customer_id, product_id, quantity, payment_method, address, expected_delivery_date, tracking_type) VALUES (?, ?, ?, ?, ?, ?, ?)');
         
         foreach ($_SESSION['cart'] as $id => $item) {
-            // Randomly assign tracking type for demo purposes
+            // Check stock level first
+            $checkStmt = $pdo->prepare('SELECT stock_quantity, name FROM products WHERE id = ?');
+            $checkStmt->execute([$id]);
+            $product = $checkStmt->fetch();
+            
+            if (!$product || $product['stock_quantity'] < $item['quantity']) {
+                throw new Exception('Insufficient stock for item: ' . ($product['name'] ?? 'Unknown Product'));
+            }
+
+            // Decrement stock
+            $updateStmt = $pdo->prepare('UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ?');
+            $updateStmt->execute([$item['quantity'], $id]);
+
+            // Insert order record
             $tracking_type = (rand(0, 1) == 0) ? 'local' : 'intercity';
             $stmt->execute([$customer_id, $id, $item['quantity'], $payment_method, $address, $expected_date, $tracking_type]);
         }

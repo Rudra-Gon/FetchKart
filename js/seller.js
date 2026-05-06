@@ -37,6 +37,7 @@ async function loadInventory() {
                         <th>Image</th>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>Stock</th>
                         <th>Category</th>
                         <th>Action</th>
                     </tr>
@@ -50,6 +51,10 @@ async function loadInventory() {
                     <td><div class="thumb-container"><img src="${p.image_url}" class="thumb-mini"></div></td>
                     <td>${p.name}</td>
                     <td>₹${parseFloat(p.price).toFixed(2)}</td>
+                    <td>
+                        <strong>${p.stock_quantity}</strong>
+                        <button class="btn-secondary-sm" style="padding: 2px 6px; margin-left: 8px; font-size: 0.7rem;" onclick="updateStock(${p.id}, ${p.stock_quantity})">Edit</button>
+                    </td>
                     <td>${p.category}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Delete</button></td>
                 </tr>
@@ -149,5 +154,28 @@ async function deleteProduct(id) {
         }
     } catch (error) {
         console.error('Error deleting product:', error);
+    }
+}
+async function updateStock(productId, currentStock) {
+    const newStock = prompt("Enter new stock quantity:", currentStock);
+    if (newStock !== null && !isNaN(newStock)) {
+        try {
+            const formData = new FormData();
+            formData.append('product_id', productId);
+            formData.append('stock', newStock);
+            
+            const response = await fetch('api/get_seller_data.php?action=update_stock', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            if (data.success) {
+                loadInventory(); // Refresh list
+            } else {
+                alert('Failed to update stock: ' + (data.message || 'Unknown error'));
+            }
+        } catch (error) {
+            console.error('Error updating stock:', error);
+        }
     }
 }

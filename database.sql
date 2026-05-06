@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `category` varchar(50) DEFAULT 'General',
   `image_url` varchar(255) DEFAULT NULL,
   `seller_id` int(11) DEFAULT NULL,
+  `stock_quantity` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

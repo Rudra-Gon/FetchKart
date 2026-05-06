@@ -6,6 +6,21 @@ header('Content-Type: text/plain');
 try {
     echo "Starting Migration...\n";
 
+    // 0. Update 'products' table
+    $missing_product_cols = [
+        'stock_quantity' => "INT DEFAULT 0"
+    ];
+
+    foreach ($missing_product_cols as $col => $definition) {
+        $check = $pdo->query("SHOW COLUMNS FROM products LIKE '$col'")->fetch();
+        if (!$check) {
+            $pdo->exec("ALTER TABLE products ADD $col $definition");
+            echo "Added '$col' to 'products' table.\n";
+        } else {
+            echo "'$col' already exists in 'products' table.\n";
+        }
+    }
+
     // 1. Update 'orders' table
     $missing_order_cols = [
         'address' => "TEXT DEFAULT NULL AFTER payment_method",
