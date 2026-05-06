@@ -13,7 +13,7 @@ accounts
 platform fees 
 
 to dos
-✅ Done: Online payment (Razorpay/UPI), Checkout Page, User Accounts, Platform Fees
+✅ Done: Online payment (Razorpay/UPI), Checkout Page, User Accounts, Platform Fees, Search and Category Filtering
 
 ⏳ Pending Implementation:
 - Order Tracking (Intercity progress bar / Local map)

@@ -34,50 +34,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Global store for products
+let allProducts = [];
+
 // Fetch products from the PHP API
 async function loadProducts() {
     try {
         const response = await fetch('api/get_products.php');
-        const products = await response.json();
+        allProducts = await response.json();
         
-        const container = document.getElementById('products-container');
-        container.innerHTML = '';
-        
-        if (products.error) {
-            container.innerHTML = `<p>Error loading products: ${products.error}</p>`;
+        if (allProducts.error) {
+            document.getElementById('products-container').innerHTML = `<p>Error loading products: ${allProducts.error}</p>`;
             return;
         }
 
-        products.forEach(product => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.style.cursor = 'pointer';
-            card.onclick = (e) => {
-                if (e.target.tagName !== 'BUTTON') {
-                    window.location.href = `product.html?id=${product.id}`;
-                }
-            };
-            
-            const imageHtml = product.image_url 
-                ? `<div class="product-image"><img src="${product.image_url}" alt="${product.name}"></div>`
-                : `<div class="product-image">📦</div>`;
-
-            card.innerHTML = `
-                ${imageHtml}
-                <h3 class="product-title">${product.name}</h3>
-                <p class="product-seller-small">By: ${product.seller_name || 'FetchKart'}</p>
-                <p class="product-desc">${product.description.substring(0, 60)}...</p>
-                <div class="product-footer">
-                    <span class="product-price">₹${parseFloat(product.price).toFixed(2)}</span>
-                    <button class="btn" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
-                </div>
-            `;
-            container.appendChild(card);
-        });
+        renderProducts(allProducts);
     } catch (error) {
         console.error('Error fetching products:', error);
         document.getElementById('products-container').innerHTML = '<p>No products found. Sellers can add products from their dashboard.</p>';
     }
+}
+
+// Render product cards to the container
+function renderProducts(products) {
+    const container = document.getElementById('products-container');
+    container.innerHTML = '';
+
+    if (products.length === 0) {
+        container.innerHTML = '<p style="text-align:center; width:100%; padding: 2rem;">No products match your search.</p>';
+        return;
+    }
+
+    products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.style.cursor = 'pointer';
+        card.onclick = (e) => {
+            if (e.target.tagName !== 'BUTTON') {
+                window.location.href = `product.html?id=${product.id}`;
+            }
+        };
+        
+        const imageHtml = product.image_url 
+            ? `<div class="product-image"><img src="${product.image_url}" alt="${product.name}"></div>`
+            : `<div class="product-image">📦</div>`;
+
+        card.innerHTML = `
+            ${imageHtml}
+            <h3 class="product-title">${product.name}</h3>
+            <p class="product-seller-small">By: ${product.seller_name || 'FetchKart'}</p>
+            <p class="product-desc">${product.description.substring(0, 60)}...</p>
+            <div class="product-footer">
+                <span class="product-price">₹${parseFloat(product.price).toFixed(2)}</span>
+                <button class="btn" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Filter products based on search input and category select
+function filterProducts() {
+    const searchTerm = document.getElementById('product-search').value.toLowerCase();
+    const categoryFilter = document.getElementById('category-filter').value;
+    
+    const filtered = allProducts.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 
+                              p.category.toLowerCase().includes(searchTerm);
+        const matchesCategory = categoryFilter === 'all' || p.category === categoryFilter;
+        return matchesSearch && matchesCategory;
+    });
+    
+    renderProducts(filtered);
 }
 
 // Load single product details (Flipkart style)

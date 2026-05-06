@@ -20,7 +20,30 @@
 </header>
 
 <main>
-    <h1 class="page-title">Featured Products</h1>
+    <div class="search-filter-container">
+        <div class="search-box">
+            <input type="text" id="product-search" placeholder="Search products by name or category..." onkeyup="filterProducts()">
+            <span class="search-icon">🔍</span>
+        </div>
+        <div class="filter-box">
+            <select id="category-filter" onchange="filterProducts()">
+                <option value="all">All Categories</option>
+                <option value="Mobiles">Mobiles</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Home">Home</option>
+                <option value="Beauty">Beauty</option>
+                <option value="Appliances">Appliances</option>
+                <option value="Health">Health</option>
+                <option value="Toys">Toys</option>
+                <option value="Gifting">Gifting</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Books">Books</option>
+                <option value="Sports">Sports</option>
+                <option value="Automotive">Automotive</option>
+            </select>
+        </div>
+    </div>
     
     <div id="alert-container"></div>
 
