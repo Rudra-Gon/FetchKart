@@ -45,3 +45,9 @@ PRIORITY
    - Step C: Update `js/main.js` to read URL parameters and auto-filter products on the Shop page.
    - Step D: Add a dynamic "Featured Products" section to the landing page that fetches ~4 recent items.
    - Step E: Enhance overall styling in `style.css` (gradients, hover animations) for a "wow" factor.
+2. implement sophisticated and visually appealing animations to the whole website (dont implement heavy animations that slow down the website and make it look cheap and tacky)
+   - Step A: Add scroll animations to all sections
+   - Step B: Add hover animations to all interactive elements
+   - Step C: Add loading animations to all pages
+   - Step D: Add transition animations to all pages
+   

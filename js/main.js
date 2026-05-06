@@ -49,7 +49,31 @@ async function loadProducts() {
         }
 
         renderProducts(allProducts);
-        // Auto-filter by category if URL contains ?category=XYZ
+        // After loading products and handling URL param, add active class handling for category cards
+    const categoryCards = document.querySelectorAll('.category-card');
+    if (categoryCards.length) {
+        // Set active class based on current selection
+        categoryCards.forEach(card => {
+            const url = new URL(card.href);
+            const catParam = url.searchParams.get('category');
+            if (catParam && catParam === cat) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
+            // Click handler to update filter and active state
+            card.addEventListener('click', e => {
+                e.preventDefault();
+                // Update dropdown
+                const select = document.getElementById('category-filter');
+                if (select) select.value = catParam || 'all';
+                // Update active classes
+                categoryCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                filterProducts();
+            });
+        });
+    }
         const urlParams = new URLSearchParams(window.location.search);
         const cat = urlParams.get('category');
         if (cat) {
