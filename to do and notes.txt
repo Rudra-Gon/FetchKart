@@ -37,7 +37,7 @@ Phase 2: Warehouse/Godown Management
                     
 
 
-
+  
 PRIORITY
 1. overhaul the landing page(UI) and "trending catagories" part doesnt have any functions in it
    - Step A: Redesign Hero Section with modern, premium UI elements and better visual hierarchy.
