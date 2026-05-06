@@ -13,14 +13,18 @@ if (!isset($_SESSION['user'])) {
 if (!empty($_SESSION['cart'])) {
     $customer_id = $_SESSION['user']['id'];
     $payment_method = $_POST['payment_method'] ?? 'Not Specified';
+    $address = $_POST['address'] ?? 'No Address Provided';
+    $expected_date = date('Y-m-d', strtotime('+5 days'));
     
     try {
         $pdo->beginTransaction();
         
-        $stmt = $pdo->prepare('INSERT INTO orders (customer_id, product_id, quantity, payment_method) VALUES (?, ?, ?, ?)');
+        $stmt = $pdo->prepare('INSERT INTO orders (customer_id, product_id, quantity, payment_method, address, expected_delivery_date, tracking_type) VALUES (?, ?, ?, ?, ?, ?, ?)');
         
         foreach ($_SESSION['cart'] as $id => $item) {
-            $stmt->execute([$customer_id, $id, $item['quantity'], $payment_method]);
+            // Randomly assign tracking type for demo purposes
+            $tracking_type = (rand(0, 1) == 0) ? 'local' : 'intercity';
+            $stmt->execute([$customer_id, $id, $item['quantity'], $payment_method, $address, $expected_date, $tracking_type]);
         }
         
         $pdo->commit();

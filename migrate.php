@@ -1,0 +1,50 @@
+<?php
+require_once 'api/db.php';
+
+header('Content-Type: text/plain');
+
+try {
+    echo "Starting Migration...\n";
+
+    // 1. Update 'orders' table
+    $missing_order_cols = [
+        'address' => "TEXT DEFAULT NULL AFTER payment_method",
+        'status' => "ENUM('Pending', 'Shipped', 'Out for Delivery', 'Delivered') DEFAULT 'Pending' AFTER address",
+        'expected_delivery_date' => "DATE DEFAULT NULL AFTER status",
+        'tracking_type' => "ENUM('local', 'intercity') DEFAULT 'intercity' AFTER expected_delivery_date"
+    ];
+
+    foreach ($missing_order_cols as $col => $definition) {
+        $check = $pdo->query("SHOW COLUMNS FROM orders LIKE '$col'")->fetch();
+        if (!$check) {
+            $pdo->exec("ALTER TABLE orders ADD $col $definition");
+            echo "Added '$col' to 'orders' table.\n";
+        } else {
+            echo "'$col' already exists in 'orders' table.\n";
+        }
+    }
+
+    // 2. Update 'users' table
+    $missing_user_cols = [
+        'warehouse_option' => "ENUM('service', 'personal') DEFAULT NULL",
+        'delivery_option' => "ENUM('service', 'personal') DEFAULT NULL",
+        'storage_option' => "ENUM('service', 'personal') DEFAULT NULL"
+    ];
+
+    foreach ($missing_user_cols as $col => $definition) {
+        $check = $pdo->query("SHOW COLUMNS FROM users LIKE '$col'")->fetch();
+        if (!$check) {
+            $pdo->exec("ALTER TABLE users ADD $col $definition");
+            echo "Added '$col' to 'users' table.\n";
+        } else {
+            echo "'$col' already exists in 'users' table.\n";
+        }
+    }
+
+    echo "Migration Completed Successfully!\n";
+    echo "You can now delete this file.";
+
+} catch (Exception $e) {
+    echo "Migration Failed: " . $e->getMessage();
+}
+?>

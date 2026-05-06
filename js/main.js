@@ -65,6 +65,7 @@ async function loadProducts() {
             card.innerHTML = `
                 ${imageHtml}
                 <h3 class="product-title">${product.name}</h3>
+                <p class="product-seller-small">By: ${product.seller_name || 'FetchKart'}</p>
                 <p class="product-desc">${product.description.substring(0, 60)}...</p>
                 <div class="product-footer">
                     <span class="product-price">₹${parseFloat(product.price).toFixed(2)}</span>
@@ -107,6 +108,7 @@ async function loadProductDetails(productId) {
                 </div>
                 <div class="detail-right">
                     <h1 class="detail-title">${product.name}</h1>
+                    <p class="detail-seller">Seller: <strong>${product.seller_name || 'FetchKart'}</strong></p>
                     <div class="detail-price">₹${parseFloat(product.price).toFixed(2)}</div>
                     <div class="detail-description">
                         <h3>Product Description</h3>

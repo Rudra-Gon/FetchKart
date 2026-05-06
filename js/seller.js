@@ -3,7 +3,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadInventory();
     loadOrders();
+    loadSellerPrefs();
 });
+
+async function loadSellerPrefs() {
+    try {
+        const response = await fetch('api/auth.php?action=check');
+        const data = await response.json();
+        if (data.logged_in && data.user.role === 'seller') {
+            document.getElementById('storage-type-display').textContent = data.user.storage_option || 'N/A';
+            document.getElementById('warehouse-option-display').textContent = data.user.warehouse_option || 'N/A';
+        }
+    } catch (error) {
+        console.error('Error loading seller prefs:', error);
+    }
+}
 
 async function loadInventory() {
     try {
@@ -33,7 +47,7 @@ async function loadInventory() {
         products.forEach(p => {
             html += `
                 <tr>
-                    <td><img src="${p.image_url}" class="thumb-mini"></td>
+                    <td><div class="thumb-container"><img src="${p.image_url}" class="thumb-mini"></div></td>
                     <td>${p.name}</td>
                     <td>₹${parseFloat(p.price).toFixed(2)}</td>
                     <td>${p.category}</td>

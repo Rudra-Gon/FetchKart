@@ -16,6 +16,7 @@ async function checkUserSession() {
                 <a href="index.html">Home</a>
                 <a href="shop.html">Shop</a>
                 <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
+                <a href="orders.html">Orders</a>
                 <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme">🌙</button>
             `;
             

@@ -29,11 +29,43 @@
             </div>
             <div class="form-group">
                 <label>I want to be a:</label>
-                <select name="role">
+                <select name="role" id="role-select" onchange="toggleSellerOptions()">
                     <option value="customer">Customer (Buy items)</option>
                     <option value="seller">Seller (Sell items)</option>
                 </select>
             </div>
+            
+            <div id="seller-options" style="display: none; background: var(--background); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px dashed var(--primary);">
+                <h4 style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--primary);">Seller Preferences</h4>
+                <div class="form-group">
+                    <label>Warehouse Management</label>
+                    <select name="warehouse_option">
+                        <option value="service">FetchKart Service</option>
+                        <option value="personal">Personal Warehouse</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Method</label>
+                    <select name="delivery_option">
+                        <option value="service">FetchKart Logistics</option>
+                        <option value="personal">Personal Delivery</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Storage Type</label>
+                    <select name="storage_option">
+                        <option value="service">Standard (Service)</option>
+                        <option value="personal">Custom (Personal)</option>
+                    </select>
+                </div>
+            </div>
+
+            <script>
+                function toggleSellerOptions() {
+                    const role = document.getElementById('role-select').value;
+                    document.getElementById('seller-options').style.display = (role === 'seller') ? 'block' : 'none';
+                }
+            </script>
             <button type="submit" class="btn">Create Account</button>
         </form>
         <p id="auth-message"></p>

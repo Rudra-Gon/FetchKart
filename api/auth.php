@@ -18,8 +18,16 @@ if ($action === 'signup') {
     }
 
     try {
-        $stmt = $pdo->prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)');
-        $stmt->execute([$username, $password, $role]);
+        if ($role === 'seller') {
+            $warehouse = $_POST['warehouse_option'] ?? 'service';
+            $delivery = $_POST['delivery_option'] ?? 'service';
+            $storage = $_POST['storage_option'] ?? 'service';
+            $stmt = $pdo->prepare('INSERT INTO users (username, password, role, warehouse_option, delivery_option, storage_option) VALUES (?, ?, ?, ?, ?, ?)');
+            $stmt->execute([$username, $password, $role, $warehouse, $delivery, $storage]);
+        } else {
+            $stmt = $pdo->prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)');
+            $stmt->execute([$username, $password, $role]);
+        }
         echo json_encode(['success' => true, 'message' => 'Account created successfully.']);
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
@@ -40,7 +48,7 @@ if ($action === 'login') {
         exit;
     }
 
-    $stmt = $pdo->prepare('SELECT id, username, role FROM users WHERE username = ? AND password = ?');
+    $stmt = $pdo->prepare('SELECT id, username, role, warehouse_option, delivery_option, storage_option FROM users WHERE username = ? AND password = ?');
     $stmt->execute([$username, $password]);
     $user = $stmt->fetch();
 

@@ -144,7 +144,8 @@ if ($action === 'view') {
         'items' => $items, 
         'total' => $total,
         'discount' => round($discount, 2),
-        'grand_total' => max(0, round($total - $discount, 2)),
+        'platform_fee' => 10.00,
+        'grand_total' => max(0, round($total - $discount + 10.00, 2)),
         'applied_coupon' => $coupon_info
     ]);
     exit;

@@ -18,6 +18,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(50) NOT NULL UNIQUE,
   `password` varchar(255) NOT NULL,
   `role` enum('customer', 'seller', 'admin') NOT NULL DEFAULT 'customer',
+  `warehouse_option` enum('service', 'personal') DEFAULT NULL,
+  `delivery_option` enum('service', 'personal') DEFAULT NULL,
+  `storage_option` enum('service', 'personal') DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -27,6 +30,10 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `payment_method` varchar(50) DEFAULT 'Not Specified',
+  `address` text DEFAULT NULL,
+  `status` enum('Pending', 'Shipped', 'Out for Delivery', 'Delivered') DEFAULT 'Pending',
+  `expected_delivery_date` date DEFAULT NULL,
+  `tracking_type` enum('local', 'intercity') DEFAULT 'intercity',
   `order_date` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.display = 'flex';
             setTimeout(() => {
                 window.location.href = 'index.html';
-            }, 3000);
+            }, 5000);
         }
     } else {
         loadCheckoutData();
@@ -58,6 +58,11 @@ async function loadCheckoutData() {
         }
 
         summaryGrandTotal.textContent = `₹${parseFloat(cartData.grand_total).toFixed(2)}`;
+        
+        const platformFeeEl = document.getElementById('summary-platform-fee');
+        if (platformFeeEl && cartData.platform_fee) {
+            platformFeeEl.textContent = `₹${parseFloat(cartData.platform_fee).toFixed(2)}`;
+        }
 
     } catch (error) {
         console.error('Error loading checkout data:', error);
@@ -172,7 +177,7 @@ async function processFinalOrder(paymentMethod, address, paymentId = '') {
             // Optional: Auto redirect after 3 seconds
             setTimeout(() => {
                 window.location.href = 'index.html';
-            }, 3000);
+            }, 5000);
         } else {
             alert(data.message);
         }
