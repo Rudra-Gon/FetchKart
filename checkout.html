@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - FetchKart</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body class="checkout-body">
 
@@ -14,6 +16,7 @@
         <a href="index.html" class="logo">FetchKart</a>
     </div>
     <h1>Checkout</h1>
+    <nav id="main-nav" class="checkout-nav"></nav>
     <div class="secure-icon">🔒</div>
 </header>
 
@@ -73,13 +76,7 @@
             </div>
             <div class="section-content">
                 <form id="payment-form">
-                    <div class="payment-option unavailable">
-                        <input type="radio" name="payment" id="pay-balance" disabled>
-                        <label for="pay-balance">
-                            <strong>FetchKart Pay Balance ₹0.00</strong>
-                            <span class="error-text">Insufficient balance</span>
-                        </label>
-                    </div>
+
 
                     <div class="payment-group-title">Another payment method</div>
                     
@@ -92,16 +89,18 @@
                     </div>
 
                     <div class="payment-option">
-                        <input type="radio" name="payment" id="pay-net" value="Net Banking">
-                        <label for="pay-net">
+                        <input type="radio" name="payment" id="pay-netbanking" value="Net Banking">
+                        <label for="pay-netbanking">
                             <strong>Net Banking</strong>
-                            <select class="bank-select">
-                                <option>Choose an Option</option>
-                                <option>SBI</option>
-                                <option>HDFC Bank</option>
-                                <option>ICICI Bank</option>
-                                <option>Axis Bank</option>
-                            </select>
+                            <p class="help-text">Pay using your preferred bank account.</p>
+                        </label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" name="payment" id="pay-wallets" value="Digital Wallets">
+                        <label for="pay-wallets">
+                            <strong>Digital Wallets</strong>
+                            <p class="help-text">Paytm, PhonePe, Amazon Pay, etc.</p>
                         </label>
                     </div>
 

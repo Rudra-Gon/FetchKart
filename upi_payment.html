@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay with UPI - FetchKart</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .upi-container {
+            max-width: 500px;
+            margin: 4rem auto;
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+        .qr-code {
+            max-width: 300px;
+            margin: 1.5rem auto;
+            display: block;
+            border-radius: var(--radius);
+        }
+        .upi-container button {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="checkout-header">
+        <div class="logo-container">
+            <a href="index.html" class="logo">FetchKart</a>
+        </div>
+        <h1>Pay via UPI</h1>
+    </header>
+    <main class="checkout-container">
+        <div class="upi-container">
+            <p>Scan the QR code below with any UPI app to complete your payment.</p>
+            <img src="uploads/upi_qr.png" alt="UPI QR Code" class="qr-code">
+            <button class="btn btn-primary" onclick="paymentDone()">I have paid</button>
+        </div>
+    </main>
+    <script>
+        // Get address from query string (passed from checkout page)
+        const urlParams = new URLSearchParams(window.location.search);
+        const address = urlParams.get('address') || '';
+        async function paymentDone() {
+            try {
+                const resp = await fetch('api/checkout.php', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: `payment_method=UPI&address=${encodeURIComponent(address)}`
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    // Redirect to checkout success (reuse checkout page success modal)
+                    window.location.href = 'checkout.html?success=1';
+                } else {
+                    alert('Order processing failed: ' + data.message);
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Error completing order.');
+            }
+        }
+    </script>
+</body>
+</html>

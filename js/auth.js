@@ -24,16 +24,20 @@ async function checkUserSession() {
             }
             
             navLinks += `<a href="#" onclick="logout(event)">Logout</a>`;
-            headerNav.innerHTML = navLinks;
+            if (headerNav) {
+                headerNav.innerHTML = navLinks;
+            }
         } else {
-            headerNav.innerHTML = `
-                <a href="index.html">Home</a>
-                <a href="shop.html">Shop</a>
-                <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
-                <a href="login.html">Login</a>
-                <a href="signup.html">Signup</a>
-                <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme">🌙</button>
-            `;
+            if (headerNav) {
+                headerNav.innerHTML = `
+                    <a href="index.html">Home</a>
+                    <a href="shop.html">Shop</a>
+                    <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
+                    <a href="login.html">Login</a>
+                    <a href="signup.html">Signup</a>
+                    <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme">🌙</button>
+                `;
+            }
         }
         
         // Always try to update theme icon if theme.js is present

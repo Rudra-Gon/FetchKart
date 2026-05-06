@@ -1,6 +1,29 @@
 // Global variable to store cart count
 let cartCount = 0;
 
+// Check if the user is logged in (returns a promise)
+async function isLoggedIn() {
+    try {
+        const response = await fetch('api/auth.php?action=check');
+        const data = await response.json();
+        return data.logged_in === true;
+    } catch (error) {
+        console.error('Error checking login status:', error);
+        return false;
+    }
+}
+
+// Show "not signed in" alert and redirect to login
+function redirectToLogin() {
+    const alertContainer = document.getElementById('alert-container');
+    if (alertContainer) {
+        alertContainer.innerHTML = `<div class="alert-error" style="background:#fef2f2; color:#dc2626; padding:1rem; border-radius:8px; text-align:center; font-weight:600; border:1px solid #fecaca;">You aren't signed in! Redirecting to login...</div>`;
+    } else {
+        alert("You aren't signed in! Redirecting to login...");
+    }
+    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+}
+
 // On page load
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCounter();
@@ -36,7 +59,7 @@ async function loadProducts() {
             };
             
             const imageHtml = product.image_url 
-                ? `<img src="${product.image_url}" alt="${product.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">`
+                ? `<div class="product-image"><img src="${product.image_url}" alt="${product.name}"></div>`
                 : `<div class="product-image">📦</div>`;
 
             card.innerHTML = `
@@ -70,15 +93,15 @@ async function loadProductDetails(productId) {
         }
 
         const imageHtml = product.image_url 
-            ? `<img src="${product.image_url}" alt="${product.name}" class="detail-img">`
-            : `<div class="detail-img-placeholder">📦</div>`;
+            ? `<div class="detail-img"><img src="${product.image_url}" alt="${product.name}"></div>`
+            : `<div class="detail-img">📦</div>`;
 
         container.innerHTML = `
             <div class="product-detail-layout">
                 <div class="detail-left">
                     ${imageHtml}
                     <div class="detail-actions">
-                        <button class="btn btn-buy" onclick="addToCart(${product.id}, '${product.name}'); window.location.href='cart.html';">Buy Now</button>
+                        <button class="btn btn-buy" onclick="addToCart(${product.id}, '${product.name}').then(() => window.location.href='cart.html')">Buy Now</button>
                         <button class="btn btn-cart" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
                     </div>
                 </div>
@@ -102,7 +125,10 @@ async function updateCartCounter() {
     try {
         const response = await fetch('api/cart_actions.php?action=count');
         const data = await response.json();
-        document.getElementById('cart-counter').textContent = data.count || 0;
+        const counter = document.getElementById('cart-counter');
+        if (counter) {
+            counter.textContent = data.count || 0;
+        }
     } catch (error) {
         console.error('Error fetching cart count:', error);
     }
@@ -110,6 +136,13 @@ async function updateCartCounter() {
 
 // Add item to cart
 async function addToCart(productId, productName) {
+    // Check if user is logged in first
+    const loggedIn = await isLoggedIn();
+    if (!loggedIn) {
+        redirectToLogin();
+        return;
+    }
+
     try {
         const response = await fetch('api/cart_actions.php', {
             method: 'POST',
@@ -251,7 +284,12 @@ async function clearCart() {
 }
 
 // Go to checkout page
-function checkout() {
+async function checkout() {
+    const loggedIn = await isLoggedIn();
+    if (!loggedIn) {
+        redirectToLogin();
+        return;
+    }
     window.location.href = 'checkout.html';
 }
 

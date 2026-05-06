@@ -1,7 +1,18 @@
 // js/checkout.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadCheckoutData();
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === '1') {
+        const modal = document.getElementById('success-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3000);
+        }
+    } else {
+        loadCheckoutData();
+    }
 });
 
 async function loadCheckoutData() {
@@ -54,57 +65,104 @@ async function loadCheckoutData() {
 }
 
 async function placeOrder() {
-// Gather address fields
-const fullname = document.getElementById('ship-fullname').value.trim();
-const addr1 = document.getElementById('ship-address1').value.trim();
-const addr2 = document.getElementById('ship-address2').value.trim();
-const city = document.getElementById('ship-city').value.trim();
-const state = document.getElementById('ship-state').value.trim();
-const zip = document.getElementById('ship-zip').value.trim();
+    try {
+        // Gather address fields
+        const fullname = document.getElementById('ship-fullname').value.trim();
+        const addr1 = document.getElementById('ship-address1').value.trim();
+        const addr2 = document.getElementById('ship-address2').value.trim();
+        const city = document.getElementById('ship-city').value.trim();
+        const state = document.getElementById('ship-state').value.trim();
+        const zip = document.getElementById('ship-zip').value.trim();
 
-// Build a single address string (omit optional parts if empty)
-let addressParts = [];
-if (fullname) addressParts.push(fullname);
-if (addr1) addressParts.push(addr1);
-if (addr2) addressParts.push(addr2);
-if (city) addressParts.push(city);
-if (state) addressParts.push(state);
-if (zip) addressParts.push(zip);
-const address = addressParts.join(', ');
+        // Build a single address string (omit optional parts if empty)
+        let addressParts = [];
+        if (fullname) addressParts.push(fullname);
+        if (addr1) addressParts.push(addr1);
+        if (addr2) addressParts.push(addr2);
+        if (city) addressParts.push(city);
+        if (state) addressParts.push(state);
+        if (zip) addressParts.push(zip);
+        const address = addressParts.join(', ');
 
-// Validate required fields (fullname, addr1, city, state, zip)
-if (!fullname || !addr1 || !city || !state || !zip) {
-    addressError.style.display = 'block';
-    // Highlight missing fields (simple approach: set red border on each empty required input)
-    const requiredIds = ['ship-fullname', 'ship-address1', 'ship-city', 'ship-state', 'ship-zip'];
-    requiredIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el.value.trim()) {
-            el.style.borderColor = '#b12704';
+        const addressError = document.getElementById('address-error');
+        
+        // Validate required fields (fullname, addr1, city, state, zip)
+        if (!fullname || !addr1 || !city || !state || !zip) {
+            addressError.style.display = 'block';
+            // Highlight missing fields
+            const requiredIds = ['ship-fullname', 'ship-address1', 'ship-city', 'ship-state', 'ship-zip'];
+            requiredIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el.value.trim()) {
+                    el.style.borderColor = '#b12704';
+                } else {
+                    el.style.borderColor = '#ccc';
+                }
+            });
+            addressError.textContent = 'Please fill in all required shipping fields.';
+            return;
         } else {
-            el.style.borderColor = '#ccc';
+            addressError.style.display = 'none';
+            // Reset border colors
+            ['ship-fullname', 'ship-address1', 'ship-city', 'ship-state', 'ship-zip'].forEach(id => {
+                document.getElementById(id).style.borderColor = '#ccc';
+            });
         }
-    });
-    addressError.textContent = 'Please fill in all required shipping fields.';
-    return;
-} else {
-    addressError.style.display = 'none';
-    // Reset border colors
-    ['ship-fullname', 'ship-address1', 'ship-city', 'ship-state', 'ship-zip'].forEach(id => {
-        document.getElementById(id).style.borderColor = '#ccc';
-    });
+
+        const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+        
+        // --- RAZORPAY INTEGRATION ---
+        if (paymentMethod !== 'Cash on Delivery' && paymentMethod !== 'UPI') {
+            const grandTotalText = document.getElementById('summary-grand-total').textContent;
+            const amount = parseFloat(grandTotalText.replace('₹', '').replace(',', '')) * 100; // Amount in paise
+
+            const options = {
+                "key": "rzp_test_Slyg9wRckaoXnF",
+                "amount": amount,
+                "currency": "INR",
+                "name": "FetchKart",
+                "description": "Order Payment",
+                "image": "uploads/logo.png",
+                "handler": function (response) {
+                    processFinalOrder(paymentMethod, address, response.razorpay_payment_id);
+                },
+                "prefill": {
+                    "name": fullname,
+                    "contact": "9999999999"
+                },
+                "theme": {
+                    "color": "#2874f0"
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+            return;
+        }
+
+        // If UPI is chosen, redirect to the dedicated QR‑payment page
+        if (paymentMethod === 'UPI') {
+            const encodedAddr = encodeURIComponent(address);
+            window.location.href = `upi_payment.html?address=${encodedAddr}`;
+            return;
+        }
+
+        // For COD, proceed directly
+        processFinalOrder(paymentMethod, address);
+    } catch (error) {
+        console.error('Error in placeOrder:', error);
+    }
 }
 
-    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-    
+async function processFinalOrder(paymentMethod, address, paymentId = '') {
     try {
         const response = await fetch('api/checkout.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `payment_method=${encodeURIComponent(paymentMethod)}&address=${encodeURIComponent(address)}`
+            body: `payment_method=${encodeURIComponent(paymentMethod)}&address=${encodeURIComponent(address)}&payment_id=${encodeURIComponent(paymentId)}`
         });
+
         
         const data = await response.json();
         if (data.success) {
