@@ -33,4 +33,5 @@ Phase 2: Warehouse/Godown Management
 1. Create 'godowns' table [DONE]
 2. Create Godown Management API (CRUD) [CURRENT STEP]
 3. Add "Manage Godowns" UI to seller dashboard
-4. Assign products to specific godowns
+4. Assign products to specific godowns
+                     
