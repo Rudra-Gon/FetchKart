@@ -35,3 +35,13 @@ Phase 2: Warehouse/Godown Management
 3. Add "Manage Godowns" UI to seller dashboard
 4. Assign products to specific godowns
                     
+
+
+
+PRIORITY
+1. overhaul the landing page(UI) and "trending catagories" part doesnt have any functions in it
+   - Step A: Redesign Hero Section with modern, premium UI elements and better visual hierarchy.
+   - Step B: Make "Trending Categories" clickable by passing category tags via URL (e.g., `shop.html?category=Fashion`).
+   - Step C: Update `js/main.js` to read URL parameters and auto-filter products on the Shop page.
+   - Step D: Add a dynamic "Featured Products" section to the landing page that fetches ~4 recent items.
+   - Step E: Enhance overall styling in `style.css` (gradients, hover animations) for a "wow" factor.
