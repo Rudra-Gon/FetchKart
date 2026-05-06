@@ -79,14 +79,18 @@ function renderProducts(products) {
             ? `<div class="product-image"><img src="${product.image_url}" alt="${product.name}"></div>`
             : `<div class="product-image">📦</div>`;
 
+        const isOutOfStock = parseInt(product.stock_quantity) <= 0;
+        const stockBadge = isOutOfStock ? `<span class="stock-badge-out">Out of Stock</span>` : '';
+        
         card.innerHTML = `
             ${imageHtml}
+            ${stockBadge}
             <h3 class="product-title">${product.name}</h3>
             <p class="product-seller-small">By: ${product.seller_name || 'FetchKart'}</p>
             <p class="product-desc">${product.description.substring(0, 60)}...</p>
             <div class="product-footer">
                 <span class="product-price">₹${parseFloat(product.price).toFixed(2)}</span>
-                <button class="btn" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
+                <button class="btn" ${isOutOfStock ? 'disabled style="background: #cbd5e1; color: #64748b; cursor: not-allowed; border: none;"' : ''} onclick="addToCart(${product.id}, '${product.name}')">${isOutOfStock ? 'Sold Out' : 'Add to Cart'}</button>
             </div>
         `;
         container.appendChild(card);
@@ -125,19 +129,31 @@ async function loadProductDetails(productId) {
             ? `<div class="detail-img"><img src="${product.image_url}" alt="${product.name}"></div>`
             : `<div class="detail-img">📦</div>`;
 
+        const stock = parseInt(product.stock_quantity || 0);
+        let stockMessage = '';
+        let btnDisabled = '';
+        
+        if (stock <= 0) {
+            stockMessage = `<p class="stock-msg-out">❌ Out of Stock - Check back later!</p>`;
+            btnDisabled = 'disabled style="background: #cbd5e1; color: #64748b; cursor: not-allowed; border: none;"';
+        } else if (stock < 50) {
+            stockMessage = `<p class="stock-msg-low">⚠️ Hurry! Only ${stock} units left in stock!</p>`;
+        }
+
         container.innerHTML = `
             <div class="product-detail-layout">
                 <div class="detail-left">
                     ${imageHtml}
                     <div class="detail-actions">
-                        <button class="btn btn-buy" onclick="addToCart(${product.id}, '${product.name}').then(() => window.location.href='cart.html')">Buy Now</button>
-                        <button class="btn btn-cart" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
+                        <button class="btn btn-buy" ${btnDisabled} onclick="addToCart(${product.id}, '${product.name}').then(() => window.location.href='cart.html')">Buy Now</button>
+                        <button class="btn btn-cart" ${btnDisabled} onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
                     </div>
                 </div>
                 <div class="detail-right">
                     <h1 class="detail-title">${product.name}</h1>
                     <p class="detail-seller">Seller: <strong>${product.seller_name || 'FetchKart'}</strong></p>
                     <div class="detail-price">₹${parseFloat(product.price).toFixed(2)}</div>
+                    ${stockMessage}
                     <div class="detail-description">
                         <h3>Product Description</h3>
                         <p>${product.description}</p>

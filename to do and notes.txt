@@ -25,5 +25,6 @@ to dos
 Phase 1: Stock Management
 1. Add 'stock_quantity' to products table [DONE]
 2. Update seller dashboard to manage stock [DONE]
-3. Update checkout to decrement stock on purchase [CURRENT STEP]
-4. Implement "Out of Stock" UI indicators
+3. Update checkout to decrement stock on purchase [DONE]
+4. Implement "Out of Stock" UI indicators [DONE]
+5. Implement "Low Stock" marketing messages (if < 50 units) [DONE]
