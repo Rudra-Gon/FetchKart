@@ -12,6 +12,7 @@
     <title>FetchKart - Your One-Stop Shop</title>
 
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -912,7 +913,22 @@
             🌙
         </button>
 
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+            <span class="hamburger"></span>
+        </button>
+
     </nav>
+
+    <div class="mobile-nav-overlay"></div>
+    <div class="mobile-nav">
+        <div class="mobile-nav-links">
+            <a href="index.html">🏠 Home</a>
+            <a href="shop.html">🛍️ Shop</a>
+            <a href="cart.html">🛒 Cart</a>
+            <a href="orders.html" id="mobile-orders-link" style="display:none;">📦 Orders</a>
+            <a href="login.html" id="mobile-auth-link">👤 Profile</a>
+        </div>
+    </div>
 
 </header>
 
@@ -1151,6 +1167,8 @@
 <script src="js/auth.js"></script>
 
 <script src="js/main.js"></script>
+
+<script src="js/mobile.js"></script>
 
 <script>
 

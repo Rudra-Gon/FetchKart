@@ -48,36 +48,43 @@ async function checkUserSession() {
         const response = await fetch('api/auth.php?action=check');
         const data = await response.json();
         
-        const headerNav = document.getElementById('main-nav') || document.querySelector('nav');
-        if (data.logged_in) {
-            let navLinks = `
-                <span class="user-greeting">Hi, <strong>${data.user.username}</strong> (${data.user.role})</span>
-                <a href="index.html">Home</a>
-                <a href="shop.html">Shop</a>
-                <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
-                <a href="orders.html">Orders</a>
-                <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme"></button>
-            `;
-            
-            if (data.user.role === 'seller') {
-                navLinks += `<a href="seller.html">Dashboard</a>`;
+        const desktopNav = document.getElementById('main-nav');
+        const mobileNavLinks = document.querySelector('.mobile-nav-links');
+        
+        const getNavContent = (isMobile = false) => {
+            let links = '';
+            if (data.logged_in) {
+                if (!isMobile) links += `<span class="user-greeting">Hi, <strong>${data.user.username}</strong></span>`;
+                links += `<a href="index.html">${isMobile ? '🏠 ' : ''}Home</a>`;
+                links += `<a href="shop.html">${isMobile ? '🛍️ ' : ''}Shop</a>`;
+                links += `<a href="cart.html">${isMobile ? '🛒 ' : ''}Cart <span class="cart-count" id="cart-counter">0</span></a>`;
+                links += `<a href="orders.html">${isMobile ? '📦 ' : ''}Orders</a>`;
+                if (data.user.role === 'seller') {
+                    links += `<a href="seller.html">${isMobile ? '📊 ' : ''}Dashboard</a>`;
+                }
+                links += `<a href="#" onclick="logout(event)">${isMobile ? '🚪 ' : ''}Logout</a>`;
+            } else {
+                links += `<a href="index.html">${isMobile ? '🏠 ' : ''}Home</a>`;
+                links += `<a href="shop.html">${isMobile ? '🛍️ ' : ''}Shop</a>`;
+                links += `<a href="cart.html">${isMobile ? '🛒 ' : ''}Cart <span class="cart-count" id="cart-counter">0</span></a>`;
+                links += `<a href="login.html">${isMobile ? '👤 ' : ''}Login</a>`;
+                links += `<a href="signup.html">${isMobile ? '📝 ' : ''}Signup</a>`;
             }
-            
-            navLinks += `<a href="#" onclick="logout(event)">Logout</a>`;
-            if (headerNav) {
-                headerNav.innerHTML = navLinks;
+            if (!isMobile) {
+                links += `<button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme"></button>`;
             }
-        } else {
-            if (headerNav) {
-                headerNav.innerHTML = `
-                    <a href="index.html">Home</a>
-                    <a href="shop.html">Shop</a>
-                    <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
-                    <a href="login.html">Login</a>
-                    <a href="signup.html">Signup</a>
-                    <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme"></button>
-                `;
-            }
+            return links;
+        };
+
+        if (desktopNav) {
+            // Check if we need to preserve the hamburger
+            const toggle = desktopNav.querySelector('.mobile-nav-toggle');
+            desktopNav.innerHTML = getNavContent(false);
+            if (toggle) desktopNav.appendChild(toggle);
+        }
+
+        if (mobileNavLinks) {
+            mobileNavLinks.innerHTML = getNavContent(true);
         }
         
         // Always try to update theme icon if theme.js is present

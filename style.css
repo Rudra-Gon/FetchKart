@@ -17,6 +17,25 @@
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --radius: 12px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Fluid Typography (clamp based) */
+    --fs-xs: clamp(0.75rem, 0.05vw + 0.73rem, 0.8rem);
+    --fs-sm: clamp(0.875rem, 0.21vw + 0.82rem, 1rem);
+    --fs-base: clamp(1rem, 0.38vw + 0.91rem, 1.125rem);
+    --fs-md: clamp(1.125rem, 0.64vw + 0.97rem, 1.5rem);
+    --fs-lg: clamp(1.5rem, 1.28vw + 1.18rem, 2.25rem);
+    --fs-xl: clamp(2rem, 2.56vw + 1.36rem, 3.5rem);
+    --fs-2xl: clamp(2.5rem, 4.27vw + 1.43rem, 5rem);
+    
+    /* Responsive Spacing */
+    --space-xs: clamp(0.5rem, 0.43vw + 0.39rem, 0.75rem);
+    --space-sm: clamp(1rem, 0.85vw + 0.79rem, 1.5rem);
+    --space-md: clamp(1.5rem, 1.71vw + 1.07rem, 2.5rem);
+    --space-lg: clamp(2rem, 3.42vw + 1.15rem, 4rem);
+    --space-xl: clamp(3rem, 5.13vw + 1.72rem, 6rem);
+    
+    /* Standardized Container Padding */
+    --container-px: clamp(1rem, 5vw, 4rem);
 }
 
 body.dark {
@@ -212,13 +231,13 @@ body.dark .theme-toggle {
 main {
     max-width: 1200px;
     margin: 2rem auto;
-    padding: 0 2rem;
+    padding: 0 var(--container-px);
 }
 
 .page-title {
-    font-size: 2.5rem;
+    font-size: var(--fs-xl);
     font-weight: 700;
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-md);
     color: var(--text-main);
     letter-spacing: -0.025em;
 }
@@ -227,16 +246,20 @@ main {
 .hero-section {
     position: relative;
     border-radius: var(--radius);
-    padding: 6rem 2rem;
-    margin-bottom: 4rem;
+    padding: var(--space-xl) var(--container-px);
+    margin-bottom: var(--space-lg);
     text-align: center;
     box-shadow: var(--shadow-lg);
-    background-image: url('hero_banner.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: 
+        radial-gradient(circle at top left, #1e3a8a 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #6d28d9 0%, transparent 35%),
+        #050816;
     overflow: hidden;
     color: white;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .hero-overlay {
@@ -258,17 +281,21 @@ main {
 }
 
 .hero-section h1 {
-    font-size: 4rem;
-    margin-bottom: 1rem;
+    font-size: var(--fs-2xl);
+    margin-bottom: var(--space-xs);
     text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    font-weight: 700;
+    font-weight: 800;
+    line-height: 1.1;
 }
 
 .hero-section p {
-    font-size: 1.5rem;
-    margin-bottom: 2.5rem;
+    font-size: var(--fs-md);
+    margin-bottom: var(--space-md);
     opacity: 0.95;
     text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-buttons {
@@ -370,7 +397,7 @@ footer a:hover {
 .product-card {
     background: var(--surface);
     border-radius: var(--radius);
-    padding: 1.5rem;
+    padding: var(--space-sm);
     box-shadow: var(--shadow);
     transition: var(--transition);
     border: 1px solid var(--border);
@@ -432,9 +459,9 @@ body.dark .product-card::before {
 
 
 .product-title {
-    font-size: 1.25rem;
+    font-size: var(--fs-base);
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-xs);
 }
 
 .product-desc {
@@ -452,7 +479,7 @@ body.dark .product-card::before {
 }
 
 .product-price {
-    font-size: 1.5rem;
+    font-size: var(--fs-md);
     font-weight: 700;
     color: var(--primary);
 }
@@ -673,7 +700,7 @@ footer a:hover {
 .category-card {
     transition: var(--transition);
     cursor: pointer;
-    padding: 1.25rem 2rem;
+    padding: var(--space-sm) var(--space-md);
     border-radius: var(--radius);
     background: var(--surface);
     box-shadow: var(--shadow);
@@ -682,7 +709,7 @@ footer a:hover {
     color: var(--text-main);
     text-decoration: none;
     border: 1px solid var(--border);
-    min-width: 130px;
+    min-width: 140px;
     position: relative;
     overflow: hidden;
 }
@@ -726,13 +753,13 @@ body.dark .category-card:hover {
 .features-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 3rem;
+    gap: var(--space-md);
     background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    padding: 4rem 2rem;
+    padding: var(--space-lg) var(--container-px);
     border-radius: 30px;
-    margin-bottom: 5rem;
+    margin-bottom: var(--space-xl);
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     text-align: center;
@@ -744,7 +771,7 @@ body.dark .features-section {
 }
 
 .feature-item {
-    padding: 2rem;
+    padding: var(--space-md);
     border-radius: 20px;
     transition: var(--transition);
     display: flex;
@@ -770,9 +797,9 @@ body.dark .features-section {
 }
 
 .feature-item h3 {
-    font-size: 1.5rem;
+    font-size: var(--fs-md);
     font-weight: 700;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-xs);
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -1551,3 +1578,84 @@ body.dark .skeleton {
 .skeleton-btn { height: 2.25rem; width: 45%; border-radius: 8px; }
 .skeleton-card { pointer-events: none; }
 .skeleton-card .product-image { background: transparent !important; }
+
+/* ==================================================
+   RESPONSIVE OVERRIDES (MOBILE FIRST APPROACH)
+   ================================================== */
+
+/* Extra Large Screens (Desktop) */
+@media (max-width: 1400px) {
+    main {
+        max-width: 1200px;
+    }
+}
+
+/* Large Screens (Laptops) */
+@media (max-width: 1200px) {
+    main {
+        max-width: 960px;
+    }
+}
+
+/* Medium Screens (Tablets) */
+@media (max-width: 992px) {
+    main {
+        max-width: 720px;
+    }
+    
+    .hero-section h1 {
+        font-size: var(--fs-xl);
+    }
+}
+
+/* Small Screens (Large Phones/Small Tablets) */
+@media (max-width: 768px) {
+    main {
+        max-width: 540px;
+        padding: 0 var(--container-px);
+    }
+    
+    header {
+        padding: 1rem var(--container-px);
+    }
+    
+    nav a, .user-greeting {
+        display: none; /* Hide desktop links */
+    }
+    
+    #theme-btn {
+        margin-right: 1rem;
+    }
+    
+    .hero-section {
+        padding: 4rem 1rem;
+    }
+    
+    .hero-section h1 {
+        font-size: var(--fs-lg);
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Extra Small Screens (Phones) */
+@media (max-width: 480px) {
+    main {
+        max-width: 100%;
+    }
+    
+    .section-title {
+        font-size: var(--fs-lg);
+    }
+    
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}
