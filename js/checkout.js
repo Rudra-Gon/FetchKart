@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (urlParams.get('success') === '1') {
         const modal = document.getElementById('success-modal');
         if (modal) {
+            document.body.classList.add('modal-open');
             modal.style.display = 'flex';
             setTimeout(() => {
                 window.location.href = 'index.html';
@@ -172,9 +173,10 @@ async function processFinalOrder(paymentMethod, address, paymentId = '') {
         const data = await response.json();
         if (data.success) {
             // Show success modal
+            document.body.classList.add('modal-open');
             document.getElementById('success-modal').style.display = 'flex';
             
-            // Optional: Auto redirect after 3 seconds
+            // Optional: Auto redirect after 5 seconds
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 5000);
