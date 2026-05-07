@@ -13,13 +13,13 @@ function themeToggle() {
 function updateToggleIcon(theme) {
     const btn = document.getElementById('theme-btn');
     if (btn) {
-        btn.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+        btn.innerHTML = theme === 'dark' ? '🌙' : '☀️';
     }
 }
 
 // Initialize theme on load
 document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     document.body.classList.add(savedTheme);
     updateToggleIcon(savedTheme);
 });

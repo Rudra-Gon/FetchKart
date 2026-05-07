@@ -56,7 +56,7 @@ async function checkUserSession() {
                 <a href="shop.html">Shop</a>
                 <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
                 <a href="orders.html">Orders</a>
-                <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme">🌙</button>
+                <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme"></button>
             `;
             
             if (data.user.role === 'seller') {
@@ -75,14 +75,14 @@ async function checkUserSession() {
                     <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
                     <a href="login.html">Login</a>
                     <a href="signup.html">Signup</a>
-                    <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme">🌙</button>
+                    <button id="theme-btn" class="theme-toggle" onclick="themeToggle()" title="Toggle Theme"></button>
                 `;
             }
         }
         
         // Always try to update theme icon if theme.js is present
         if (typeof updateToggleIcon === 'function') {
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedTheme = localStorage.getItem('theme') || 'dark';
             updateToggleIcon(savedTheme);
         }
 
