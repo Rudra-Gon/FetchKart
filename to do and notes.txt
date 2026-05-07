@@ -34,7 +34,10 @@ Phase 2: Warehouse/Godown Management
 2. Create Godown Management API (CRUD) [DONE]
 3. Add "Manage Godowns" UI to seller dashboard
 4. Assign products to specific godowns
-                    
+
+Phase 3: Mobile-Friendly adaptive design
+1. Make sure the website is mobile-friendly and adaptive to all screen sizes
+2. 
 
 
   
