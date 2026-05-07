@@ -39,6 +39,22 @@ let allProducts = [];
 
 // Fetch products from the PHP API
 async function loadProducts() {
+    const container = document.getElementById('products-container');
+    if (container) {
+        // Show skeleton loading
+        container.innerHTML = Array(8).fill(0).map(() => `
+            <div class="product-card skeleton-card">
+                <div class="product-image skeleton"></div>
+                <div class="skeleton skeleton-title"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="product-footer">
+                    <div class="skeleton skeleton-price"></div>
+                    <div class="skeleton skeleton-btn"></div>
+                </div>
+            </div>
+        `).join('');
+    }
+
     try {
         const response = await fetch('api/get_products.php');
         allProducts = await response.json();
@@ -135,6 +151,20 @@ function renderProducts(products) {
 
 // Load Featured Products on Home page
 async function loadFeaturedProducts() {
+    const container = document.getElementById('featured-container');
+    if (container) {
+        container.innerHTML = Array(3).fill(0).map(() => `
+            <div class="product-card skeleton-card">
+                <div class="product-image skeleton"></div>
+                <div class="skeleton skeleton-title"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="product-footer">
+                    <div class="skeleton skeleton-price"></div>
+                    <div class="skeleton skeleton-btn"></div>
+                </div>
+            </div>
+        `).join('');
+    }
     try {
         const response = await fetch('api/get_products.php');
         const products = await response.json();

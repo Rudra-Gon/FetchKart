@@ -147,21 +147,35 @@ nav a {
     font-weight: 500;
     transition: var(--transition);
     position: relative;
+    padding: 0.25rem 0;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 2px;
 }
 
 nav a:hover {
     color: var(--primary);
 }
 
-nav a.active::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
+nav a:hover::after {
     width: 100%;
-    height: 2px;
-    background: var(--primary);
-    border-radius: 2px;
+}
+
+nav a.active {
+    color: var(--primary);
+}
+
+nav a.active::after {
+    width: 100%;
 }
 
 .theme-toggle {
@@ -344,6 +358,13 @@ main {
     background: var(--primary);
     color: white;
     border-color: var(--primary);
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+}
+
+footer a:hover {
+    color: var(--secondary);
+    text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
 }
 
 .product-card {
@@ -481,7 +502,7 @@ body.dark .product-card::before {
 .btn-primary:hover {
     background: linear-gradient(135deg, var(--primary-hover), #4f46e5);
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
 }
 
 .btn-primary:active {
@@ -492,11 +513,15 @@ body.dark .product-card::before {
     background: var(--surface);
     color: var(--text-main);
     border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
     background: #f1f5f9;
-    border-color: var(--text-muted);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    color: var(--primary);
 }
 
 .btn-danger {
@@ -557,10 +582,16 @@ body.dark .product-card::before {
     transition: var(--transition);
 }
 
+.form-group input:hover, .form-group select:hover {
+    border-color: var(--primary);
+    background: rgba(79, 70, 229, 0.02);
+}
+
 .form-group input:focus, .form-group select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+    background: var(--surface);
 }
 /* Footer */
 footer {
@@ -1465,3 +1496,28 @@ body.dark .feature-item h3 {
 .product-grid > .reveal, .category-grid > .reveal, .features-section > .reveal {
     transition-delay: calc(var(--i, 0) * 0.1s);
 }
+
+/* Skeleton Loader */
+.skeleton {
+    background: linear-gradient(90deg, var(--border) 25%, rgba(226, 232, 240, 0.5) 50%, var(--border) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 4px;
+}
+
+body.dark .skeleton {
+    background: linear-gradient(90deg, #334155 25%, #475569 50%, #334155 75%);
+    background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.skeleton-title { height: 1.25rem; width: 70%; margin-bottom: 0.75rem; }
+.skeleton-text { height: 0.9rem; width: 90%; margin-bottom: 0.5rem; }
+.skeleton-price { height: 1.75rem; width: 35%; }
+.skeleton-btn { height: 2.25rem; width: 45%; border-radius: 8px; }
+.skeleton-card { pointer-events: none; }
+.skeleton-card .product-image { background: transparent !important; }
