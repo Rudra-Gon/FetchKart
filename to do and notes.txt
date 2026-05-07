@@ -36,14 +36,14 @@ Phase 2: Warehouse/Godown Management
 4. Assign products to specific godowns
 
 Phase 3: Mobile-Friendly adaptive design
-1. Make sure the website is mobile-friendly and adaptive for all screen sizes
-2. Recognizable website design between mobile and desktop versions
-3. Implement a sleek bottom navigation bar for quick access to Home, Search, Cart, and Profile.
-4. Optimize touch targets (buttons and links) for better ergonomics (min 48x48px).
-5. Add smooth swipe-to-dismiss gestures for cart items and notification toasts.
-6. Implement a sticky "Buy Now/Add to Cart" bar on mobile product detail pages.
-7. Integrate PWA (Progressive Web App) features for an "installable" experience.
-8. Optimize all assets for mobile performance (WebP images, lazy-loading, and minified CSS/JS).
+1. Implement fluid typography using CSS clamp() and adjust spacing for small screens
+2. Ensure all touch targets (buttons/links) have a minimum hit area of 48x48px
+3. Create a sleek, fixed bottom navigation bar for core mobile actions
+4. Simplify top header on mobile (logo centering, hidden desktop nav links)
+5. Implement sticky "Add to Cart" bar for product pages on mobile
+6. Create js/mobile.js for mobile interactions (swipe-to-dismiss, nav logic)
+7. Add PWA support (manifest.json, service worker, iOS meta tags)
+8. Optimize performance with lazy loading and responsive images (srcset)
   
 PRIORITY
 1. overhaul the landing page(UI) and "trending catagories" part doesnt have any functions in it
