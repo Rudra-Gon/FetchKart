@@ -32,6 +32,9 @@
                 <select name="role" id="role-select" onchange="toggleSellerOptions()">
                     <option value="customer">Customer (Buy items)</option>
                     <option value="seller">Seller (Sell items)</option>
+                    <!-- 
+                    added logistics options during signing up process
+                    -->
                 </select>
             </div>
             
@@ -55,7 +58,9 @@
                     <label>Storage Type</label>
                     <select name="storage_option">
                         <option value="service">Standard (Service)</option>
-                        <option value="personal">Custom (Personal)</option>
+                        <option value="cold storage">Cold Storage (Service)</option>
+                        <option value="fragile">Fragile Items (Service)</option>
+                        <option value="personal">personal storage</option>
                     </select>
                 </div>
             </div>
