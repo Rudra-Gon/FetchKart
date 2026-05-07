@@ -148,7 +148,7 @@ function renderProducts(products) {
         container.appendChild(card);
     });
 }
-
+//added TAB key navigation support
 // Load Featured Products on Home page
 async function loadFeaturedProducts() {
     const container = document.getElementById('featured-container');
