@@ -11,6 +11,7 @@ visually pleasing design
 light to run 
 accounts
 platform fees 
+added ngrok temporary hosting
 
 to dos
 ✅ Done: Online payment (Razorpay/UPI), Checkout Page, User Accounts, Platform Fees, Search and Category Filtering
@@ -57,4 +58,3 @@ PRIORITY
    - Step B: Add hover animations to all interactive elements
    - Step C: Add loading animations to all pages
    - Step D: Add transition animations to all pages
-   
