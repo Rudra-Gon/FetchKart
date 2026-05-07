@@ -2,7 +2,46 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     checkUserSession();
+    initAnimations();
 });
+
+function initAnimations() {
+    // Page Loader
+    const loader = document.createElement('div');
+    loader.className = 'page-loader';
+    loader.innerHTML = '<div class="loader-spinner"></div>';
+    document.body.appendChild(loader);
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            loader.classList.add('fade-out');
+            document.body.classList.add('loaded');
+        }, 500);
+    });
+
+    // Intersection Observer for Scroll Animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, observerOptions);
+
+    // Auto-reveal sections and cards
+    const revealElements = document.querySelectorAll('section, .product-card, .category-card, .feature-item, .hero-content');
+    revealElements.forEach((el, index) => {
+        el.classList.add('reveal');
+        // Set index for staggering if in a grid
+        el.style.setProperty('--i', (index % 4) + 1); 
+        observer.observe(el);
+    });
+}
 
 async function checkUserSession() {
     try {
