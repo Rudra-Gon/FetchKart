@@ -28,7 +28,7 @@
             <p>Discover the best products from sellers around the world.</p>
             <div class="hero-buttons">
                 <a href="shop.html" class="btn btn-primary hero-btn">Start Shopping Now</a>
-                <a href="signup.html?role=seller" class="btn btn-secondary hero-btn-secondary">Become a Seller</a>
+                <a href="signup.html?role=seller" class="btn btn-secondary hero-btn-secondary" id="become-seller-hero">Become a Seller</a>
             </div>
         </div>
     </section>
@@ -77,11 +77,24 @@
 
 <footer>
     <p>&copy; 2026 FetchKart. All rights reserved.</p>
-    <a href="signup.html?role=seller">Become a Seller</a>
+    <a href="signup.html?role=seller" id="become-seller-footer">Become a Seller</a>
 </footer>
 
 <script src="js/theme.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
+<script>
+    // Hide "Become a Seller" buttons if user is logged in
+    (async () => {
+        try {
+            const response = await fetch('api/auth.php?action=check');
+            const data = await response.json();
+            if (data.logged_in) {
+                const sellerBtns = document.querySelectorAll('#become-seller-hero, #become-seller-footer');
+                sellerBtns.forEach(btn => btn && (btn.style.display = 'none'));
+            }
+        } catch (e) {}
+    })();
+</script>
 </body>
 </html>
