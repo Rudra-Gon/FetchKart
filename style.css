@@ -580,6 +580,21 @@ body.dark .product-card::before {
     font-family: inherit;
     font-size: 1rem;
     transition: var(--transition);
+    background: var(--surface);
+    color: var(--text-main);
+}
+
+body.dark .form-group input, 
+body.dark .form-group select, 
+body.dark .form-group textarea {
+    background: #0f172a; /* Deep black-blue */
+    color: #ffffff;
+    border-color: #334155;
+}
+
+body.dark .form-group input::placeholder,
+body.dark .form-group textarea::placeholder {
+    color: #64748b;
 }
 
 .form-group input:hover, .form-group select:hover {
@@ -587,11 +602,18 @@ body.dark .product-card::before {
     background: rgba(79, 70, 229, 0.02);
 }
 
-.form-group input:focus, .form-group select:focus {
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
     background: var(--surface);
+}
+
+body.dark .form-group input:focus, 
+body.dark .form-group select:focus, 
+body.dark .form-group textarea:focus {
+    background: #000000; /* Pure black on focus for extra premium feel */
+    border-color: var(--primary);
 }
 /* Footer */
 footer {
