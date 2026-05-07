@@ -229,7 +229,8 @@ function filterProducts() {
     
     const filtered = allProducts.filter(p => {
         const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 
-                              p.category.toLowerCase().includes(searchTerm);
+                              p.category.toLowerCase().includes(searchTerm) ||
+                              p.description.toLowerCase().includes(searchTerm);
         const matchesCategory = categoryFilter === 'all' || p.category === categoryFilter;
         return matchesSearch && matchesCategory;
     });
