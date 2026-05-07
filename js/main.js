@@ -133,10 +133,69 @@ function renderProducts(products) {
     });
 }
 
-// Filter products based on search input and category select
+// Load Featured Products on Home page
+async function loadFeaturedProducts() {
+    try {
+        const response = await fetch('api/get_products.php');
+        const products = await response.json();
+        if (Array.isArray(products) && products.length) {
+            // Filter out out-of-stock, sort by newest
+            const inStock = products.filter(p => parseInt(p.stock_quantity) > 0);
+            const sorted = inStock.sort((a, b) => b.id - a.id);
+            const featured = sorted.slice(0, 8);
+            renderFeatured(featured);
+        }
+    } catch (e) {
+        console.error('Failed to load featured products', e);
+    }
+}
+
+function renderFeatured(products) {
+    const container = document.getElementById('featured-container');
+    if (!container) return;
+    container.innerHTML = '';
+    products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.style.cursor = 'pointer';
+        card.onclick = (e) => {
+            if (e.target.tagName !== 'BUTTON') {
+                window.location.href = `product.html?id=${product.id}`;
+            }
+        };
+        const img = product.image_url ? `<div class="product-image"><img src="${product.image_url}" alt="${product.name}"></div>` : `<div class="product-image">📦</div>`;
+        card.innerHTML = `
+            ${img}
+            <h3 class="product-title">${product.name}</h3>
+            <p class="product-seller-small">By: ${product.seller_name || 'FetchKart'}</p>
+            <p class="product-desc">${product.description.substring(0, 60)}...</p>
+            <div class="product-footer">
+                <span class="product-price">₹${parseFloat(product.price).toFixed(2)}</span>
+                <button class="btn" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Scroll the featured carousel by direction (-1 = left, 1 = right)
+function scrollFeatured(direction) {
+    const track = document.getElementById('featured-container');
+    if (!track) return;
+    const cardWidth = track.querySelector('.product-card')?.offsetWidth || 300;
+    track.scrollBy({ left: direction * (cardWidth + 24), behavior: 'smooth' });
+}
+
+// Auto-load featured products on any page that has the container
+loadFeaturedProducts();
+
 function filterProducts() {
-    const searchTerm = document.getElementById('product-search').value.toLowerCase();
-    const categoryFilter = document.getElementById('category-filter').value;
+    const searchEl = document.getElementById('product-search');
+    const categoryEl = document.getElementById('category-filter');
+    if (!searchEl || !categoryEl) return;
+
+    const searchTerm = searchEl.value.toLowerCase();
+    const categoryFilter = categoryEl.value;
     
     const filtered = allProducts.filter(p => {
         const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 

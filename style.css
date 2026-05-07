@@ -228,10 +228,59 @@ main {
 }
 
 /* Cards & Grid */
-.products {
+.products,
+.product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
+}
+
+.featured-products {
+    margin-bottom: 4rem;
+}
+
+.featured-carousel-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+}
+
+.featured-carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    flex: 1;
+}
+
+.featured-carousel-track .product-card {
+    min-width: calc(33.333% - 1rem);
+    max-width: calc(33.333% - 1rem);
+    flex-shrink: 0;
+}
+
+.carousel-arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-main);
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+    box-shadow: var(--shadow);
+}
+
+.carousel-arrow:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
 }
 
 .product-card {
