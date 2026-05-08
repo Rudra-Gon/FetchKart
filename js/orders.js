@@ -106,7 +106,7 @@ async function loadCustomerOrders() {
                                 <p class="item-desc">${order.description ? order.description.substring(0, 100) + '...' : ''}</p>
                                 <div class="item-actions">
                                     <button class="btn btn-secondary-sm">Return or replace items</button>
-                                    <button class="btn btn-secondary-sm">Write a product review</button>
+                                    <button class="btn btn-secondary-sm" onclick="openReviewModal(${order.product_id})">Write a product review</button>
                                 </div>
                             </div>
                         </div>
@@ -118,9 +118,76 @@ async function loadCustomerOrders() {
         });
 
         container.innerHTML = html;
+        setupStarRating();
     } catch (error) {
         console.error('Error loading orders:', error);
         document.getElementById('orders-container').innerHTML = '<p>Error loading orders.</p>';
+    }
+}
+
+function setupStarRating() {
+    const stars = document.querySelectorAll('.rating-stars i');
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = star.getAttribute('data-rating');
+            document.getElementById('review-rating').value = rating;
+            
+            // Update UI
+            stars.forEach(s => {
+                const r = s.getAttribute('data-rating');
+                if (r <= rating) {
+                    s.classList.remove('far');
+                    s.classList.add('fas');
+                } else {
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                }
+            });
+        });
+    });
+}
+
+function openReviewModal(productId) {
+    document.getElementById('review-product-id').value = productId;
+    document.getElementById('review-modal').style.display = 'flex';
+    document.body.classList.add('modal-open');
+}
+
+function closeReviewModal() {
+    document.getElementById('review-modal').style.display = 'none';
+    document.body.classList.remove('modal-open');
+    document.getElementById('review-form').reset();
+    document.querySelectorAll('.rating-stars i').forEach(s => {
+        s.classList.remove('fas');
+        s.classList.add('far');
+    });
+}
+
+async function submitReview(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    formData.append('action', 'add');
+
+    if (formData.get('rating') == '0') {
+        alert('Please select a rating.');
+        return;
+    }
+
+    try {
+        const res = await fetch('api/reviews.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            alert(data.message);
+            closeReviewModal();
+        } else {
+            alert(data.message);
+        }
+    } catch (e) {
+        alert('Failed to submit review. Please try again.');
     }
 }
 

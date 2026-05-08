@@ -173,5 +173,23 @@ if ($action === 'add_coupon') {
     exit;
 }
 
+// DELETE /api/admin.php?action=delete_order&id=...
+if ($action === 'delete_order') {
+    $id = $_GET['id'] ?? null;
+    if (!$id) {
+        echo json_encode(['success' => false, 'message' => 'Order ID required.']);
+        exit;
+    }
+
+    try {
+        $stmt = $pdo->prepare('DELETE FROM orders WHERE id = ?');
+        $stmt->execute([$id]);
+        echo json_encode(['success' => true, 'message' => 'Order record deleted successfully.']);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+    exit;
+}
+
 echo json_encode(['success' => false, 'message' => 'Invalid admin action.']);
 ?>

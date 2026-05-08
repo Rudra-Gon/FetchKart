@@ -286,9 +286,49 @@ async function loadProductDetails(productId) {
                     </div>
                 </div>
             </div>
+
+            <!-- Reviews Section (Moved below layout) -->
+            <div id="reviews-section" class="detail-reviews">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin: 2rem 0 1rem 0;">
+                    <h2 style="font-size: 1.5rem;">Customer Reviews</h2>
+                </div>
+                <div id="reviews-list">
+                    <p class="text-muted">Loading reviews...</p>
+                </div>
+            </div>
         `;
+        loadReviews(productId);
     } catch (error) {
         console.error('Error loading product details:', error);
+    }
+}
+
+async function loadReviews(productId) {
+    const list = document.getElementById('reviews-list');
+    if (!list) return;
+
+    try {
+        const response = await fetch(`api/reviews.php?action=get&product_id=${productId}`);
+        const data = await response.json();
+
+        if (data.success && data.reviews.length > 0) {
+            list.innerHTML = data.reviews.map(r => `
+                <div class="review-item" style="padding: 1.5rem 0; border-top: 1px solid var(--border);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="font-weight: 700;">${r.username}</span>
+                        <span style="color: #f59e0b;">
+                            ${Array(5).fill(0).map((_, i) => `<i class="${i < r.rating ? 'fas' : 'far'} fa-star"></i>`).join('')}
+                        </span>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9375rem;">${r.review_text}</p>
+                    <small style="color: #94a3b8; display: block; margin-top: 0.5rem;">${new Date(r.created_at).toLocaleDateString()}</small>
+                </div>
+            `).join('');
+        } else {
+            list.innerHTML = '<p class="text-muted" style="padding: 1rem 0;">No reviews yet. Be the first to review this product!</p>';
+        }
+    } catch (e) {
+        list.innerHTML = '<p class="text-muted">Failed to load reviews.</p>';
     }
 }
 

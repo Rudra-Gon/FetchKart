@@ -127,6 +127,7 @@ async function loadAllUsers() {
 
 async function loadAllOrders() {
     const tbody = document.querySelector('#all-orders-table tbody');
+    tbody.innerHTML = '<tr><td colspan="6">Loading orders...</td></tr>';
     try {
         const res = await fetch('api/admin.php?action=orders');
         const data = await res.json();
@@ -138,10 +139,26 @@ async function loadAllOrders() {
                     <td>${o.product_name}</td>
                     <td><span class="badge badge-success">${o.status}</span></td>
                     <td>${new Date(o.order_date).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn-action" onclick="deleteOrder(${o.id})" title="Delete Order">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
                 </tr>
             `).join('');
         }
     } catch (e) {}
+}
+
+async function deleteOrder(id) {
+    if (!confirm('Are you sure you want to delete this order record?')) return;
+    const res = await fetch(`api/admin.php?action=delete_order&id=${id}`);
+    const data = await res.json();
+    if (data.success) {
+        alert(data.message);
+        loadAllOrders();
+        loadDashboardStats();
+    }
 }
 
 async function deleteProduct(id) {

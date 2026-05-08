@@ -4,7 +4,62 @@ document.addEventListener('DOMContentLoaded', () => {
     loadInventory();
     loadOrders();
     loadSellerPrefs();
+    loadReviews();
 });
+
+async function loadReviews() {
+    const container = document.getElementById('seller-reviews-list');
+    if (!container) return;
+
+    try {
+        const response = await fetch('api/reviews.php?action=get_seller_reviews');
+        const data = await response.json();
+
+        if (data.success && data.reviews.length > 0) {
+            let html = `
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Rating</th>
+                            <th>Reviewer</th>
+                            <th>Comment</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            data.reviews.forEach(r => {
+                const date = new Date(r.created_at).toLocaleDateString();
+                const stars = Array(5).fill(0).map((_, i) => `<i class="${i < r.rating ? 'fas' : 'far'} fa-star" style="color: #f59e0b; font-size: 0.8rem;"></i>`).join('');
+                
+                html += `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="${r.image_url}" style="width: 30px; height: 30px; border-radius: 4px; object-fit: cover;">
+                                <span>${r.product_name}</span>
+                            </div>
+                        </td>
+                        <td>${stars}</td>
+                        <td>${r.reviewer_name}</td>
+                        <td style="max-width: 300px; white-space: normal; font-size: 0.85rem;">${r.review_text}</td>
+                        <td>${date}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        } else {
+            container.innerHTML = '<p class="text-muted">No reviews received yet for your products.</p>';
+        }
+    } catch (error) {
+        console.error('Error loading reviews:', error);
+        container.innerHTML = '<p class="text-muted">Error loading feedback.</p>';
+    }
+}
 
 async function loadSellerPrefs() {
     try {
