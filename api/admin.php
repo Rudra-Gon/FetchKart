@@ -191,5 +191,26 @@ if ($action === 'delete_order') {
     exit;
 }
 
+// POST /api/admin.php?action=update_order_tracking
+if ($action === 'update_order_tracking') {
+    $id = $_POST['order_id'] ?? null;
+    $status = $_POST['status'] ?? 'Pending';
+    $location = $_POST['current_location'] ?? 'At Warehouse';
+
+    if (!$id) {
+        echo json_encode(['success' => false, 'message' => 'Order ID required.']);
+        exit;
+    }
+
+    try {
+        $stmt = $pdo->prepare('UPDATE orders SET status = ?, current_location = ? WHERE id = ?');
+        $stmt->execute([$status, $location, $id]);
+        echo json_encode(['success' => true, 'message' => 'Order tracking updated successfully.']);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+    exit;
+}
+
 echo json_encode(['success' => false, 'message' => 'Invalid admin action.']);
 ?>

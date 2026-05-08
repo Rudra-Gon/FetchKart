@@ -139,7 +139,10 @@ async function loadAllOrders() {
                     <td>${o.product_name}</td>
                     <td><span class="badge badge-success">${o.status}</span></td>
                     <td>${new Date(o.order_date).toLocaleDateString()}</td>
-                    <td>
+                    <td style="display: flex; gap: 5px;">
+                        <button class="btn-action" onclick="openTrackingModal(${o.id}, '${o.status}', '${o.current_location || ''}')" title="Update Tracking">
+                            <i class="fas fa-truck-fast"></i>
+                        </button>
                         <button class="btn-action" onclick="deleteOrder(${o.id})" title="Delete Order">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -148,6 +151,35 @@ async function loadAllOrders() {
             `).join('');
         }
     } catch (e) {}
+}
+
+function openTrackingModal(id, status, location) {
+    document.getElementById('tracking-order-id').value = id;
+    document.getElementById('tracking-status').value = status;
+    document.getElementById('tracking-location').value = location || 'At Warehouse';
+    document.getElementById('tracking-modal').style.display = 'flex';
+}
+
+function closeTrackingModal() {
+    document.getElementById('tracking-modal').style.display = 'none';
+}
+
+async function saveTracking(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    
+    try {
+        const res = await fetch('api/admin.php?action=update_order_tracking', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert(data.message);
+            closeTrackingModal();
+            loadAllOrders();
+        }
+    } catch (e) { alert('Update failed'); }
 }
 
 async function deleteOrder(id) {

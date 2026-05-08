@@ -456,6 +456,34 @@
         </section>
     </main>
 
+    <!-- Tracking Edit Modal -->
+    <div id="tracking-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Update Order Tracking</h3>
+            <form id="tracking-form" onsubmit="saveTracking(event)">
+                <input type="hidden" name="order_id" id="tracking-order-id">
+                <div class="form-group">
+                    <label>Order Status</label>
+                    <select name="status" id="tracking-status">
+                        <option value="Pending">Pending</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Out for Delivery">Out for Delivery</option>
+                        <option value="Delivered">Delivered</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label>Current Location (Fake/Real)</label>
+                    <input type="text" name="current_location" id="tracking-location" placeholder="e.g. Near New Delhi Hub" required>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">This will show up on the customer's live tracking map.</p>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Save Updates</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeTrackingModal()" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="js/admin.js"></script>
 </body>
 </html>

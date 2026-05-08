@@ -45,6 +45,9 @@ async function loadCustomerOrders() {
                                 <div class="step ${progress >= 80 ? 'completed' : ''}">Out for Delivery</div>
                                 <div class="step ${progress >= 100 ? 'completed' : ''}">Delivered</div>
                             </div>
+                            <p class="tracking-status-msg" style="font-size: 0.8rem; margin-top: 10px; color: var(--accent);">
+                                <i class="fas fa-location-dot"></i> Current Status: <strong>${order.current_location || 'Processing'}</strong>
+                            </p>
                         </div>
                     </div>
                 `;
@@ -53,11 +56,11 @@ async function loadCustomerOrders() {
                     <div class="tracking-section local">
                         <h4>Local Tracking (Real-time Map)</h4>
                         <div class="map-view">
-                            <div class="driver-info">
+                                <div class="driver-info">
                                 <span class="driver-icon">🚚</span>
                                 <div>
                                     <p><strong>Delivery Partner</strong></p>
-                                    <p class="small text-muted">Out for delivery to ${(order.address || 'your location').split(',')[0]}</p>
+                                    <p class="small text-muted">${order.current_location || ('Out for delivery to ' + (order.address || 'your location').split(',')[0])}</p>
                                 </div>
                             </div>
                             <div class="map-placeholder">
