@@ -904,6 +904,8 @@ body.dark .feature-item:hover {
 
 .feature-item:hover .feature-icon {
     transform: scale(1.2) rotate(10deg);
+}
+
 .feature-item h3 {
     font-size: var(--fs-md);
     margin-bottom: 0.5rem;
@@ -1715,6 +1717,7 @@ body.dark .search-filter-container {
 
 body.dark .search-filter-container {
     background: rgba(15, 23, 42, 0.55);
+}
 
 body.dark #product-search,
 body.dark #category-filter {
@@ -1725,6 +1728,9 @@ body.dark #category-filter {
 
 body.dark #category-filter {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.25rem center;
+    background-size: 1.2rem;
 }
 
 body.dark #product-search::placeholder {
@@ -1865,8 +1871,7 @@ body.dark .skeleton {
 .skeleton-price { height: 1.75rem; width: 35%; }
 .skeleton-btn { height: 2.25rem; width: 45%; border-radius: 8px; }
 .skeleton-card { pointer-events: none; }
-.skeleton-card .product-image { background: transparent !important; 
-}
+.skeleton-card .product-image { background: transparent !important; }
 
 /* ==================================================
    RESPONSIVE OVERRIDES (MOBILE FIRST APPROACH)
