@@ -45,8 +45,18 @@ Phase 3: Mobile-Friendly adaptive design
 7. Add PWA support (manifest.json, service worker, iOS meta tags)
 8. Optimize performance with lazy loading and responsive images (srcset)
 
+Phase 4: Account Management & Profile
+1. Create a personalized "My Account" page for user profile editing.
+2. Implement profile picture uploads for customers and sellers.
+3. Add "Wishlist" functionality to save favorite products.
+4. Security: Implement password hashing and account recovery flow.
 
 ✅ Priority Tasks Done:
 1. Overhauled landing page UI, clickable categories, and featured products.
 2. Implemented sophisticated animations (scroll, hover, loading, transitions).
-3. Built full Admin Dashboard with product, user, order, and coupon controls (including Add Coupon).
+3. Built full Admin Dashboard with management controls for products, users, orders, and coupons.
+4. Completed Phase 3 Mobile-Friendly Design (Fluid typography, bottom nav, sticky action bars).
+5. Implemented full PWA support (Service Worker offline caching, manifest.json).
+6. Developed Product Review system (Submit ratings/comments from orders, view on product & seller pages).
+7. Added Advanced Order Tracking (Admin controlled "Fake" live location updates for customers).
+8. Created secret Cyberpunk Easter Egg page.

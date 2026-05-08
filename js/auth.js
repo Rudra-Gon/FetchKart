@@ -32,6 +32,7 @@ function injectMobileBottomNav() {
     const nav = document.createElement('nav');
     nav.id = 'mobile-bottom-nav';
     nav.className = 'mobile-bottom-nav';
+    // Initial static icons while loading session
     nav.innerHTML = `
         <a href="index.html" class="nav-item">
             <i class="fas fa-home"></i>
@@ -48,6 +49,10 @@ function injectMobileBottomNav() {
         <a href="orders.html" class="nav-item">
             <i class="fas fa-box"></i>
             <span>Orders</span>
+        </a>
+        <a href="login.html" class="nav-item" id="mobile-nav-auth">
+            <i class="fas fa-user"></i>
+            <span>Login</span>
         </a>
     `;
     document.body.appendChild(nav);
@@ -138,6 +143,26 @@ async function checkUserSession() {
 
         if (mobileNavLinks) {
             mobileNavLinks.innerHTML = getNavContent(true);
+        }
+
+        // Update mobile bottom nav auth link
+        const mobileAuthLink = document.getElementById('mobile-nav-auth');
+        if (mobileAuthLink) {
+            if (data.logged_in) {
+                mobileAuthLink.href = '#';
+                mobileAuthLink.onclick = (e) => logout(e);
+                mobileAuthLink.innerHTML = `
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                `;
+            } else {
+                mobileAuthLink.href = 'login.html';
+                mobileAuthLink.onclick = null;
+                mobileAuthLink.innerHTML = `
+                    <i class="fas fa-user"></i>
+                    <span>Login</span>
+                `;
+            }
         }
         
         // Always try to update theme icon if theme.js is present

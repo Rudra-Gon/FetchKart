@@ -2044,7 +2044,7 @@ body.dark .skeleton {
         align-items: center;
         text-decoration: none;
         color: var(--text-muted);
-        font-size: 0.7rem;
+        font-size: 0.65rem; /* Slightly smaller to fit 5 items */
         transition: var(--transition);
         flex: 1;
         padding: 8px 0;
@@ -2107,6 +2107,18 @@ body.dark .skeleton {
     /* Padding for fixed bars */
     body {
         padding-bottom: 140px; /* Space for bottom nav + sticky bar */
+    }
+
+    /* Prevent Horizontal Scroll */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+    }
+
+    /* Hide Redundant Burger Menu */
+    .mobile-nav-toggle, .mobile-nav-links, .hamburger, .nav-toggle {
+        display: none !important;
     }
 
     /* Fix Carousel on Mobile */

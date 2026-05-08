@@ -104,19 +104,18 @@
 
 /* Responsive Visibility */
 @media (max-width: 768px) {
-    .mobile-nav-toggle {
-        display: block;
+    /* Enforce no horizontal scroll */
+    html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        position: relative !important;
     }
-    
-    .mobile-nav {
-        display: flex;
-    }
-    
-    .mobile-nav.active {
-        right: 0;
-    }
-    
-    .mobile-nav-overlay.active {
-        display: block;
+
+    /* Hide the burger menu and side menu entirely as requested */
+    .mobile-nav-toggle, 
+    .mobile-nav, 
+    .mobile-nav-overlay,
+    .hamburger {
+        display: none !important;
     }
 }
