@@ -3,7 +3,60 @@
 document.addEventListener('DOMContentLoaded', () => {
     checkUserSession();
     initAnimations();
+    injectMobileBottomNav();
+    registerPWA();
 });
+
+function registerPWA() {
+    // Add manifest link
+    if (!document.querySelector('link[rel="manifest"]')) {
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = 'manifest.json';
+        document.head.appendChild(link);
+    }
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW Registered'))
+                .catch(err => console.log('SW Reg Failed', err));
+        });
+    }
+}
+
+function injectMobileBottomNav() {
+    if (document.getElementById('mobile-bottom-nav')) return;
+    
+    const nav = document.createElement('nav');
+    nav.id = 'mobile-bottom-nav';
+    nav.className = 'mobile-bottom-nav';
+    nav.innerHTML = `
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="shop.html" class="nav-item">
+            <i class="fas fa-search"></i>
+            <span>Shop</span>
+        </a>
+        <a href="cart.html" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+        <a href="orders.html" class="nav-item">
+            <i class="fas fa-box"></i>
+            <span>Orders</span>
+        </a>
+    `;
+    document.body.appendChild(nav);
+
+    // Load mobile.js dynamically
+    const script = document.createElement('script');
+    script.src = 'js/mobile.js';
+    document.body.appendChild(script);
+}
 
 function initAnimations() {
     // Page Loader

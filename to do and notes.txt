@@ -44,7 +44,8 @@ Phase 3: Mobile-Friendly adaptive design
 6. Create js/mobile.js for mobile interactions (swipe-to-dismiss, nav logic)
 7. Add PWA support (manifest.json, service worker, iOS meta tags)
 8. Optimize performance with lazy loading and responsive images (srcset)
-  
+
+
 ✅ Priority Tasks Done:
 1. Overhauled landing page UI, clickable categories, and featured products.
 2. Implemented sophisticated animations (scroll, hover, loading, transitions).

@@ -2005,3 +2005,120 @@ body.dark .skeleton {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+/* Mobile Specific Overrides & New Features */
+@media (max-width: 768px) {
+    /* Simplified Header */
+    header {
+        padding: 0.75rem var(--container-px);
+        justify-content: center;
+    }
+
+    #main-nav {
+        display: none; /* Hide desktop nav */
+    }
+
+    .logo {
+        font-size: 1.5rem;
+    }
+
+    /* Fixed Bottom Navigation */
+    .mobile-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 65px;
+        background: rgba(var(--surface-rgb, 255, 255, 255), 0.85);
+        backdrop-filter: blur(20px);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-top: 1px solid var(--border);
+        z-index: 1000;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .mobile-bottom-nav .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-size: 0.7rem;
+        transition: var(--transition);
+        flex: 1;
+        padding: 8px 0;
+    }
+
+    .mobile-bottom-nav .nav-item i {
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+    }
+
+    .mobile-bottom-nav .nav-item.active {
+        color: var(--primary);
+    }
+
+    /* Sticky Add to Cart Bar */
+    .mobile-sticky-action-bar {
+        position: fixed;
+        bottom: 65px; /* Above bottom nav */
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        padding: 0.75rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+        z-index: 999;
+        border-top: 1px solid var(--border);
+        animation: slideUp 0.4s ease-out;
+    }
+
+    .sticky-price {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    /* Grid Adjustments */
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .product-card {
+        padding: 10px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    /* Touch Target Optimization */
+    button, .btn, a {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Padding for fixed bars */
+    body {
+        padding-bottom: 140px; /* Space for bottom nav + sticky bar */
+    }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+/* Base Styles for Dynamic Components */
+.mobile-bottom-nav { display: none; }
+@media (max-width: 768px) { .mobile-bottom-nav { display: flex; } }
+
+body.dark .mobile-bottom-nav {
+    background: rgba(30, 41, 59, 0.85);
+}
