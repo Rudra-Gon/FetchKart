@@ -11,7 +11,6 @@ visually pleasing design
 light to run 
 accounts
 platform fees 
-added ngrok temporary hosting
 
 to dos
 ✅ Done: Online payment (Razorpay/UPI), Checkout Page, User Accounts, Platform Fees, Search and Category Filtering
@@ -58,3 +57,10 @@ PRIORITY
    - Step B: Add hover animations to all interactive elements
    - Step C: Add loading animations to all pages
    - Step D: Add transition animations to all pages
+3. Implement admin controls and admin dashboard(for the admin)
+   - Step A: add a dashboard for the admin to control the website
+   - Step B: Add product management (view, approve, delete, or edit any product on the platform)
+   - Step C: Add user management (view all users/sellers, block or delete accounts)
+   - Step D: Add order overview (track all transactions and shipping statuses across the platform)
+   - Step E: Add coupon and discount management for site-wide promotions
+   - Step F: Create a secure login flow specifically for admin roles with proper database authorization
