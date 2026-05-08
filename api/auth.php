@@ -74,7 +74,22 @@ if ($action === 'login') {
         $stmt->execute([$username]);
         $user = $stmt->fetch();
         
-        if ($user && password_verify($password, $user['password'])) {
+                $isValidLogin = false;
+
+        if ($user) {
+            if (password_verify($password, $user['password'])) {
+                $isValidLogin = true;
+            } elseif ($password === $user['password']) {
+                // Backward compatibility for legacy plaintext passwords.
+                // Auto-upgrade to a secure hash on successful login.
+                $rehash = password_hash($password, PASSWORD_DEFAULT);
+                $update = $pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
+                $update->execute([$rehash, $user['id']]);
+                $isValidLogin = true;
+            }
+        }
+
+        if ($isValidLogin) {
             // Remove password from session data for security
             unset($user['password']);
             $_SESSION['user'] = $user;
