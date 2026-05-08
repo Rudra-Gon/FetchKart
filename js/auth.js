@@ -112,11 +112,21 @@ async function checkUserSession() {
         const getNavContent = (isMobile = false) => {
             let links = '';
             if (data.logged_in) {
-                if (!isMobile) links += `<span class="user-greeting">Hi, <strong>${data.user.username}</strong></span>`;
+                if (!isMobile) {
+                    links += `
+                        <a href="account.html" class="nav-profile">
+                            <img src="${data.user.profile_pic || 'assets/default-avatar.png'}" alt="Avatar">
+                            <span>${data.user.display_name || data.user.username}</span>
+                        </a>
+                    `;
+                }
                 links += `<a href="index.html">${isMobile ? '🏠 ' : ''}Home</a>`;
                 links += `<a href="shop.html">${isMobile ? '🛍️ ' : ''}Shop</a>`;
                 links += `<a href="cart.html">${isMobile ? '🛒 ' : ''}Cart <span class="cart-count" id="cart-counter">0</span></a>`;
                 links += `<a href="orders.html">${isMobile ? '📦 ' : ''}Orders</a>`;
+                if (isMobile) {
+                    links += `<a href="account.html">👤 Account</a>`;
+                }
                 if (data.user.role === 'seller') {
                     links += `<a href="seller.html">${isMobile ? '📊 ' : ''}Dashboard</a>`;
                 }

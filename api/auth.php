@@ -86,7 +86,11 @@ if ($action === 'logout') {
 
 if ($action === 'check') {
     if (isset($_SESSION['user'])) {
-        echo json_encode(['logged_in' => true, 'user' => $_SESSION['user']]);
+        $id = $_SESSION['user']['id'];
+        $stmt = $pdo->prepare('SELECT id, username, role, display_name, email, phone, bio, profile_pic FROM users WHERE id = ?');
+        $stmt->execute([$id]);
+        $user = $stmt->fetch();
+        echo json_encode(['logged_in' => true, 'user' => $user]);
     } else {
         echo json_encode(['logged_in' => false]);
     }

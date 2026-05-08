@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - FetchKart</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header id="main-header">
+        <a href="index.html" class="logo">Fetch<span>Kart</span></a>
+        <nav id="main-nav"></nav>
+    </header>
+
+    <main class="container" style="padding-top: 100px; padding-bottom: 50px;">
+        <div class="account-layout">
+            <!-- Sidebar / Profile Summary -->
+            <aside class="account-sidebar">
+                <div class="profile-card card reveal">
+                    <div class="profile-img-container">
+                        <img id="profile-img-preview" src="assets/default-avatar.png" alt="Profile Picture">
+                        <label for="profile-pic-upload" class="img-edit-btn">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                        <input type="file" id="profile-pic-upload" hidden accept="image/*">
+                    </div>
+                    <h2 id="summary-display-name">Loading...</h2>
+                    <p id="summary-username" class="text-muted">@username</p>
+                    <div class="profile-badge" id="user-role-badge">Customer</div>
+                    
+                    <div class="sidebar-nav">
+                        <a href="#personal-info" class="active"><i class="fas fa-user"></i> Personal Info</a>
+                        <a href="orders.html"><i class="fas fa-box"></i> My Orders</a>
+                        <a href="cart.html"><i class="fas fa-shopping-cart"></i> My Cart</a>
+                        <a href="#" onclick="logout(event)" style="color: var(--danger);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <section class="account-content card reveal" style="--i: 2">
+                <div id="personal-info">
+                    <h3>Personal Information</h3>
+                    <p class="text-muted" style="margin-bottom: 2rem;">Update your account details and profile information.</p>
+                    
+                    <form id="profile-form" class="profile-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Display Name</label>
+                                <input type="text" name="display_name" id="field-display-name" placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" id="field-username" disabled title="Username cannot be changed">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" name="email" id="field-email" placeholder="john@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" name="phone" id="field-phone" placeholder="+1 234 567 890">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1.5rem;">
+                            <label>Bio</label>
+                            <textarea name="bio" id="field-bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 2rem;">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="reset" class="btn btn-secondary">Discard</button>
+                        </div>
+                    </form>
+
+                    <hr style="margin: 3rem 0; border: 0; border-top: 1px solid var(--border);">
+
+                    <h3>Security & Password</h3>
+                    <p class="text-muted" style="margin-bottom: 2rem;">Keep your account secure by using a strong password.</p>
+                    
+                    <form id="password-form" class="profile-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" name="current_password" required>
+                            </div>
+                            <div class="form-group"></div> <!-- Spacer -->
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" name="new_password" required minlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" name="confirm_password" required minlength="5">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-secondary" style="margin-top: 1.5rem;">Update Password</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/account.js"></script>
+</body>
+</html>
