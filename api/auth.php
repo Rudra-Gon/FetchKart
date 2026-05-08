@@ -9,7 +9,7 @@ $action = $_GET['action'] ?? ($_POST['action'] ?? '');
 
 if ($action === 'signup') {
     $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
+    $password = password_hash($_POST['password'] ?? '', PASSWORD_DEFAULT);
     $role = $_POST['role'] ?? 'customer';
 
     if (empty($username) || empty($password)) {
@@ -70,22 +70,22 @@ if ($action === 'login') {
     }
 
     try {
-        $stmt = $pdo->prepare('SELECT id, username, role, warehouse_option, delivery_option, storage_option FROM users WHERE username = ? AND password = ?');
-        $stmt->execute([$username, $password]);
+        $stmt = $pdo->prepare('SELECT id, username, password, role FROM users WHERE username = ?');
+        $stmt->execute([$username]);
         $user = $stmt->fetch();
+        
+        if ($user && password_verify($password, $user['password'])) {
+            // Remove password from session data for security
+            unset($user['password']);
+            $_SESSION['user'] = $user;
+            echo json_encode(['success' => true, 'user' => $user]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
+        }
     } catch (PDOException $e) {
-        // Fallback if columns don't exist
-        $stmt = $pdo->prepare('SELECT id, username, role FROM users WHERE username = ? AND password = ?');
-        $stmt->execute([$username, $password]);
-        $user = $stmt->fetch();
+        echo json_encode(['success' => false, 'message' => 'Login error: ' . $e->getMessage()]);
     }
 
-    if ($user) {
-        $_SESSION['user'] = $user;
-        echo json_encode(['success' => true, 'user' => $user]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
-    }
     exit;
 }
 

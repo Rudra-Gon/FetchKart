@@ -44,15 +44,16 @@ if ($action === 'update_password') {
         $stmt->execute([$user_id]);
         $user = $stmt->fetch();
 
-        // Check password (plain text for now as per existing implementation)
-        if ($user['password'] !== $current) {
+        // Check password (verified against hash)
+        if (!password_verify($current, $user['password'])) {
             echo json_encode(['success' => false, 'message' => 'Current password is incorrect']);
             exit;
         }
 
-        // Update password
+        // Update password with hash
+        $new_hashed = password_hash($new, PASSWORD_DEFAULT);
         $stmt = $pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
-        $stmt->execute([$new, $user_id]);
+        $stmt->execute([$new_hashed, $user_id]);
         echo json_encode(['success' => true, 'message' => 'Password updated successfully']);
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
