@@ -219,8 +219,8 @@ async function handleSignup(event) {
         const data = await response.json();
         
         if (data.success) {
-            msgBox.innerHTML = `<span style="color: green;">${data.message} Redirecting to login...</span>`;
-            setTimeout(() => window.location.href = 'login.html', 2000);
+            msgBox.innerHTML = `<span style="color: green;">Account created successfully! Redirecting...</span>`;
+            setTimeout(() => window.location.href = 'index.html', 1500);
         } else {
             msgBox.innerHTML = `<span style="color: red;">${data.message}</span>`;
         }

@@ -17,28 +17,39 @@ if ($action === 'signup') {
         exit;
     }
 
+    // Handle Profile Pic Upload during signup
+    $profile_pic = 'assets/default-avatar.png';
+    if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === 0) {
+        $file = $_FILES['profile_pic'];
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = 'profile_new_' . time() . '_' . rand(100, 999) . '.' . $ext;
+        $target = '../uploads/profiles/' . $filename;
+        if (!is_dir('../uploads/profiles')) mkdir('../uploads/profiles', 0777, true);
+        if (move_uploaded_file($file['tmp_name'], $target)) {
+            $profile_pic = 'uploads/profiles/' . $filename;
+        }
+    }
+
     try {
         if ($role === 'seller') {
-            $warehouse = $_POST['warehouse_option'] ?? 'service';
-            $delivery = $_POST['delivery_option'] ?? 'service';
-            $storage = $_POST['storage_option'] ?? 'service';
-            
-            try {
-                $stmt = $pdo->prepare('INSERT INTO users (username, password, role, warehouse_option, delivery_option, storage_option) VALUES (?, ?, ?, ?, ?, ?)');
-                $stmt->execute([$username, $password, $role, $warehouse, $delivery, $storage]);
-            } catch (PDOException $inner_e) {
-                // If column doesn't exist, fallback
-                if ($inner_e->getCode() == 23000) {
-                    throw $inner_e; // Re-throw duplicate entry
-                }
-                $stmt = $pdo->prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)');
-                $stmt->execute([$username, $password, $role]);
-            }
+            $warehouse_option = $_POST['warehouse_option'] ?? 'service';
+            $delivery_option = $_POST['delivery_option'] ?? 'service';
+            $storage_option = $_POST['storage_option'] ?? null;
+
+            $stmt = $pdo->prepare('INSERT INTO users (username, password, role, warehouse_option, delivery_option, storage_option, profile_pic) VALUES (?, ?, ?, ?, ?, ?, ?)');
+            $stmt->execute([$username, $password, $role, $warehouse_option, $delivery_option, $storage_option, $profile_pic]);
         } else {
-            $stmt = $pdo->prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)');
-            $stmt->execute([$username, $password, $role]);
+            $stmt = $pdo->prepare('INSERT INTO users (username, password, role, profile_pic) VALUES (?, ?, ?, ?)');
+            $stmt->execute([$username, $password, $role, $profile_pic]);
         }
-        echo json_encode(['success' => true, 'message' => 'Account created successfully.']);
+        
+        $userId = $pdo->lastInsertId();
+        $_SESSION['user'] = [
+            'id' => $userId,
+            'username' => $username,
+            'role' => $role
+        ];
+        echo json_encode(['success' => true]);
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
             echo json_encode(['success' => false, 'message' => 'Username already exists.']);

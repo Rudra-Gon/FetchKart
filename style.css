@@ -2319,3 +2319,25 @@ body.dark .mobile-bottom-nav {
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+/* Dark Mode Refinements for Account Page */
+body.dark .profile-card {
+    background: var(--surface);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border);
+}
+
+body.dark .profile-form input, 
+body.dark .profile-form textarea {
+    background: rgba(15, 23, 42, 0.5);
+    border-color: var(--border);
+}
+
+body.dark .img-edit-btn {
+    border-color: var(--surface);
+}
+
+body.dark .sidebar-nav a:hover,
+body.dark .sidebar-nav a.active {
+    background: rgba(79, 70, 229, 0.1);
+}
