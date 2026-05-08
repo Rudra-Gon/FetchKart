@@ -63,4 +63,4 @@ PRIORITY
    - Step C: Add user management (view all users/sellers, block or delete accounts)
    - Step D: Add order overview (track all transactions and shipping statuses across the platform)
    - Step E: Add coupon and discount management for site-wide promotions
-   - Step F: Create a secure login flow specifically for admin roles with proper database authorization
+   - Step F: Create a secure login flow specifically for admin roles with proper database authorization

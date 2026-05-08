@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FetchKart Admin - Platform Control</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+        }
+
+        body {
+            display: flex;
+            background: var(--background);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            background: #0f172a;
+            color: white;
+            padding: 2rem 1.5rem;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .admin-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+        }
+
+        .admin-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .admin-nav-item {
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .admin-nav-item:hover, .admin-nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+        }
+
+        .admin-nav-item.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Main Content */
+        .admin-main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2.5rem;
+            max-width: 1400px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .icon-blue { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .icon-purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+        .icon-green { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .icon-orange { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+        .stat-info h3 {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-info p {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Management Sections */
+        .admin-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .table-container {
+            background: var(--surface);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--background);
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        .user-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .role-admin { background: #fee2e2; color: #991b1b; }
+        .role-seller { background: #dcfce7; color: #166534; }
+        .role-customer { background: #e0f2fe; color: #075985; }
+
+        .btn-action {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            background: #fee2e2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        /* Theme support */
+        body.dark .admin-sidebar { background: #020617; }
+        body.dark .stat-card, body.dark .table-container { background: #1e293b; border-color: rgba(255,255,255,0.05); }
+
+    </style>
+</head>
+<body class="dark"> <!-- Defaulting to dark for admin premium feel -->
+
+    <aside class="admin-sidebar">
+        <div class="admin-logo">
+            <i class="fas fa-shield-halved"></i>
+            FetchKart Admin
+        </div>
+        <nav class="admin-nav">
+            <button class="admin-nav-item active" onclick="showSection('overview')">
+                <i class="fas fa-chart-pie"></i> Overview
+            </button>
+            <button class="admin-nav-item" onclick="showSection('products')">
+                <i class="fas fa-box"></i> Products
+            </button>
+            <button class="admin-nav-item" onclick="showSection('users')">
+                <i class="fas fa-users"></i> Users
+            </button>
+            <button class="admin-nav-item" onclick="showSection('orders')">
+                <i class="fas fa-shopping-bag"></i> Orders
+            </button>
+            <button class="admin-nav-item" onclick="showSection('coupons')">
+                <i class="fas fa-ticket"></i> Coupons
+            </button>
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 1rem 0;">
+            <a href="index.html" class="admin-nav-item">
+                <i class="fas fa-arrow-left"></i> Back to Site
+            </a>
+            <button class="admin-nav-item" onclick="logoutAdmin()" style="margin-top: auto; color: #ef4444;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <div>
+                <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Dashboard Overview</h1>
+                <p style="color: var(--text-muted);">Manage your entire ecommerce ecosystem.</p>
+            </div>
+            <div id="admin-profile" style="display: flex; align-items: center; gap: 15px;">
+                <div style="text-align: right;">
+                    <p style="font-weight: 700;">System Administrator</p>
+                    <p style="font-size: 0.875rem; color: var(--text-muted);">Super User</p>
+                </div>
+                <div style="width: 45px; height: 45px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white;">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- OVERVIEW SECTION -->
+        <section id="overview" class="admin-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Users</h3>
+                        <p id="stat-users">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-purple"><i class="fas fa-box"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Products</h3>
+                        <p id="stat-products">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-green"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Orders</h3>
+                        <p id="stat-orders">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon icon-orange"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3>Pending Orders</h3>
+                        <p id="stat-pending">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem;">
+                <div class="table-container">
+                    <div style="padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="font-size: 1.25rem;">Recent Platform Orders</h2>
+                    </div>
+                    <table id="recent-orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loaded via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-container">
+                    <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);">
+                        <h2 style="font-size: 1.25rem;">New Sellers</h2>
+                    </div>
+                    <table id="new-sellers-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loaded via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTS SECTION -->
+        <section id="products" class="admin-section">
+            <h2 style="margin-bottom: 1.5rem;">Catalog Management</h2>
+            <div class="table-container">
+                <table id="all-products-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Seller</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- USERS SECTION -->
+        <section id="users" class="admin-section">
+            <h2 style="margin-bottom: 1.5rem;">User & Seller Accounts</h2>
+            <div class="table-container">
+                <table id="all-users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ORDERS SECTION -->
+        <section id="orders" class="admin-section">
+            <h2 style="margin-bottom: 1.5rem;">All Sales & Shipments</h2>
+            <div class="table-container">
+                <table id="all-orders-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Product</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- COUPONS SECTION -->
+        <section id="coupons" class="admin-section">
+            <h2 style="margin-bottom: 1.5rem;">Promotions & Coupons</h2>
+            <div class="table-container">
+                <table id="all-coupons-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Value</th>
+                            <th>Type</th>
+                            <th>Min Order</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
