@@ -201,6 +201,35 @@ async function deleteCoupon(id) {
     }
 }
 
+function toggleCouponForm() {
+    const form = document.getElementById('add-coupon-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+async function createNewCoupon(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    
+    try {
+        const res = await fetch('api/admin.php?action=add_coupon', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            alert(data.message);
+            event.target.reset();
+            toggleCouponForm();
+            loadAllCoupons();
+        } else {
+            alert(data.message);
+        }
+    } catch (e) {
+        alert('Failed to add coupon. Please try again.');
+    }
+}
+
 async function logoutAdmin() {
     await fetch('api/auth.php?action=logout');
     window.location.href = 'login.html';

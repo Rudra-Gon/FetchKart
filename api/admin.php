@@ -146,5 +146,32 @@ if ($action === 'delete_coupon') {
     exit;
 }
 
+// POST /api/admin.php?action=add_coupon
+if ($action === 'add_coupon') {
+    $code = $_POST['code'] ?? '';
+    $type = $_POST['discount_type'] ?? 'percentage';
+    $value = $_POST['discount_value'] ?? 0;
+    $min_amount = $_POST['min_order_amount'] ?? 0;
+    $expiry = $_POST['expiry_date'] ?? null;
+
+    if (empty($code)) {
+        echo json_encode(['success' => false, 'message' => 'Coupon code is required.']);
+        exit;
+    }
+
+    try {
+        $stmt = $pdo->prepare('INSERT INTO coupons (code, discount_type, discount_value, min_order_amount, expiry_date) VALUES (?, ?, ?, ?, ?)');
+        $stmt->execute([$code, $type, $value, $min_amount, $expiry]);
+        echo json_encode(['success' => true, 'message' => 'Coupon added successfully.']);
+    } catch (PDOException $e) {
+        if ($e->getCode() == 23000) {
+            echo json_encode(['success' => false, 'message' => 'Coupon code already exists.']);
+        } else {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+    exit;
+}
+
 echo json_encode(['success' => false, 'message' => 'Invalid admin action.']);
 ?>

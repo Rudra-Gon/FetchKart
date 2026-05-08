@@ -45,22 +45,7 @@ Phase 3: Mobile-Friendly adaptive design
 7. Add PWA support (manifest.json, service worker, iOS meta tags)
 8. Optimize performance with lazy loading and responsive images (srcset)
   
-PRIORITY
-1. overhaul the landing page(UI) and "trending catagories" part doesnt have any functions in it
-   - Step A: Redesign Hero Section with modern, premium UI elements and better visual hierarchy.
-   - Step B: Make "Trending Categories" clickable by passing category tags via URL (e.g., `shop.html?category=Fashion`).
-   - Step C: Update `js/main.js` to read URL parameters and auto-filter products on the Shop page.
-   - Step D: Add a dynamic "Featured Products" section to the landing page that fetches ~4 recent items.
-   - Step E: Enhance overall styling in `style.css` (gradients, hover animations) for a "wow" factor.
-2. implement sophisticated and visually appealing animations to the whole website (dont implement heavy animations that slow down the website and make it look cheap and tacky)
-   - Step A: Add scroll animations to all sections
-   - Step B: Add hover animations to all interactive elements
-   - Step C: Add loading animations to all pages
-   - Step D: Add transition animations to all pages
-3. Implement admin controls and admin dashboard(for the admin)
-   - Step A: add a dashboard for the admin to control the website
-   - Step B: Add product management (view, approve, delete, or edit any product on the platform)
-   - Step C: Add user management (view all users/sellers, block or delete accounts)
-   - Step D: Add order overview (track all transactions and shipping statuses across the platform)
-   - Step E: Add coupon and discount management for site-wide promotions
-   - Step F: Create a secure login flow specifically for admin roles with proper database authorization
+✅ Priority Tasks Done:
+1. Overhauled landing page UI, clickable categories, and featured products.
+2. Implemented sophisticated animations (scroll, hover, loading, transitions).
+3. Built full Admin Dashboard with product, user, order, and coupon controls (including Add Coupon).
