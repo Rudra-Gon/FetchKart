@@ -25,7 +25,7 @@ function registerPWA() {
         });
     }
 }
-
+// Inject mobile bottom navigation bar on vertical screens
 function injectMobileBottomNav() {
     if (document.getElementById('mobile-bottom-nav')) return;
     
