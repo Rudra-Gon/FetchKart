@@ -10,7 +10,7 @@ FetchKart is a functional e-commerce application supporting multi-vendor roles, 
 
 ### Checkout & Payments
 - **Multi-Step Checkout**: Optimized flow for order placement.
-- **Payment Integration**: Supports Razorpay (test mode), UPI QR (static simulation), and Cash on Delivery.
+- **Payment Integration**: Supports Razorpay checkout for online payments, including UPI, and Cash on Delivery.
 - **Order Processing**: Automated calculation of platform fees and coupon discounts.
 
 ### Order Tracking

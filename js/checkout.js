@@ -118,7 +118,7 @@ async function placeOrder() {
         const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
         
         // --- RAZORPAY INTEGRATION ---
-        if (paymentMethod !== 'Cash on Delivery' && paymentMethod !== 'UPI') {
+        if (paymentMethod !== 'Cash on Delivery') {
             const grandTotalText = document.getElementById('summary-grand-total').textContent;
             const amount = parseFloat(grandTotalText.replace('₹', '').replace(',', '')) * 100; // Amount in paise
 
@@ -142,13 +142,6 @@ async function placeOrder() {
             };
             const rzp = new Razorpay(options);
             rzp.open();
-            return;
-        }
-
-        // If UPI is chosen, redirect to the dedicated QR‑payment page
-        if (paymentMethod === 'UPI') {
-            const encodedAddr = encodeURIComponent(address);
-            window.location.href = `upi_payment.html?address=${encodedAddr}`;
             return;
         }
 
