@@ -66,61 +66,61 @@ The project focuses on delivering a premium shopping experience with seller mana
 
 ## Landing Page (Dark Mode)
 
-![Landing Page Dark](screenshots/lander.png)
+![Landing Page Dark](./screenshots/lander.png)
 
 ---
 
 ## Landing Page (Light Mode)
 
-![Landing Page Light](screenshots/lander-light.png)
+![Landing Page Light](./screenshots/lander-light.png)
 
 ---
 
 ## Product Catalog
 
-![Shop](screenshots/shop.png)
+![Shop](./screenshots/shop.png)
 
 ---
 
 ## Featured Products Section
 
-![Featured Products](screenshots/featured-20products.png)
+![Featured Products](./screenshots/featured_products.png)
 
 ---
 
 ## Checkout System
 
-![Checkout](screenshots/checkout.png)
+![Checkout](./screenshots/checkout.png)
 
 ---
 
 ## Razorpay Payment Integration
 
-![Payment Integration](screenshots/payment-20emulation.png)
+![Payment Integration](./screenshots/payment-emulation.png)
 
 ---
 
 ## Payment Confirmation
 
-![Payment Confirmation](screenshots/payment-20confirmation.png)
+![Payment Confirmation](./screenshots/payment-confirmation.png)
 
 ---
 
 ## Order Tracking
 
-![Order Tracking](screenshots/order-20tracking1.png)
+![Order Tracking](./screenshots/order-tracking1.png)
 
 ---
 
 ## Seller Dashboard
 
-![Seller Dashboard](screenshots/seller-20dashboard.png)
+![Seller Dashboard](./screenshots/seller-dashboard.png)
 
 ---
 
 ## Admin Dashboard
 
-![Admin Dashboard](screenshots/admin1.png)
+![Admin Dashboard](./screenshots/admin1.png)
 
 ---
 
@@ -144,3 +144,62 @@ The project focuses on delivering a premium shopping experience with seller mana
 ```bash
 git clone https://github.com/Rudra-Gon/FetchKart.git
 ```
+
+---
+
+## 2. Move Project to WAMP/XAMPP htdocs folder
+
+```text
+C:/wamp64/www/
+```
+
+---
+
+## 3. Import Database
+
+### Open phpMyAdmin
+
+### Create a database named
+
+```text
+fetchkart
+```
+
+### Import the SQL file
+
+```text
+database.sql
+```
+
+---
+
+## 4. Start Apache & MySQL
+
+```text
+Start Apache and MySQL services from WAMP/XAMPP Control Panel
+```
+
+---
+
+## 5. Open in Browser
+
+```text
+http://localhost/FetchKart
+```
+
+---
+
+# Future Improvements
+
+- Real shipment API integration
+- Email notifications
+- Product recommendation system
+- Advanced analytics dashboard
+- Mobile app version
+
+---
+
+# Credits
+
+**Rudra Sagar Gondhalekar**  
+CE4A — 2401225010053
