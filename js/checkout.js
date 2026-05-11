@@ -134,16 +134,26 @@ async function placeOrder() {
                 'Digital Wallets': {
                     name: 'Pay via Wallet',
                     instruments: [{ method: 'wallet' }]
-                },
-                'UPI': {
-                    name: 'Pay via UPI',
-                    instruments: [{
-                        method: 'upi',
-                        flows: ['qr', 'intent']
-                    }]
                 }
             };
             const selectedMethodConfig = methodConfigs[paymentMethod];
+            const allowFallbackMethods = paymentMethod === 'UPI';
+            const displayConfig = allowFallbackMethods
+                ? {
+                    sequence: ["upi", "card", "netbanking", "wallet"],
+                    preferences: {
+                        show_default_blocks: true
+                    }
+                }
+                : {
+                    blocks: {
+                        selected_method: selectedMethodConfig
+                    },
+                    sequence: ["block.selected_method"],
+                    preferences: {
+                        show_default_blocks: false
+                    }
+                };
 
             const options = {
                 "key": "rzp_test_SnyMpw9EnZSpCa",
@@ -153,15 +163,7 @@ async function placeOrder() {
                 "description": "Order Payment",
                 "image": "uploads/logo.png",
                 "config": {
-                    "display": {
-                        "blocks": {
-                            "selected_method": selectedMethodConfig
-                        },
-                        "sequence": ["block.selected_method"],
-                        "preferences": {
-                            "show_default_blocks": false
-                        }
-                    }
+                    "display": displayConfig
                 },
                 "handler": function (response) {
                     processFinalOrder(paymentMethod, address, response.razorpay_payment_id);
