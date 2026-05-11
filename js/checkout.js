@@ -122,21 +122,44 @@ async function placeOrder() {
             const grandTotalText = document.getElementById('summary-grand-total').textContent;
             const amount = parseFloat(grandTotalText.replace('₹', '').replace(',', '')) * 100; // Amount in paise
 
-            const methodOptions = {
-                'Credit/Debit Card': { card: true },
-                'Net Banking': { netbanking: true },
-                'Digital Wallets': { wallet: true },
-                'UPI': { upi: true }
+            const methodConfigs = {
+                'Credit/Debit Card': {
+                    name: 'Pay via Card',
+                    instruments: [{ method: 'card' }]
+                },
+                'Net Banking': {
+                    name: 'Pay via Net Banking',
+                    instruments: [{ method: 'netbanking' }]
+                },
+                'Digital Wallets': {
+                    name: 'Pay via Wallet',
+                    instruments: [{ method: 'wallet' }]
+                },
+                'UPI': {
+                    name: 'Pay via UPI',
+                    instruments: [{ method: 'upi' }]
+                }
             };
+            const selectedMethodConfig = methodConfigs[paymentMethod];
 
             const options = {
-                "key": "rzp_test_Slyg9wRckaoXnF",
+                "key": "rzp_test_SnyMpw9EnZSpCa",
                 "amount": amount,
                 "currency": "INR",
                 "name": "FetchKart",
                 "description": "Order Payment",
                 "image": "uploads/logo.png",
-                "method": methodOptions[paymentMethod] || {},
+                "config": {
+                    "display": {
+                        "blocks": {
+                            "selected_method": selectedMethodConfig
+                        },
+                        "sequence": ["block.selected_method"],
+                        "preferences": {
+                            "show_default_blocks": false
+                        }
+                    }
+                },
                 "handler": function (response) {
                     processFinalOrder(paymentMethod, address, response.razorpay_payment_id);
                 },
