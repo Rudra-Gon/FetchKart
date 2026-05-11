@@ -137,7 +137,10 @@ async function placeOrder() {
                 },
                 'UPI': {
                     name: 'Pay via UPI',
-                    instruments: [{ method: 'upi' }]
+                    instruments: [{
+                        method: 'upi',
+                        flows: ['qr', 'intent']
+                    }]
                 }
             };
             const selectedMethodConfig = methodConfigs[paymentMethod];
