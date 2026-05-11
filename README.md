@@ -1,156 +1,146 @@
-# FetchKart — Multi-Vendor E-Commerce Platform
+# FetchKart - Multi-Vendor E-commerce Platform
 
-FetchKart is a modern multi-vendor e-commerce platform built for local deployment environments using WAMP/XAMPP. The project focuses on providing a complete online shopping ecosystem with dedicated customer and seller workflows, integrated payment processing, logistics tracking, and responsive UI design.
-
----
-
-## Features
-
-### Multi-Role System
-
-#### Customer Features
-
-- Browse and search products across multiple categories
-- Add products to cart and manage orders
-- Apply discount coupons during checkout
-- Track order and delivery progress
-- Razorpay and Cash on Delivery payment support
-
-#### Seller Features
-
-- Seller dashboard for inventory management
-- Add, edit, and remove products
-- Monitor incoming orders
-- Configure warehouse and logistics preferences
-- Manage storage and delivery options
+FetchKart is a modern multi-vendor e-commerce platform built using HTML, CSS, JavaScript, PHP, and MySQL.  
+The project focuses on delivering a premium shopping experience with seller management, order tracking, payment integration, and responsive UI design.
 
 ---
 
-## Checkout & Payments
+# Features
 
-- Multi-step checkout flow
-- Razorpay integration for secure online payments
-- UPI, card, net banking, and wallet support
-- Cash on Delivery (COD)
-- Automatic coupon and platform fee calculations
+## User Roles
 
----
+### Customer
 
-## Order Tracking System
+- Product browsing and search
+- Add to cart and wishlist
+- Coupon support
+- Order tracking system
+- Dark / Light mode support
 
-### Intercity Logistics
+### Seller
 
-- Shipment progress visualization
-- Delivery stage indicators for long-distance orders
+- Seller dashboard
+- Product and inventory management
+- Order monitoring
+- Logistics preferences configuration
 
-### Local Logistics
+### Admin
 
-- Simulated map-based local delivery tracking
-- Dynamic delivery progress updates
-
----
-
-## User Experience & Interface
-
-- Fully responsive layout
-- Dark and light theme support
-- Modern UI built with Vanilla CSS
-- Clean typography and mobile-friendly design
+- Platform overview dashboard
+- User and product management
+- Coupon management
+- Order monitoring and analytics
 
 ---
 
-## Technical Stack
+# Checkout & Payments
 
-| Technology   | Usage                       |
-| ------------ | --------------------------- |
-| HTML5        | Frontend structure          |
-| CSS3         | Styling & responsiveness    |
-| JavaScript   | Frontend functionality      |
-| PHP          | Backend logic               |
-| MySQL        | Database management         |
-| Razorpay SDK | Payment gateway integration |
+- Multi-step checkout system
+- Razorpay payment integration
+- UPI and Cash on Delivery support
+- Coupon code system
+- Automated platform fee calculations
+- Payment confirmation workflow
 
 ---
 
-## Installation & Setup
+# Logistics & Tracking
 
-### 1. Clone or Download the Project
+- Intercity order tracking
+- Local delivery simulation
+- Delivery progress visualization
+- Expected delivery estimation
 
-Place the project folder inside your local server directory.
+---
 
-#### XAMPP
+# Security Features
+
+- Session-based authentication
+- Password hashing using PHP hashing functions
+- CAPTCHA integration using Cloudflare Turnstile
+- Role-based access control
+
+---
+
+# Screenshots
+
+## Landing Page (Dark Mode)
+
+![Landing Page Dark](screenshots/lander.png)
+
+---
+
+## Landing Page (Light Mode)
+
+![Landing Page Light](screenshots/lander-light.png)
+
+---
+
+## Product Catalog
+
+![Shop](screenshots/shop.png)
+
+---
+
+## Featured Products Section
+
+![Featured Products](screenshots/featured%20products.png)
+
+---
+
+## Checkout System
+
+![Checkout](screenshots/checkout.png)
+
+---
+
+## Razorpay Payment Integration
+
+![Payment Integration](screenshots/payment%20emulation.png)
+
+---
+
+## Payment Confirmation
+
+![Payment Confirmation](screenshots/payment%20confirmation.png)
+
+---
+
+## Order Tracking
+
+![Order Tracking](screenshots/order%20tracking1.png)
+
+---
+
+## Seller Dashboard
+
+![Seller Dashboard](screenshots/seller%20dashboard.png)
+
+---
+
+## Admin Dashboard
+
+![Admin Dashboard](screenshots/admin1.png)
+
+---
+
+# Technical Stack
+
+| Technology   | Usage                   |
+| ------------ | ----------------------- |
+| HTML         | Structure               |
+| CSS          | Styling & Responsive UI |
+| JavaScript   | Frontend Logic          |
+| PHP          | Backend API             |
+| MySQL        | Database                |
+| Razorpay SDK | Payment Integration     |
+
+---
+
+# Installation
+
+## 1. Clone Repository
 
 ```bash
-htdocs/
+git clone https://github.com/Rudra-Gon/FetchKart.git
 ```
-
-#### WAMP
-
-```bash
-www/
-```
-
----
-
-### 2. Create Database
-
-Create a MySQL database named:
-
-```sql
-fetchkart
-```
-
----
-
-### 3. Configure Database Connection
-
-Open:
-
-```bash
-api/db.php
-```
-
-Update the database credentials according to your local environment.
-
----
-
-### 4. Run Database Migration
-
-Start Apache and MySQL from XAMPP/WAMP and open:
-
-```bash
-http://localhost/Microtech_internship_ECOM/migrate.php
-```
-
-This will initialize the required database tables.
-
----
-
-## Project Highlights
-
-- Multi-vendor marketplace architecture
-- Integrated payment gateway support
-- Logistics simulation system
-- Role-based access management
-- Responsive and modern UI/UX
-- Real-world ecommerce workflow implementation
-- CAPTCHA and Two-Factor Authentication (2FA)
-
----
-
-## Future Improvements
-
-- Real-time order notifications
-- Advanced analytics dashboard
-- Product reviews and ratings
-- Wishlist functionality
-- AI-powered product recommendations
-
----
-
-## Credits
-
-**Rudra Sagar Gondhalekar**  
-CE4A — 2401225010053
-
-Developed as part of an internship-focused e-commerce platform project.

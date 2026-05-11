@@ -21,7 +21,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `role` enum('customer', 'seller', 'admin') NOT NULL DEFAULT 'customer',
   `warehouse_option` enum('service', 'personal') DEFAULT NULL,
   `delivery_option` enum('service', 'personal') DEFAULT NULL,
-  `storage_option` enum('service', 'personal') DEFAULT NULL,
+  `storage_option`
+enum(
+'service',
+'personal',
+'cold storage',
+'fragile'
+) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
