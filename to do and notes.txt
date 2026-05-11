@@ -32,8 +32,10 @@ Phase 1: Stock Management
 Phase 2: Warehouse/Godown Management
 1. Create 'godowns' table [DONE]
 2. Create Godown Management API (CRUD) [DONE]
-3. Add "Manage Godowns" UI to seller dashboard
+3. Add "Manage Godowns" UI to seller Dashboard
 4. Assign products to specific godowns
+5. Admin can see all godowns and manage
+6. Importing warehosue data and godown data from third party latform
 
 Phase 3: Mobile-Friendly adaptive design
 1. Implement fluid typography using CSS clamp() and adjust spacing for small screens
@@ -50,7 +52,7 @@ Phase 4: Account Management & Profile
 2. Implement profile picture uploads for customers and sellers. [DONE]
 3. Add "Wishlist" functionality to save favorite products. [DONE]
 4. Security: Implement password hashing and account recovery via mobile number. [DONE]
-5. Capcha and (Two step authentication if [possible/viable])
+5. Capcha and (Two step authentication if [possible/viable]) [DONE]
 
 ✅ Priority Tasks Done:
 1. Overhauled landing page UI, clickable categories, and featured products.
