@@ -37,19 +37,20 @@ Phase 2: Warehouse/Godown Management
 
 Phase 3: Mobile-Friendly adaptive design
 1. Implement fluid typography using CSS clamp() and adjust spacing for small screens
-2. Ensure all touch targets (buttons/links) have a minimum hit area of 48x48px
-3. Create a sleek, fixed bottom navigation bar for core mobile actions
-4. Simplify top header on mobile (logo centering, hidden desktop nav links)
-5. Implement sticky "Add to Cart" bar for product pages on mobile
-6. Create js/mobile.js for mobile interactions (swipe-to-dismiss, nav logic)
-7. Add PWA support (manifest.json, service worker, iOS meta tags)
-8. Optimize performance with lazy loading and responsive images (srcset)
+2. Ensure all touch targets (buttons/links) have a minimum hit area of 48x48px [DONE]
+3. Create a sleek, fixed bottom navigation bar for core mobile actions [DONE]
+4. Simplify top header on mobile (logo centering, hidden desktop nav links) [DONE]
+5. Implement sticky "Add to Cart" bar for product pages on mobile [DONE]
+6. Create js/mobile.js for mobile interactions (swipe-to-dismiss, nav logic) [DONE]
+7. Add PWA support (manifest.json, service worker, iOS meta tags) [DONE]
+8. Optimize performance with lazy loading and responsive images (srcset) [DONE]
 
 Phase 4: Account Management & Profile
-1. Create a personalized "My Account" page for user profile editing.
-2. Implement profile picture uploads for customers and sellers.
-3. Add "Wishlist" functionality to save favorite products.
-4. Security: Implement password hashing and account recovery flow.
+1. Create a personalized "My Account" page for user profile editing. [DONE]
+2. Implement profile picture uploads for customers and sellers. [DONE]
+3. Add "Wishlist" functionality to save favorite products. [DONE]
+4. Security: Implement password hashing and account recovery via mobile number. [DONE]
+5. Capcha and (Two step authentication if [possible/viable])
 
 ✅ Priority Tasks Done:
 1. Overhauled landing page UI, clickable categories, and featured products.
@@ -59,4 +60,3 @@ Phase 4: Account Management & Profile
 5. Implemented full PWA support (Service Worker offline caching, manifest.json).
 6. Developed Product Review system (Submit ratings/comments from orders, view on product & seller pages).
 7. Added Advanced Order Tracking (Admin controlled "Fake" live location updates for customers).
-8. Created secret Cyberpunk Easter Egg page.
