@@ -140,14 +140,16 @@ if ($action === 'view') {
         }
     }
 
+    $platform_fee = round($total * 0.10, 2);
+
     echo json_encode([
         'items' => $items, 
         'total' => $total,
         'discount' => round($discount, 2),
-        'platform_fee' => 10.00,
-        'grand_total' => max(0, round($total - $discount + 10.00, 2)),
-        'applied_coupon' => $coupon_info
-    ]);
+        'platform_fee' => $platform_fee,
+        'grand_total' => max(0, round($total - $discount + $platform_fee, 2)),
+    'applied_coupon' => $coupon_info
+]);
     exit;
 }
 
