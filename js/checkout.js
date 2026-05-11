@@ -122,6 +122,13 @@ async function placeOrder() {
             const grandTotalText = document.getElementById('summary-grand-total').textContent;
             const amount = parseFloat(grandTotalText.replace('₹', '').replace(',', '')) * 100; // Amount in paise
 
+            const methodOptions = {
+                'Credit/Debit Card': { card: true },
+                'Net Banking': { netbanking: true },
+                'Digital Wallets': { wallet: true },
+                'UPI': { upi: true }
+            };
+
             const options = {
                 "key": "rzp_test_Slyg9wRckaoXnF",
                 "amount": amount,
@@ -129,6 +136,7 @@ async function placeOrder() {
                 "name": "FetchKart",
                 "description": "Order Payment",
                 "image": "uploads/logo.png",
+                "method": methodOptions[paymentMethod] || {},
                 "handler": function (response) {
                     processFinalOrder(paymentMethod, address, response.razorpay_payment_id);
                 },
