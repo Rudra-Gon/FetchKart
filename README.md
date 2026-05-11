@@ -84,7 +84,7 @@ The project focuses on delivering a premium shopping experience with seller mana
 
 ## Featured Products Section
 
-![Featured Products](screenshots/featured%20products.png)
+![Featured Products](screenshots/featured-20products.png)
 
 ---
 
@@ -96,25 +96,25 @@ The project focuses on delivering a premium shopping experience with seller mana
 
 ## Razorpay Payment Integration
 
-![Payment Integration](screenshots/payment%20emulation.png)
+![Payment Integration](screenshots/payment-20emulation.png)
 
 ---
 
 ## Payment Confirmation
 
-![Payment Confirmation](screenshots/payment%20confirmation.png)
+![Payment Confirmation](screenshots/payment-20confirmation.png)
 
 ---
 
 ## Order Tracking
 
-![Order Tracking](screenshots/order%20tracking1.png)
+![Order Tracking](screenshots/order-20tracking1.png)
 
 ---
 
 ## Seller Dashboard
 
-![Seller Dashboard](screenshots/seller%20dashboard.png)
+![Seller Dashboard](screenshots/seller-20dashboard.png)
 
 ---
 
