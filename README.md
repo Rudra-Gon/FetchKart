@@ -84,7 +84,7 @@ The project focuses on delivering a premium shopping experience with seller mana
 
 ## Featured Products Section
 
-![Featured Products](./Screenshots/featured_products.png)
+![Featured Products](./Screenshots/featured-products.png)
 
 ---
 
