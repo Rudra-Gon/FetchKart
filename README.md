@@ -124,19 +124,6 @@ The project focuses on delivering a premium shopping experience with seller mana
 
 ---
 
-# Technical Stack
-
-| Technology   | Usage                   |
-| ------------ | ----------------------- |
-| HTML         | Structure               |
-| CSS          | Styling & Responsive UI |
-| JavaScript   | Frontend Logic          |
-| PHP          | Backend API             |
-| MySQL        | Database                |
-| Razorpay SDK | Payment Integration     |
-
----
-
 # Installation
 
 ## 1. Clone Repository
