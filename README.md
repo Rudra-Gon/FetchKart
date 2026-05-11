@@ -66,61 +66,61 @@ The project focuses on delivering a premium shopping experience with seller mana
 
 ## Landing Page (Dark Mode)
 
-![Landing Page Dark](./screenshots/lander.png)
+![Landing Page Dark](./Screenshots/lander.png)
 
 ---
 
 ## Landing Page (Light Mode)
 
-![Landing Page Light](./screenshots/lander-light.png)
+![Landing Page Light](./Screenshots/lander-light.png)
 
 ---
 
 ## Product Catalog
 
-![Shop](./screenshots/shop.png)
+![Shop](./Screenshots/shop.png)
 
 ---
 
 ## Featured Products Section
 
-![Featured Products](./screenshots/featured_products.png)
+![Featured Products](./Screenshots/featured_products.png)
 
 ---
 
 ## Checkout System
 
-![Checkout](./screenshots/checkout.png)
+![Checkout](./Screenshots/checkout.png)
 
 ---
 
 ## Razorpay Payment Integration
 
-![Payment Integration](./screenshots/payment-emulation.png)
+![Payment Integration](./Screenshots/payment-emulation.png)
 
 ---
 
 ## Payment Confirmation
 
-![Payment Confirmation](./screenshots/payment-confirmation.png)
+![Payment Confirmation](./Screenshots/payment-confirmation.png)
 
 ---
 
 ## Order Tracking
 
-![Order Tracking](./screenshots/order-tracking1.png)
+![Order Tracking](./Screenshots/order-tracking1.png)
 
 ---
 
 ## Seller Dashboard
 
-![Seller Dashboard](./screenshots/seller-dashboard.png)
+![Seller Dashboard](./Screenshots/seller-dashboard.png)
 
 ---
 
 ## Admin Dashboard
 
-![Admin Dashboard](./screenshots/admin1.png)
+![Admin Dashboard](./Screenshots/admin1.png)
 
 ---
 
