@@ -111,7 +111,7 @@
                 <hr>
                 <div class="stock-actions">
                     <button class="btn btn-secondary-sm" onclick="alert('Coming Soon...')">Import Warehouse Stock</button>
-                    <button class="btn btn-secondary-sm" onclick="alert('Coming Soon...')">Manage Godowns</button>
+                    <button class="btn btn-secondary-sm" onclick="openGodownModal()">Manage Godowns</button>
                 </div>
             </div>
 
@@ -121,6 +121,36 @@
                 <div id="seller-reviews-list">
                     <p>Loading feedback...</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Godown Management Modal -->
+    <div id="godown-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="modal-content card" style="width: 90%; max-width: 600px; position: relative;">
+            <span class="close" onclick="closeGodownModal()" style="position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer;">&times;</span>
+            <h2>Manage Godowns</h2>
+            
+            <form id="add-godown-form" onsubmit="handleAddGodown(event)" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label>Godown Name</label>
+                    <input type="text" name="name" required placeholder="e.g. Main Warehouse">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" name="location" placeholder="e.g. Mumbai North">
+                </div>
+                <div class="form-group">
+                    <label>Capacity (units)</label>
+                    <input type="number" name="capacity" min="0">
+                </div>
+                <button type="submit" class="btn">Add Godown</button>
+            </form>
+            <p id="godown-message" style="margin-top: 10px;"></p>
+
+            <h3 style="margin-top: 30px;">Existing Godowns</h3>
+            <div id="godown-list" class="scroll-table" style="max-height: 200px; overflow-y: auto;">
+                <p>Loading...</p>
             </div>
         </div>
     </div>

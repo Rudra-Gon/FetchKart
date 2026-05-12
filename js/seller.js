@@ -234,3 +234,108 @@ async function updateStock(productId, currentStock) {
         }
     }
 }
+
+// --- Godown Management ---
+
+function openGodownModal() {
+    document.getElementById('godown-modal').style.display = 'flex';
+    loadGodowns();
+}
+
+function closeGodownModal() {
+    document.getElementById('godown-modal').style.display = 'none';
+}
+
+async function loadGodowns() {
+    const container = document.getElementById('godown-list');
+    try {
+        const response = await fetch('api/godown_actions.php?action=view');
+        const godowns = await response.json();
+        
+        if (!Array.isArray(godowns) || godowns.length === 0) {
+            container.innerHTML = '<p>No godowns found.</p>';
+            return;
+        }
+
+        let html = `
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Capacity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        godowns.forEach(g => {
+            html += `
+                <tr>
+                    <td>${g.name}</td>
+                    <td>${g.location || '-'}</td>
+                    <td>${g.capacity || '-'}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="deleteGodown(${g.id})">Delete</button></td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading godowns:', error);
+        container.innerHTML = '<p>Error loading godowns.</p>';
+    }
+}
+
+async function handleAddGodown(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const msgBox = document.getElementById('godown-message');
+    msgBox.textContent = 'Adding...';
+
+    formData.append('action', 'add');
+
+    try {
+        const response = await fetch('api/godown_actions.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            msgBox.innerHTML = `<span style="color: var(--success-color, green);">${data.message}</span>`;
+            event.target.reset();
+            loadGodowns();
+        } else {
+            msgBox.innerHTML = `<span style="color: var(--danger-color, red);">${data.message}</span>`;
+        }
+    } catch (error) {
+        msgBox.innerHTML = `<span style="color: var(--danger-color, red);">Error adding godown.</span>`;
+    }
+}
+
+async function deleteGodown(id) {
+    if (!confirm('Are you sure you want to delete this godown?')) return;
+    
+    try {
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('id', id);
+        
+        const response = await fetch('api/godown_actions.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            loadGodowns();
+        } else {
+            alert('Failed to delete: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error deleting godown:', error);
+    }
+}
