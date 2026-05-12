@@ -56,17 +56,7 @@ Phase 4: Account Management & Profile
 
 Phase 5: Enhanced Shopping Experience
 1. Advanced Search & Filters: Add price range, sorting, and category filters. [DONE]
-2. Product Recommendations: "Customers who bought this also bought..." or Similar Products section.
-3. Recently Viewed Products: Track and display products a customer looked at recently. 
-4. Quick View Modal: Allow users to preview product details and add to cart without leaving the shop page.
-5. Mini-Cart Drawer: A slide-out cart sidebar that lets users manage their cart seamlessly. [DONE]
-
-Phase 6: Improve stability and performance of the entire website
-1. Optimize database queries and indexing
-2. Implement caching for frequently accessed data
-3. Add error handling and logging
-4. Optimize frontend performance with lazy loading and code splitting
-5. Implement proper error handling for all API endpoints
+2. Mini-Cart Drawer: A slide-out cart sidebar that lets users manage their cart seamlessly. [DONE]
 
 ✅ Priority Tasks Done:
 1. Overhauled landing page UI, clickable categories, and featured products.
