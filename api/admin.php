@@ -212,5 +212,35 @@ if ($action === 'update_order_tracking') {
     exit;
 }
 
+// GET /api/admin.php?action=godowns
+if ($action === 'godowns') {
+    try {
+        $stmt = $pdo->query('SELECT g.*, u.username as seller_name FROM godowns g LEFT JOIN users u ON g.seller_id = u.id ORDER BY g.id DESC');
+        $godowns = $stmt->fetchAll();
+        echo json_encode(['success' => true, 'godowns' => $godowns]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+    exit;
+}
+
+// DELETE /api/admin.php?action=delete_godown&id=...
+if ($action === 'delete_godown') {
+    $id = $_GET['id'] ?? null;
+    if (!$id) {
+        echo json_encode(['success' => false, 'message' => 'Godown ID required.']);
+        exit;
+    }
+
+    try {
+        $stmt = $pdo->prepare('DELETE FROM godowns WHERE id = ?');
+        $stmt->execute([$id]);
+        echo json_encode(['success' => true, 'message' => 'Godown deleted successfully.']);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+    exit;
+}
+
 echo json_encode(['success' => false, 'message' => 'Invalid admin action.']);
 ?>

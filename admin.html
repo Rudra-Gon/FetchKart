@@ -244,6 +244,9 @@
             <button class="admin-nav-item" onclick="showSection('coupons')">
                 <i class="fas fa-ticket"></i> Coupons
             </button>
+            <button class="admin-nav-item" onclick="showSection('godowns')">
+                <i class="fas fa-warehouse"></i> Godowns
+            </button>
             <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 1rem 0;">
             <a href="index.html" class="admin-nav-item">
                 <i class="fas fa-arrow-left"></i> Back to Site
@@ -447,6 +450,25 @@
                             <th>Value</th>
                             <th>Type</th>
                             <th>Min Order</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+        <!-- GODOWNS SECTION -->
+        <section id="godowns" class="admin-section">
+            <h2 style="margin-bottom: 1.5rem;">Godowns Management</h2>
+            <div class="table-container">
+                <table id="all-godowns-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Capacity</th>
+                            <th>Seller</th>
                             <th>Actions</th>
                         </tr>
                     </thead>

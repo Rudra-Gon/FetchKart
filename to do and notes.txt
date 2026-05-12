@@ -34,7 +34,7 @@ Phase 2: Warehouse/Godown Management
 2. Create Godown Management API (CRUD) [DONE]
 3. Add "Manage Godowns" UI to seller Dashboard [DONE]
 4. Assign products to specific godowns [DONE]
-5. Admin can see all godowns and manage
+5. Admin can see all godowns and manage [DONE]
 6. Importing warehosue data and godown data from third party latform
 
 Phase 3: Mobile-Friendly adaptive design

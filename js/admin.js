@@ -39,6 +39,7 @@ function showSection(sectionId) {
     if (sectionId === 'users') loadAllUsers();
     if (sectionId === 'orders') loadAllOrders();
     if (sectionId === 'coupons') loadAllCoupons();
+    if (sectionId === 'godowns') loadAllGodowns();
 }
 
 async function loadDashboardStats() {
@@ -282,4 +283,44 @@ async function createNewCoupon(event) {
 async function logoutAdmin() {
     await fetch('api/auth.php?action=logout');
     window.location.href = 'login.html';
+}
+
+async function loadAllGodowns() {
+    const tbody = document.querySelector('#all-godowns-table tbody');
+    tbody.innerHTML = '<tr><td colspan="6">Loading godowns...</td></tr>';
+    
+    try {
+        const res = await fetch('api/admin.php?action=godowns');
+        const data = await res.json();
+        if (data.success) {
+            tbody.innerHTML = data.godowns.map(g => `
+                <tr>
+                    <td>${g.id}</td>
+                    <td><strong>${g.name}</strong></td>
+                    <td>${g.location || '-'}</td>
+                    <td>${g.capacity || '-'}</td>
+                    <td>${g.seller_name || 'System'}</td>
+                    <td>
+                        <button class="btn-action" onclick="deleteAdminGodown(${g.id})" title="Delete Godown">
+                            <i class="fas fa-trash-can"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    } catch (e) {
+        console.error('Error loading godowns', e);
+    }
+}
+
+async function deleteAdminGodown(id) {
+    if (!confirm('Are you sure you want to delete this godown?')) return;
+    const res = await fetch(`api/admin.php?action=delete_godown&id=${id}`);
+    const data = await res.json();
+    if (data.success) {
+        alert(data.message);
+        loadAllGodowns();
+    } else {
+        alert('Failed to delete godown: ' + data.message);
+    }
 }
