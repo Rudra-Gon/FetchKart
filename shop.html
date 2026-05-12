@@ -21,30 +21,55 @@
 </header>
 
 <main>
-    <div class="search-filter-container">
-        <div class="search-box">
-            <input type="text" id="product-search" placeholder="Search products by name or category..." onkeyup="filterProducts()">
-            <div class="search-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <div class="shop-controls-container">
+        <div class="search-section">
+            <div class="search-input-wrapper">
+                <input type="text" id="product-search" placeholder="Search products by name, category or details..." onkeyup="filterProducts()">
+                <div class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
             </div>
         </div>
-        <div class="filter-box">
-            <select id="category-filter" onchange="filterProducts()">
-                <option value="all">All Categories</option>
-                <option value="Mobiles">Mobiles</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Fashion">Fashion</option>
-                <option value="Home">Home</option>
-                <option value="Beauty">Beauty</option>
-                <option value="Appliances">Appliances</option>
-                <option value="Health">Health</option>
-                <option value="Toys">Toys</option>
-                <option value="Gifting">Gifting</option>
-                <option value="Groceries">Groceries</option>
-                <option value="Books">Books</option>
-                <option value="Sports">Sports</option>
-                <option value="Automotive">Automotive</option>
-            </select>
+        
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="category-filter">Category</label>
+                <select id="category-filter" onchange="filterProducts()">
+                    <option value="all">All Categories</option>
+                    <option value="Mobiles">Mobiles</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Fashion">Fashion</option>
+                    <option value="Home">Home</option>
+                    <option value="Beauty">Beauty</option>
+                    <option value="Appliances">Appliances</option>
+                    <option value="Health">Health</option>
+                    <option value="Toys">Toys</option>
+                    <option value="Gifting">Gifting</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Books">Books</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Automotive">Automotive</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Price Range</label>
+                <div class="price-inputs">
+                    <input type="number" id="price-min" placeholder="Min" oninput="filterProducts()" />
+                    <span class="range-separator">-</span>
+                    <input type="number" id="price-max" placeholder="Max" oninput="filterProducts()" />
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label for="sort-select">Sort By</label>
+                <select id="sort-select" onchange="sortProducts()">
+                    <option value="default">Default</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="newest">Newest Arrivals</option>
+                </select>
+            </div>
         </div>
     </div>
     

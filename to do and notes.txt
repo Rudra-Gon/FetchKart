@@ -54,6 +54,21 @@ Phase 4: Account Management & Profile
 4. Security: Implement password hashing and account recovery via mobile number. [DONE]
 5. Capcha and (Two step authentication if [possible/viable]) [DONE]
 
+Phase 5: Enhanced Shopping Experience
+1. Advanced Search & Filters: Add price range slider, sorting options, and brand filtering.
+2. Product Recommendations: "Customers who bought this also bought..." or Similar Products section.
+3. Recently Viewed Products: Track and display products a customer looked at recently. 
+4. Quick View Modal: Allow users to preview product details and add to cart without leaving the shop page.
+5. Mini-Cart Drawer: A slide-out cart sidebar that lets users manage their cart seamlessly.
+6. Gamification & Loyalty: Reward users with points for purchases or reviews to encourage retention.
+
+Phase 6: Improve stability and performance of the entire website
+1. Optimize database queries and indexing
+2. Implement caching for frequently accessed data
+3. Add error handling and logging
+4. Optimize frontend performance with lazy loading and code splitting
+5. Implement proper error handling for all API endpoints
+
 ✅ Priority Tasks Done:
 1. Overhauled landing page UI, clickable categories, and featured products.
 2. Implemented sophisticated animations (scroll, hover, loading, transitions).

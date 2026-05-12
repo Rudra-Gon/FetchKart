@@ -36,9 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Global store for products
 let allProducts = [];
+let currentSort = 'default';
 
 // Fetch products from the PHP API
 async function loadProducts() {
+
+
     const container = document.getElementById('products-container');
     if (container) {
         // Show skeleton loading
@@ -65,31 +68,7 @@ async function loadProducts() {
         }
 
         renderProducts(allProducts);
-        // After loading products and handling URL param, add active class handling for category cards
-    const categoryCards = document.querySelectorAll('.category-card');
-    if (categoryCards.length) {
-        // Set active class based on current selection
-        categoryCards.forEach(card => {
-            const url = new URL(card.href);
-            const catParam = url.searchParams.get('category');
-            if (catParam && catParam === cat) {
-                card.classList.add('active');
-            } else {
-                card.classList.remove('active');
-            }
-            // Click handler to update filter and active state
-            card.addEventListener('click', e => {
-                e.preventDefault();
-                // Update dropdown
-                const select = document.getElementById('category-filter');
-                if (select) select.value = catParam || 'all';
-                // Update active classes
-                categoryCards.forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                filterProducts();
-            });
-        });
-    }
+        
         const urlParams = new URLSearchParams(window.location.search);
         const cat = urlParams.get('category');
         if (cat) {
@@ -222,20 +201,44 @@ loadFeaturedProducts();
 function filterProducts() {
     const searchEl = document.getElementById('product-search');
     const categoryEl = document.getElementById('category-filter');
+    const priceMinEl = document.getElementById('price-min');
+    const priceMaxEl = document.getElementById('price-max');
     if (!searchEl || !categoryEl) return;
 
     const searchTerm = searchEl.value.toLowerCase();
     const categoryFilter = categoryEl.value;
-    
-    const filtered = allProducts.filter(p => {
-        const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 
+    const priceMin = priceMinEl && priceMinEl.value ? parseFloat(priceMinEl.value) : null;
+    const priceMax = priceMaxEl && priceMaxEl.value ? parseFloat(priceMaxEl.value) : null;
+
+    let filtered = allProducts.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm) ||
                               p.category.toLowerCase().includes(searchTerm) ||
                               p.description.toLowerCase().includes(searchTerm);
         const matchesCategory = categoryFilter === 'all' || p.category === categoryFilter;
-        return matchesSearch && matchesCategory;
+        const price = parseFloat(p.price);
+        const matchesPrice = (priceMin === null || price >= priceMin) && (priceMax === null || price <= priceMax);
+        return matchesSearch && matchesCategory && matchesPrice;
     });
-    
+
+    // Apply sorting based on currentSort
+    if (currentSort && currentSort !== 'default') {
+        if (currentSort === 'price-asc') {
+            filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        } else if (currentSort === 'price-desc') {
+            filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        } else if (currentSort === 'newest') {
+            filtered.sort((a, b) => b.id - a.id);
+        }
+    }
+
     renderProducts(filtered);
+}
+// Sorting function
+function sortProducts() {
+    const sortSelect = document.getElementById('sort-select');
+    if (!sortSelect) return;
+    currentSort = sortSelect.value;
+    filterProducts();
 }
 
 // Load single product details (Flipkart style)
