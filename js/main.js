@@ -27,6 +27,7 @@ function redirectToLogin() {
 // On page load
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCounter();
+    initCartDrawer();
     
     // If we are on index.html, load products
     if (document.getElementById('products-container')) {
@@ -344,6 +345,10 @@ async function updateCartCounter() {
         if (counter) {
             counter.textContent = data.count || 0;
         }
+        // Also update drawer if it's open
+        if (document.querySelector('.cart-drawer.active')) {
+            loadDrawerItems();
+        }
     } catch (error) {
         console.error('Error fetching cart count:', error);
     }
@@ -369,13 +374,9 @@ async function addToCart(productId, productName) {
         
         const data = await response.json();
         if (data.success) {
-            // Show alert
-            const alertContainer = document.getElementById('alert-container');
-            if (alertContainer) {
-                alertContainer.innerHTML = `<div class="alert-success">Added ${productName} to cart!</div>`;
-                setTimeout(() => { alertContainer.innerHTML = ''; }, 3000);
-            }
+            // Update counter and open drawer
             updateCartCounter();
+            toggleCartDrawer(true);
         }
     } catch (error) {
         console.error('Error adding to cart:', error);
@@ -529,3 +530,121 @@ async function removeFromCart(productId) {
     }
 }
 
+
+// --- Mini-Cart Drawer Functions ---
+
+function initCartDrawer() {
+    // Create Drawer HTML
+    const drawerHTML = `
+        <div class="cart-drawer-overlay" id="cart-overlay"></div>
+        <div class="cart-drawer" id="cart-drawer">
+            <div class="cart-drawer-header">
+                <h2>Your Shopping Cart</h2>
+                <button class="close-drawer" onclick="toggleCartDrawer(false)">&times;</button>
+            </div>
+            <div class="cart-drawer-content" id="drawer-items">
+                <!-- Items injected here -->
+            </div>
+            <div class="cart-drawer-footer">
+                <div class="drawer-total">
+                    <span>Total:</span>
+                    <span id="drawer-total-amount">₹0.00</span>
+                </div>
+                <div class="drawer-actions">
+                    <button class="btn btn-primary drawer-btn" onclick="window.location.href='checkout.html'">Checkout Now</button>
+                    <button class="btn btn-secondary drawer-btn" onclick="window.location.href='cart.html'">View Full Cart</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', drawerHTML);
+
+    // Event listener for overlay
+    document.getElementById('cart-overlay').addEventListener('click', () => toggleCartDrawer(false));
+
+    // Update cart link in header to open drawer
+    const cartLink = document.querySelector('nav a[href="cart.html"]');
+    if (cartLink) {
+        cartLink.addEventListener('click', (e) => {
+            if (window.innerWidth > 768) { // Only drawer on desktop/tablet
+                e.preventDefault();
+                toggleCartDrawer(true);
+            }
+        });
+    }
+}
+
+async function toggleCartDrawer(show) {
+    const drawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('cart-overlay');
+    if (!drawer || !overlay) return;
+
+    if (show) {
+        drawer.classList.add('active');
+        overlay.classList.add('active');
+        loadDrawerItems();
+        document.body.style.overflow = 'hidden'; // Prevent scroll
+    } else {
+        drawer.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+async function loadDrawerItems() {
+    const container = document.getElementById('drawer-items');
+    const totalEl = document.getElementById('drawer-total-amount');
+    if (!container) return;
+
+    try {
+        const response = await fetch('api/cart_actions.php?action=view');
+        const cartData = await response.json();
+
+        if (!cartData.items || cartData.items.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-muted);">
+                <p>Your cart is empty</p>
+                <button class="btn btn-secondary-sm" style="margin-top:1rem;" onclick="toggleCartDrawer(false)">Start Shopping</button>
+            </div>`;
+            totalEl.textContent = '₹0.00';
+            return;
+        }
+
+        container.innerHTML = cartData.items.map(item => `
+            <div class="drawer-cart-item">
+                <img src="${item.image_url || '📦'}" alt="${item.name}" class="drawer-item-img" onerror="this.src='https://placehold.co/70?text=📦'">
+                <div class="drawer-item-info">
+                    <span class="drawer-item-name">${item.name}</span>
+                    <span class="drawer-item-price">₹${parseFloat(item.price).toFixed(2)}</span>
+                    <div class="drawer-item-qty">
+                        <button class="qty-btn-sm" onclick="updateDrawerQuantity(${item.id}, -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="qty-btn-sm" onclick="updateDrawerQuantity(${item.id}, 1)">+</button>
+                    </div>
+                </div>
+                <button class="close-drawer" style="font-size:1.2rem;" onclick="updateDrawerQuantity(${item.id}, -${item.quantity})">&times;</button>
+            </div>
+        `).join('');
+
+        totalEl.textContent = `₹${parseFloat(cartData.total).toFixed(2)}`;
+    } catch (error) {
+        console.error('Error loading drawer items:', error);
+    }
+}
+
+async function updateDrawerQuantity(productId, change) {
+    try {
+        const response = await fetch('api/cart_actions.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=update_quantity&product_id=${productId}&change=${change}`
+        });
+        const data = await response.json();
+        if (data.success) {
+            updateCartCounter(); // This will also trigger loadDrawerItems
+        }
+    } catch (error) {
+        console.error('Error updating quantity:', error);
+    }
+}

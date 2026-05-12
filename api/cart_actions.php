@@ -19,7 +19,7 @@ if ($action === 'add') {
             $_SESSION['cart'][$product_id]['quantity'] += 1;
         } else {
             // Fetch product details from DB
-            $stmt = $pdo->prepare('SELECT name, price FROM products WHERE id = ?');
+            $stmt = $pdo->prepare('SELECT name, price, image_url FROM products WHERE id = ?');
             $stmt->execute([$product_id]);
             $product = $stmt->fetch();
             
@@ -28,6 +28,7 @@ if ($action === 'add') {
                     'id' => $product_id,
                     'name' => $product['name'],
                     'price' => $product['price'],
+                    'image_url' => $product['image_url'],
                     'quantity' => 1
                 ];
             }

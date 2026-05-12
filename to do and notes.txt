@@ -59,8 +59,7 @@ Phase 5: Enhanced Shopping Experience
 2. Product Recommendations: "Customers who bought this also bought..." or Similar Products section.
 3. Recently Viewed Products: Track and display products a customer looked at recently. 
 4. Quick View Modal: Allow users to preview product details and add to cart without leaving the shop page.
-5. Mini-Cart Drawer: A slide-out cart sidebar that lets users manage their cart seamlessly.
-6. Gamification & Loyalty: Reward users with points for purchases or reviews to encourage retention.
+5. Mini-Cart Drawer: A slide-out cart sidebar that lets users manage their cart seamlessly. [DONE]
 
 Phase 6: Improve stability and performance of the entire website
 1. Optimize database queries and indexing
