@@ -176,13 +176,10 @@ http://localhost/FetchKart
 
 ---
 
-# Future Improvements
+# Coupons
+The coupons that you can use for discounts during check out 
 
-- Real shipment API integration
-- Email notifications
-- Product recommendation system
-- Advanced analytics dashboard
-- Mobile app version
+![Coupons](./Screenshots/coupons.png)
 
 ---
 
