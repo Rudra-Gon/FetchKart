@@ -1,40 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Details - FetchKart</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<header>
-    <a href="index.html" class="logo">FetchKart</a>
-    <nav id="main-nav">
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="logo">FetchKart</a>
+      <nav id="main-nav">
         <!-- Dynamic content from auth.js -->
-    </nav>
-</header>
+      </nav>
+    </header>
 
-<main>
-    <div id="product-details-container" class="product-details-page">
+    <main>
+      <div id="product-details-container" class="product-details-page">
         <p>Loading product details...</p>
-    </div>
-</main>
+      </div>
+    </main>
 
-<script src="js/theme.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/main.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
+    <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id');
+        const productId = urlParams.get("id");
         if (productId) {
-            loadProductDetails(productId);
+          loadProductDetails(productId);
         } else {
-            document.getElementById('product-details-container').innerHTML = '<p>Product not found.</p>';
+          document.getElementById("product-details-container").innerHTML =
+            "<p>Product not found.</p>";
         }
-    });
-</script>
-</body>
+      });
+    </script>
+  </body>
 </html>

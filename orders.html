@@ -1,54 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Orders - FetchKart</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <!-- Review Modal -->
     <div id="review-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h3>Write a Review</h3>
-            <form id="review-form" onsubmit="submitReview(event)">
-                <input type="hidden" name="product_id" id="review-product-id">
-                <div class="rating-stars" style="font-size: 2rem; margin: 1.5rem 0; color: #f59e0b;">
-                    <i class="far fa-star" data-rating="1"></i>
-                    <i class="far fa-star" data-rating="2"></i>
-                    <i class="far fa-star" data-rating="3"></i>
-                    <i class="far fa-star" data-rating="4"></i>
-                    <i class="far fa-star" data-rating="5"></i>
-                </div>
-                <input type="hidden" name="rating" id="review-rating" value="0">
-                <div class="form-group">
-                    <textarea name="review_text" placeholder="Share your experience with this product..." style="min-height: 120px;" required></textarea>
-                </div>
-                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Submit Review</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeReviewModal()" style="flex: 1;">Cancel</button>
-                </div>
-            </form>
-        </div>
+      <div class="modal-content">
+        <h3>Write a Review</h3>
+        <form id="review-form" onsubmit="submitReview(event)">
+          <input type="hidden" name="product_id" id="review-product-id" />
+          <div
+            class="rating-stars"
+            style="font-size: 2rem; margin: 1.5rem 0; color: #f59e0b"
+          >
+            <i class="far fa-star" data-rating="1"></i>
+            <i class="far fa-star" data-rating="2"></i>
+            <i class="far fa-star" data-rating="3"></i>
+            <i class="far fa-star" data-rating="4"></i>
+            <i class="far fa-star" data-rating="5"></i>
+          </div>
+          <input type="hidden" name="rating" id="review-rating" value="0" />
+          <div class="form-group">
+            <textarea
+              name="review_text"
+              placeholder="Share your experience with this product..."
+              style="min-height: 120px"
+              required
+            ></textarea>
+          </div>
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem">
+            <button type="submit" class="btn btn-primary" style="flex: 1">
+              Submit Review
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeReviewModal()"
+              style="flex: 1"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
     <header>
-        <a href="index.html" class="logo">FetchKart</a>
-        <nav id="main-nav">
-            <!-- Dynamic content from auth.js -->
-        </nav>
+      <a href="index.html" class="logo">FetchKart</a>
+      <nav id="main-nav">
+        <!-- Dynamic content from auth.js -->
+      </nav>
     </header>
 
     <main>
-        <h1 class="page-title">My Orders</h1>
-        <div id="orders-container" class="orders-list">
-            <p>Loading your orders...</p>
-        </div>
+      <h1 class="page-title">My Orders</h1>
+      <div id="orders-container" class="orders-list">
+        <p>Loading your orders...</p>
+      </div>
     </main>
 
     <script src="js/theme.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/orders.js"></script>
-</body>
+  </body>
 </html>

@@ -497,75 +497,69 @@
     display:block;
 }
 
-.product-info{
-
-    padding:1.5rem;
-
-    display:flex;
-
-    flex-direction:column;
-
-    flex:1;
-
-    gap:0.8rem;
+.product-title {
+    padding: 1.2rem 1.2rem 0.3rem 1.2rem;
+    font-size: 1.4rem;
+    color: white;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.product-info h3{
-
-    font-size:2rem;
-
-    color:white;
+.product-seller-small {
+    padding: 0 1.2rem;
+    font-size: 0.85rem;
+    color: #8b5cf6;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
 }
 
-.product-info p{
-
-    color:#94a3b8;
-
-    line-height:1.6;
+.product-desc {
+    padding: 0 1.2rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-.product-bottom{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-top:auto;
-
-    gap:1rem;
+.product-footer {
+    padding: 0 1rem 1.2rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    gap: 0.5rem;
 }
 
-.price{
-
-    font-size:2rem;
-
-    font-weight:700;
-
-    color:#635bff;
+.product-price {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #8b5cf6;
 }
 
-.product-card button{
-
-    border:none;
-
-    padding:0.9rem 1.4rem;
-
-    border-radius:16px;
-
-    background:white;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:0.3s;
+.product-card button {
+    border: none;
+    padding: 0.6rem 0.9rem;
+    border-radius: 12px;
+    background: white;
+    color: #050816;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-.product-card button:hover{
-
-    transform:scale(1.03);
+.product-card button:hover {
+    transform: scale(1.05);
+    background: #f8fafc;
 }
 
 /* ARROWS */
