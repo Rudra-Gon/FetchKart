@@ -32,7 +32,7 @@ Phase 1: Stock Management
 Phase 2: Warehouse/Godown Management
 1. Create 'godowns' table [DONE]
 2. Create Godown Management API (CRUD) [DONE]
-3. Add "Manage Godowns" UI to seller Dashboard
+3. Add "Manage Godowns" UI to seller Dashboard [DONE]
 4. Assign products to specific godowns
 5. Admin can see all godowns and manage
 6. Importing warehosue data and godown data from third party latform
