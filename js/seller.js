@@ -112,7 +112,10 @@ async function loadInventory() {
                         <strong>${p.stock_quantity}</strong>
                         <button class="btn-secondary-sm" style="padding: 2px 6px; margin-left: 8px; font-size: 0.7rem;" onclick="updateStock(${p.id}, ${p.stock_quantity})">Edit</button>
                     </td>
-                    <td>${p.godown_name || '<span class="text-muted">None</span>'}</td>
+                    <td>
+                        ${p.godown_name || '<span class="text-muted">None</span>'}
+                        <button class="btn-secondary-sm" style="padding: 2px 6px; margin-left: 8px; font-size: 0.7rem;" onclick="assignGodown(${p.id})">Assign</button>
+                    </td>
                     <td>${p.category}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Delete</button></td>
                 </tr>
@@ -239,6 +242,44 @@ async function updateStock(productId, currentStock) {
 }
 
 // --- Godown Management ---
+
+async function assignGodown(productId) {
+    try {
+        const response = await fetch('api/godown_actions.php?action=view');
+        const godowns = await response.json();
+        
+        let promptText = "Enter Godown ID from the list below to assign (or 0 for None):\n\n";
+        promptText += "0: -- None --\n";
+        if (Array.isArray(godowns)) {
+            godowns.forEach(g => {
+                promptText += `${g.id}: ${g.name}\n`;
+            });
+        } else {
+            alert('No godowns available. Please create a godown first.');
+            return;
+        }
+        
+        const newGodownId = prompt(promptText);
+        if (newGodownId !== null) {
+            const formData = new FormData();
+            formData.append('product_id', productId);
+            formData.append('godown_id', newGodownId === '0' ? '' : newGodownId);
+            
+            const assignResp = await fetch('api/get_seller_data.php?action=assign_godown', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await assignResp.json();
+            if (data.success) {
+                loadInventory(); // Refresh list
+            } else {
+                alert('Failed to assign godown: ' + (data.message || 'Unknown error'));
+            }
+        }
+    } catch (error) {
+        console.error('Error assigning godown:', error);
+    }
+}
 
 function openGodownModal() {
     document.getElementById('godown-modal').style.display = 'flex';

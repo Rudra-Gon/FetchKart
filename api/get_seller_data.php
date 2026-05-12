@@ -57,5 +57,14 @@ if ($action === 'update_stock') {
     exit;
 }
 
+if ($action === 'assign_godown') {
+    $id = $_POST['product_id'] ?? null;
+    $godown_id = !empty($_POST['godown_id']) ? $_POST['godown_id'] : null;
+    $stmt = $pdo->prepare('UPDATE products SET godown_id = ? WHERE id = ? AND seller_id = ?');
+    $stmt->execute([$godown_id, $id, $seller_id]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 echo json_encode(['error' => 'Invalid action']);
 ?>
