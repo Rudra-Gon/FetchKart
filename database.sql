@@ -22,12 +22,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `warehouse_option` enum('service', 'personal') DEFAULT NULL,
   `delivery_option` enum('service', 'personal') DEFAULT NULL,
   `storage_option`
-enum(
-'service',
-'personal',
-'cold storage',
-'fragile'
-) DEFAULT NULL,
+  enum(
+    'service',
+    'personal',
+    'cold storage',
+    'fragile'
+  ) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -102,3 +102,7 @@ CREATE TABLE IF NOT EXISTS `wishlists` (
   FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`product_id`) REFERENCES products(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Phase 2 updates
+ALTER TABLE `products` ADD COLUMN IF NOT EXISTS `godown_id` int(11) DEFAULT NULL;
+ALTER TABLE `products` ADD CONSTRAINT `fk_product_godown` FOREIGN KEY (`godown_id`) REFERENCES `godowns`(`id`) ON DELETE SET NULL;

@@ -14,7 +14,12 @@ $seller_id = $_SESSION['user']['id'];
 $action = $_GET['action'] ?? '';
 
 if ($action === 'inventory') {
-    $stmt = $pdo->prepare('SELECT * FROM products WHERE seller_id = ?');
+    $stmt = $pdo->prepare('
+        SELECT p.*, g.name as godown_name 
+        FROM products p
+        LEFT JOIN godowns g ON p.godown_id = g.id
+        WHERE p.seller_id = ?
+    ');
     $stmt->execute([$seller_id]);
     echo json_encode($stmt->fetchAll());
     exit;

@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = $_POST['description'] ?? '';
     $category = $_POST['category'] ?? 'General';
     $stock_quantity = $_POST['stock_quantity'] ?? 0;
+    $godown_id = !empty($_POST['godown_id']) ? $_POST['godown_id'] : null;
     $seller_id = $_SESSION['user']['id'];
 
     if (empty($name) || empty($price) || empty($description)) {
@@ -40,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        $stmt = $pdo->prepare('INSERT INTO products (name, price, description, category, image_url, seller_id, stock_quantity) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        $stmt->execute([$name, $price, $description, $category, $image_url, $seller_id, $stock_quantity]);
+        $stmt = $pdo->prepare('INSERT INTO products (name, price, description, category, image_url, seller_id, stock_quantity, godown_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$name, $price, $description, $category, $image_url, $seller_id, $stock_quantity, $godown_id]);
         echo json_encode(['success' => true, 'message' => 'Product added successfully!']);
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);

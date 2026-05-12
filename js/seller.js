@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadOrders();
     loadSellerPrefs();
     loadReviews();
+    populateGodownSelect();
 });
 
 async function loadReviews() {
@@ -93,6 +94,7 @@ async function loadInventory() {
                         <th>Name</th>
                         <th>Price</th>
                         <th>Stock</th>
+                        <th>Godown</th>
                         <th>Category</th>
                         <th>Action</th>
                     </tr>
@@ -110,6 +112,7 @@ async function loadInventory() {
                         <strong>${p.stock_quantity}</strong>
                         <button class="btn-secondary-sm" style="padding: 2px 6px; margin-left: 8px; font-size: 0.7rem;" onclick="updateStock(${p.id}, ${p.stock_quantity})">Edit</button>
                     </td>
+                    <td>${p.godown_name || '<span class="text-muted">None</span>'}</td>
                     <td>${p.category}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Delete</button></td>
                 </tr>
@@ -287,6 +290,9 @@ async function loadGodowns() {
         console.error('Error loading godowns:', error);
         container.innerHTML = '<p>Error loading godowns.</p>';
     }
+    
+    // Refresh dropdown whenever godowns are loaded/changed
+    populateGodownSelect();
 }
 
 async function handleAddGodown(event) {
@@ -337,5 +343,25 @@ async function deleteGodown(id) {
         }
     } catch (error) {
         console.error('Error deleting godown:', error);
+    }
+}
+
+async function populateGodownSelect() {
+    const select = document.getElementById('godown-select');
+    if (!select) return;
+
+    try {
+        const response = await fetch('api/godown_actions.php?action=view');
+        const godowns = await response.json();
+        
+        let html = '<option value="">-- No Godown --</option>';
+        if (Array.isArray(godowns)) {
+            godowns.forEach(g => {
+                html += `<option value="${g.id}">${g.name}</option>`;
+            });
+        }
+        select.innerHTML = html;
+    } catch (error) {
+        console.error('Error populating godowns:', error);
     }
 }
