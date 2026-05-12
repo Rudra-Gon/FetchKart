@@ -1,6 +1,6 @@
 <?php
 require_once 'api/db.php';
-header('Content-Type: text/plain');
+header('Content-Type: text/plain'); 
 try {
     $stmt = $pdo->query("DESCRIBE orders");
     print_r($stmt->fetchAll());

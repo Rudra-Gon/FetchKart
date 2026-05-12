@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   FOREIGN KEY (`product_id`) REFERENCES products(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+ 
 -- made by rudra gondhalkar
 
 CREATE TABLE IF NOT EXISTS `wishlists` (
