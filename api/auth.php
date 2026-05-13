@@ -21,7 +21,12 @@ if ($action === 'signup') {
     $profile_pic = 'assets/default-avatar.png';
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === 0) {
         $file = $_FILES['profile_pic'];
-        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (!in_array($ext, $allowed)) {
+            echo json_encode(['success' => false, 'message' => 'Invalid file type for profile picture.']);
+            exit;
+        }
         $filename = 'profile_new_' . time() . '_' . rand(100, 999) . '.' . $ext;
         $target = '../uploads/profiles/' . $filename;
         if (!is_dir('../uploads/profiles')) mkdir('../uploads/profiles', 0777, true);

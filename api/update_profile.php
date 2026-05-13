@@ -67,7 +67,12 @@ if ($action === 'upload_pic') {
     }
 
     $file = $_FILES['profile_pic'];
-    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    if (!in_array($ext, $allowed)) {
+        echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG, PNG, GIF, and WEBP are allowed.']);
+        exit;
+    }
     $filename = 'profile_' . $user_id . '_' . time() . '.' . $ext;
     $target = '../uploads/profiles/' . $filename;
 

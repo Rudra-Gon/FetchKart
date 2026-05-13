@@ -210,6 +210,13 @@ async function handleSignup(event) {
 
     const msgBox = document.getElementById('auth-message');
     msgBox.textContent = 'Creating account...';
+    
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Loading...';
+    }
 
     try {
         const response = await fetch('api/auth.php', {
@@ -226,6 +233,11 @@ async function handleSignup(event) {
         }
     } catch (error) {
         msgBox.innerHTML = `<span style="color: red;">Error during signup.</span>`;
+    } finally {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+        }
     }
 }
 
@@ -236,6 +248,13 @@ async function handleLogin(event) {
 
     const msgBox = document.getElementById('auth-message');
     msgBox.textContent = 'Logging in...';
+
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Loading...';
+    }
 
     try {
         const response = await fetch('api/auth.php', {
@@ -252,5 +271,10 @@ async function handleLogin(event) {
         }
     } catch (error) {
         msgBox.innerHTML = `<span style="color: red;">Error during login.</span>`;
+    } finally {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+        }
     }
 }

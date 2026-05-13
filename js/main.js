@@ -1,6 +1,9 @@
 // Global variable to store cart count
 let cartCount = 0;
 
+// Escape HTML utility to prevent XSS
+const escapeHTML = (str) => str ? String(str).replace(/[&<>'"]/g, match => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[match])) : '';
+
 // Check if the user is logged in (returns a promise)
 async function isLoggedIn() {
     try {
@@ -103,8 +106,12 @@ function renderProducts(products) {
             }
         };
         
+        const safeName = escapeHTML(product.name);
+        const safeSeller = escapeHTML(product.seller_name || 'FetchKart');
+        const safeDesc = escapeHTML(product.description).substring(0, 60);
+
         const imageHtml = product.image_url 
-            ? `<div class="product-image"><img src="${product.image_url}" alt="${product.name}"></div>`
+            ? `<div class="product-image"><img src="${product.image_url}" alt="${safeName}" onerror="this.src='https://placehold.co/300x300?text=📦'"></div>`
             : `<div class="product-image">📦</div>`;
 
         const isOutOfStock = parseInt(product.stock_quantity) <= 0;
@@ -117,12 +124,12 @@ function renderProducts(products) {
         card.innerHTML = `
             ${imageHtml}
             ${stockBadge}
-            <h3 class="product-title">${product.name}</h3>
-            <p class="product-seller-small">By: ${product.seller_name || 'FetchKart'}</p>
-            <p class="product-desc">${product.description.substring(0, 60)}...</p>
+            <h3 class="product-title">${safeName}</h3>
+            <p class="product-seller-small">By: ${safeSeller}</p>
+            <p class="product-desc">${safeDesc}...</p>
             <div class="product-footer">
                 <span class="product-price">₹${parseFloat(product.price).toFixed(2)}</span>
-                <button class="btn" ${isOutOfStock ? 'disabled style="background: #cbd5e1; color: #64748b; cursor: not-allowed; border: none;"' : ''} onclick="addToCart(${product.id}, '${product.name}')">${isOutOfStock ? 'Sold Out' : 'Add to Cart'}</button>
+                <button class="btn" ${isOutOfStock ? 'disabled style="background: #cbd5e1; color: #64748b; cursor: not-allowed; border: none;"' : ''} onclick="addToCart(${product.id}, '${safeName.replace(/'/g, "\\'")}')">${isOutOfStock ? 'Sold Out' : 'Add to Cart'}</button>
             </div>
         `;
         container.appendChild(card);
@@ -173,15 +180,19 @@ function renderFeatured(products) {
                 window.location.href = `product.html?id=${product.id}`;
             }
         };
-        const img = product.image_url ? `<div class="product-image"><img src="${product.image_url}" alt="${product.name}"></div>` : `<div class="product-image">📦</div>`;
+        const safeName = escapeHTML(product.name);
+        const safeSeller = escapeHTML(product.seller_name || 'FetchKart');
+        const safeDesc = escapeHTML(product.description).substring(0, 60);
+
+        const img = product.image_url ? `<div class="product-image"><img src="${product.image_url}" alt="${safeName}" onerror="this.src='https://placehold.co/300x300?text=📦'"></div>` : `<div class="product-image">📦</div>`;
         card.innerHTML = `
             ${img}
-            <h3 class="product-title">${product.name}</h3>
-            <p class="product-seller-small">By: ${product.seller_name || 'FetchKart'}</p>
-            <p class="product-desc">${product.description.substring(0, 60)}...</p>
+            <h3 class="product-title">${safeName}</h3>
+            <p class="product-seller-small">By: ${safeSeller}</p>
+            <p class="product-desc">${safeDesc}...</p>
             <div class="product-footer">
                 <span class="product-price">₹${parseFloat(product.price).toFixed(2)}</span>
-                <button class="btn" onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
+                <button class="btn" onclick="addToCart(${product.id}, '${safeName.replace(/'/g, "\\'")}')">Add to Cart</button>
             </div>
         `;
         container.appendChild(card);
@@ -255,8 +266,12 @@ async function loadProductDetails(productId) {
             return;
         }
 
+        const safeName = escapeHTML(product.name);
+        const safeSeller = escapeHTML(product.seller_name || 'FetchKart');
+        const safeDesc = escapeHTML(product.description);
+
         const imageHtml = product.image_url 
-            ? `<div class="detail-img"><img src="${product.image_url}" alt="${product.name}"></div>`
+            ? `<div class="detail-img"><img src="${product.image_url}" alt="${safeName}" onerror="this.src='https://placehold.co/300x300?text=📦'"></div>`
             : `<div class="detail-img">📦</div>`;
 
         const stock = parseInt(product.stock_quantity || 0);
@@ -275,18 +290,18 @@ async function loadProductDetails(productId) {
                 <div class="detail-left">
                     ${imageHtml}
                     <div class="detail-actions">
-                        <button class="btn btn-buy" ${btnDisabled} onclick="addToCart(${product.id}, '${product.name}').then(() => window.location.href='cart.html')">Buy Now</button>
-                        <button class="btn btn-cart" ${btnDisabled} onclick="addToCart(${product.id}, '${product.name}')">Add to Cart</button>
+                        <button class="btn btn-buy" ${btnDisabled} onclick="addToCart(${product.id}, '${safeName.replace(/'/g, "\\'")}').then(() => window.location.href='cart.html')">Buy Now</button>
+                        <button class="btn btn-cart" ${btnDisabled} onclick="addToCart(${product.id}, '${safeName.replace(/'/g, "\\'")}')">Add to Cart</button>
                     </div>
                 </div>
                 <div class="detail-right">
-                    <h1 class="detail-title">${product.name}</h1>
-                    <p class="detail-seller">Seller: <strong>${product.seller_name || 'FetchKart'}</strong></p>
+                    <h1 class="detail-title">${safeName}</h1>
+                    <p class="detail-seller">Seller: <strong>${safeSeller}</strong></p>
                     <div class="detail-price">₹${parseFloat(product.price).toFixed(2)}</div>
                     ${stockMessage}
                     <div class="detail-description">
                         <h3>Product Description</h3>
-                        <p>${product.description}</p>
+                        <p>${safeDesc}</p>
                     </div>
                 </div>
             </div>
@@ -319,12 +334,12 @@ async function loadReviews(productId) {
             list.innerHTML = data.reviews.map(r => `
                 <div class="review-item" style="padding: 1.5rem 0; border-top: 1px solid var(--border);">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                        <span style="font-weight: 700;">${r.username}</span>
+                        <span style="font-weight: 700;">${escapeHTML(r.username)}</span>
                         <span style="color: #f59e0b;">
                             ${Array(5).fill(0).map((_, i) => `<i class="${i < r.rating ? 'fas' : 'far'} fa-star"></i>`).join('')}
                         </span>
                     </div>
-                    <p style="color: var(--text-muted); font-size: 0.9375rem;">${r.review_text}</p>
+                    <p style="color: var(--text-muted); font-size: 0.9375rem;">${escapeHTML(r.review_text)}</p>
                     <small style="color: #94a3b8; display: block; margin-top: 0.5rem;">${new Date(r.created_at).toLocaleDateString()}</small>
                 </div>
             `).join('');
@@ -418,9 +433,10 @@ async function loadCartPage() {
 
         cartData.items.forEach(item => {
             const subtotal = item.price * item.quantity;
+            const safeItemName = escapeHTML(item.name);
             tableHTML += `
                 <tr>
-                    <td>${item.name}</td>
+                    <td>${safeItemName}</td>
                     <td>₹${parseFloat(item.price).toFixed(2)}</td>
                     <td class="qty-controls">
                         <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
@@ -609,11 +625,13 @@ async function loadDrawerItems() {
             return;
         }
 
-        container.innerHTML = cartData.items.map(item => `
+        container.innerHTML = cartData.items.map(item => {
+            const safeName = escapeHTML(item.name);
+            return `
             <div class="drawer-cart-item">
-                <img src="${item.image_url || '📦'}" alt="${item.name}" class="drawer-item-img" onerror="this.src='https://placehold.co/70?text=📦'">
+                <img src="${item.image_url || '📦'}" alt="${safeName}" class="drawer-item-img" onerror="this.src='https://placehold.co/70?text=📦'">
                 <div class="drawer-item-info">
-                    <span class="drawer-item-name">${item.name}</span>
+                    <span class="drawer-item-name">${safeName}</span>
                     <span class="drawer-item-price">₹${parseFloat(item.price).toFixed(2)}</span>
                     <div class="drawer-item-qty">
                         <button class="qty-btn-sm" onclick="updateDrawerQuantity(${item.id}, -1)">-</button>
@@ -623,7 +641,7 @@ async function loadDrawerItems() {
                 </div>
                 <button class="close-drawer" style="font-size:1.2rem;" onclick="updateDrawerQuantity(${item.id}, -${item.quantity})">&times;</button>
             </div>
-        `).join('');
+        `;}).join('');
 
         totalEl.textContent = `₹${parseFloat(cartData.total).toFixed(2)}`;
     } catch (error) {

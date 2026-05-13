@@ -182,7 +182,19 @@ async function placeOrder() {
         }
 
         // For COD, proceed directly
-        processFinalOrder(paymentMethod, address);
+        const btn = document.querySelector('.checkout-container .btn-primary');
+        const originalBtnText = btn ? btn.textContent : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+        }
+
+        await processFinalOrder(paymentMethod, address);
+        
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = originalBtnText;
+        }
     } catch (error) {
         console.error('Error in placeOrder:', error);
     }

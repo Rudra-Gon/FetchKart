@@ -29,6 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
         $file_tmp = $_FILES['photo']['tmp_name'];
         $file_name = time() . '_' . basename($_FILES['photo']['name']);
+        
+        $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (!in_array($ext, $allowed)) {
+            echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG, PNG, GIF, and WEBP are allowed.']);
+            exit;
+        }
+
         $target_dir = "../uploads/";
         $target_file = $target_dir . $file_name;
 
