@@ -135,10 +135,16 @@ function renderProducts(products) {
       ? `<div class="product-image"><img src="${product.image_url}" alt="${safeName}" onerror="this.src='https://placehold.co/300x300?text=📦'"></div>`
       : `<div class="product-image">📦</div>`;
 
-    const isOutOfStock = parseInt(product.stock_quantity) <= 0;
-    const stockBadge = isOutOfStock
-      ? `<span class="stock-badge-out">Out of Stock</span>`
-      : "";
+    const stock = parseInt(product.stock_quantity);
+    const isOutOfStock = stock <= 0;
+    const isLowStock = stock > 0 && stock < 50;
+
+    let stockBadge = "";
+    if (isOutOfStock) {
+      stockBadge = `<span class="stock-badge-out">Out of Stock</span>`;
+    } else if (isLowStock) {
+      stockBadge = `<span class="stock-badge-low">⚠️ Only ${stock} left</span>`;
+    }
 
     if (isOutOfStock) {
       card.classList.add("out-of-stock-card");
@@ -215,8 +221,15 @@ function renderFeatured(products) {
     const img = product.image_url
       ? `<div class="product-image"><img src="${product.image_url}" alt="${safeName}" onerror="this.src='https://placehold.co/300x300?text=📦'"></div>`
       : `<div class="product-image">📦</div>`;
+    const stock = parseInt(product.stock_quantity);
+    const isLowStock = stock > 0 && stock < 50;
+    const stockBadge = isLowStock
+      ? `<span class="stock-badge-low" style="top: 0.5rem; right: 0.5rem;">⚠️ Only ${stock} left</span>`
+      : "";
+
     card.innerHTML = `
             ${img}
+            ${stockBadge}
             <h3 class="product-title">${safeName}</h3>
             <p class="product-seller-small">By: ${safeSeller}</p>
             <p class="product-desc">${safeDesc}...</p>

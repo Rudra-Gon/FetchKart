@@ -3398,3 +3398,34 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     cursor: pointer;
 }
+
+/* Stock Badges */
+.stock-badge-out, .stock-badge-low {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    z-index: 2;
+    text-transform: uppercase;
+    box-shadow: var(--shadow);
+}
+
+.stock-badge-out {
+    background: var(--danger);
+    color: white;
+}
+
+.stock-badge-low {
+    background: var(--secondary);
+    color: white;
+    animation: pulseBadge 2s infinite;
+}
+
+@keyframes pulseBadge {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
