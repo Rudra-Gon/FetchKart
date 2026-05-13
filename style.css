@@ -3386,3 +3386,10 @@ body.dark .cart-container {
 
     transform: scale(1.1);
 }
+
+/* Coupon Form Fix */
+.coupon-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
