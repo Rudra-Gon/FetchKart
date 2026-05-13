@@ -62,3 +62,5 @@ self.addEventListener("fetch", (event) => {
     );
   }
 });
+
+// Developed by Rudra-Gon for Microtech Internship Evaluation

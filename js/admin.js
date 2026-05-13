@@ -390,3 +390,5 @@ async function deleteAdminGodown(id) {
     alert("Failed to delete godown: " + data.message);
   }
 }
+
+// Developed by Rudra-Gon for Microtech Internship Evaluation

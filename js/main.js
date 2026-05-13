@@ -722,3 +722,5 @@ async function updateDrawerQuantity(productId, change) {
     console.error("Error updating quantity:", error);
   }
 }
+
+// Developed by Rudra-Gon for Microtech Internship Evaluation

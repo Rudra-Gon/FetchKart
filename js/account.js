@@ -116,3 +116,5 @@ function setupEventListeners() {
     }
   };
 }
+
+// Developed by Rudra-Gon for Microtech Internship Evaluation

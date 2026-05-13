@@ -279,3 +279,5 @@ async function applyCoupon() {
     console.error("Error applying coupon:", error);
   }
 }
+
+// Developed by Rudra-Gon for Microtech Internship Evaluation

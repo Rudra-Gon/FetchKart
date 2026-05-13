@@ -23,3 +23,5 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add(savedTheme);
   updateToggleIcon(savedTheme);
 });
+
+// Developed by Rudra-Gon for Microtech Internship Evaluation

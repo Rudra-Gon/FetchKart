@@ -91,3 +91,5 @@ function handleGesture() {
     // Swipe Left
   }
 }
+
+// Developed by Rudra-Gon for Microtech Internship Evaluation
