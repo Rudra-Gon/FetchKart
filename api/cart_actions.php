@@ -13,7 +13,7 @@ $action = $_GET['action'] ?? ($_POST['action'] ?? '');
 
 if ($action === 'add') {
     $product_id = $_POST['product_id'] ?? null;
-    
+
     if ($product_id) {
         if (isset($_SESSION['cart'][$product_id])) {
             $_SESSION['cart'][$product_id]['quantity'] += 1;
@@ -22,7 +22,7 @@ if ($action === 'add') {
             $stmt = $pdo->prepare('SELECT name, price, image_url FROM products WHERE id = ?');
             $stmt->execute([$product_id]);
             $product = $stmt->fetch();
-            
+
             if ($product) {
                 $_SESSION['cart'][$product_id] = [
                     'id' => $product_id,
@@ -49,16 +49,16 @@ if ($action === 'remove') {
 
 if ($action === 'update_quantity') {
     $product_id = $_POST['product_id'] ?? null;
-    $change = (int)($_POST['change'] ?? 0);
-    
+    $change = (int) ($_POST['change'] ?? 0);
+
     if ($product_id && isset($_SESSION['cart'][$product_id])) {
         $_SESSION['cart'][$product_id]['quantity'] += $change;
-        
+
         // Remove if quantity is 0 or less
         if ($_SESSION['cart'][$product_id]['quantity'] <= 0) {
             unset($_SESSION['cart'][$product_id]);
         }
-        
+
         echo json_encode(['success' => true]);
         exit;
     }
@@ -73,7 +73,7 @@ if ($action === 'clear') {
 
 if ($action === 'apply_coupon') {
     $code = $_POST['code'] ?? '';
-    
+
     if (empty($code)) {
         echo json_encode(['success' => false, 'message' => 'Please enter a coupon code.']);
         exit;
@@ -88,11 +88,11 @@ if ($action === 'apply_coupon') {
         $total = 0;
         if (!empty($_SESSION['cart'])) {
             foreach ($_SESSION['cart'] as $item) {
-                $total += (float)$item['price'] * (int)$item['quantity'];
+                $total += (float) $item['price'] * (int) $item['quantity'];
             }
         }
 
-        if ($total < (float)$coupon['min_order_amount']) {
+        if ($total < (float) $coupon['min_order_amount']) {
             echo json_encode(['success' => false, 'message' => 'Minimum order amount for this coupon is ₹' . number_format($coupon['min_order_amount'], 2)]);
             exit;
         }
@@ -126,13 +126,13 @@ if ($action === 'view') {
 
     if (isset($_SESSION['applied_coupon'])) {
         $coupon = $_SESSION['applied_coupon'];
-        
+
         // Re-validate min amount just in case items were removed
-        if ($total >= (float)$coupon['min_order_amount']) {
+        if ($total >= (float) $coupon['min_order_amount']) {
             if ($coupon['discount_type'] === 'percentage') {
-                $discount = $total * ((float)$coupon['discount_value'] / 100);
+                $discount = $total * ((float) $coupon['discount_value'] / 100);
             } else {
-                $discount = (float)$coupon['discount_value'];
+                $discount = (float) $coupon['discount_value'];
             }
             $coupon_info = $coupon;
         } else {
@@ -144,13 +144,13 @@ if ($action === 'view') {
     $platform_fee = round($total * 0.10, 2);
 
     echo json_encode([
-        'items' => $items, 
+        'items' => $items,
         'total' => $total,
         'discount' => round($discount, 2),
         'platform_fee' => $platform_fee,
         'grand_total' => max(0, round($total - $discount + $platform_fee, 2)),
-    'applied_coupon' => $coupon_info
-]);
+        'applied_coupon' => $coupon_info
+    ]);
     exit;
 }
 

@@ -29,7 +29,8 @@ if ($action === 'signup') {
         }
         $filename = 'profile_new_' . time() . '_' . rand(100, 999) . '.' . $ext;
         $target = '../uploads/profiles/' . $filename;
-        if (!is_dir('../uploads/profiles')) mkdir('../uploads/profiles', 0777, true);
+        if (!is_dir('../uploads/profiles'))
+            mkdir('../uploads/profiles', 0777, true);
         if (move_uploaded_file($file['tmp_name'], $target)) {
             $profile_pic = 'uploads/profiles/' . $filename;
         }
@@ -47,7 +48,7 @@ if ($action === 'signup') {
             $stmt = $pdo->prepare('INSERT INTO users (username, password, role, profile_pic) VALUES (?, ?, ?, ?)');
             $stmt->execute([$username, $password, $role, $profile_pic]);
         }
-        
+
         $userId = $pdo->lastInsertId();
         $_SESSION['user'] = [
             'id' => $userId,
@@ -78,8 +79,8 @@ if ($action === 'login') {
         $stmt = $pdo->prepare('SELECT id, username, password, role FROM users WHERE username = ?');
         $stmt->execute([$username]);
         $user = $stmt->fetch();
-        
-                $isValidLogin = false;
+
+        $isValidLogin = false;
 
         if ($user) {
             if (password_verify($password, $user['password'])) {

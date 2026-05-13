@@ -1,170 +1,235 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Seller Dashboard - FetchKart</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
-<header>
-    <a href="index.html" class="logo">FetchKart</a>
-    <nav id="main-nav">
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="logo">FetchKart</a>
+      <nav id="main-nav">
         <!-- Dynamic content from auth.js -->
-    </nav>
-</header>
+      </nav>
+    </header>
 
-<main>
-    <div class="seller-container">
+    <main>
+      <div class="seller-container">
         <h1 class="page-title">Seller Dashboard</h1>
-        
+
         <script>
-            // Strict check: Redirect if not a seller
-            fetch('api/auth.php?action=check')
-                .then(r => r.json())
-                .then(data => {
-                    if (!data.logged_in || data.user.role !== 'seller') {
-                        window.location.href = 'index.html';
-                    }
-                });
+          // Strict check: Redirect if not a seller
+          fetch("api/auth.php?action=check")
+            .then((r) => r.json())
+            .then((data) => {
+              if (!data.logged_in || data.user.role !== "seller") {
+                window.location.href = "index.html";
+              }
+            });
         </script>
-        
+
         <div class="dashboard-grid">
-            <!-- Add Product Form -->
-            <div class="card add-product-section">
-                <h2>Add New Product</h2>
-                <form id="add-product-form" onsubmit="handleAddProduct(event)" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label>Product Name</label>
-                        <input type="text" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Category</label>
-                        <select name="category">
-                            <option value="Fashion">Fashion</option>
-                            <option value="Mobiles">Mobiles</option>
-                            <option value="Beauty">Beauty</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Home">Home</option>
-                            <option value="Appliances">Appliances</option>
-                            <option value="Health">Health</option>
-                            <option value="Toys">Toys</option>
-                            <option value="Gifting">Gifting</option>
-                            <option value="Groceries">Groceries</option>
-                            <option value="Books">Books</option>
-                            <option value="Sports">Sports</option>
-                            <option value="Automotive">Automotive</option>
-                        </select>
-                    </div>
-                <div class="form-group">
-                    <label>Price (₹)</label>
-                    <input type="number" name="price" step="1" required>
-                </div>
-                <div class="form-group">
-                    <label>Initial Stock Quantity</label>
-                    <input type="number" name="stock_quantity" value="0" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label>Assign to Godown</label>
-                    <select name="godown_id" id="godown-select">
-                        <option value="">-- No Godown --</option>
-                    </select>
-                </div>
-                    <div class="form-group">
-                        <label>Product Description</label>
-                        <textarea name="description" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Product Photo</label>
-                        <input type="file" name="photo" accept="image/*" required>
-                    </div>
-                    <button type="submit" class="btn">Upload Product</button>
-                </form>
-                <p id="seller-message"></p>
-            </div>
-
-            <!-- Inventory List -->
-            <div class="card inventory-section">
-                <h2>My Inventory</h2>
-                <div id="inventory-list" class="scroll-table">
-                    <p>Loading inventory...</p>
-                </div>
-            </div>
-
-            <!-- Orders Received -->
-            <div class="card orders-section">
-                <h2>Recent Orders Received</h2>
-                <div id="orders-list" class="scroll-table">
-                    <p>Loading orders...</p>
-                </div>
-            </div>
-
-            <!-- Warehouse & Stock Management -->
-            <div class="card warehouse-section">
-                <h2>Warehouse & Stock Management</h2>
-                <div class="warehouse-stats">
-                    <div class="stat-item">
-                        <label>Storage Type:</label>
-                        <span id="storage-type-display">Loading...</span>
-                    </div>
-                    <div class="stat-item">
-                        <label>Warehouse Option:</label>
-                        <span id="warehouse-option-display">Loading...</span>
-                    </div>
-                </div>
-                <hr>
-                <div class="stock-actions">
-                    <button class="btn btn-secondary-sm" onclick="alert('Coming Soon...')">Import Warehouse Stock</button>
-                    <button class="btn btn-secondary-sm" onclick="openGodownModal()">Manage Godowns</button>
-                </div>
-            </div>
-
-            <!-- Customer Reviews -->
-            <div class="card reviews-section" style="grid-column: 1 / -1;">
-                <h2>Customer Feedback & Reviews</h2>
-                <div id="seller-reviews-list">
-                    <p>Loading feedback...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Godown Management Modal -->
-    <div id="godown-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-        <div class="modal-content card" style="width: 90%; max-width: 600px; position: relative;">
-            <span class="close" onclick="closeGodownModal()" style="position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer;">&times;</span>
-            <h2>Manage Godowns</h2>
-            
-            <form id="add-godown-form" onsubmit="handleAddGodown(event)" style="margin-top: 20px;">
-                <div class="form-group">
-                    <label>Godown Name</label>
-                    <input type="text" name="name" required placeholder="e.g. Main Warehouse">
-                </div>
-                <div class="form-group">
-                    <label>Location</label>
-                    <input type="text" name="location" placeholder="e.g. Mumbai North">
-                </div>
-                <div class="form-group">
-                    <label>Capacity (units)</label>
-                    <input type="number" name="capacity" min="0">
-                </div>
-                <button type="submit" class="btn">Add Godown</button>
+          <!-- Add Product Form -->
+          <div class="card add-product-section">
+            <h2>Add New Product</h2>
+            <form
+              id="add-product-form"
+              onsubmit="handleAddProduct(event)"
+              enctype="multipart/form-data"
+            >
+              <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" name="name" required />
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select name="category">
+                  <option value="Fashion">Fashion</option>
+                  <option value="Mobiles">Mobiles</option>
+                  <option value="Beauty">Beauty</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Home">Home</option>
+                  <option value="Appliances">Appliances</option>
+                  <option value="Health">Health</option>
+                  <option value="Toys">Toys</option>
+                  <option value="Gifting">Gifting</option>
+                  <option value="Groceries">Groceries</option>
+                  <option value="Books">Books</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Automotive">Automotive</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Price (₹)</label>
+                <input type="number" name="price" step="1" required />
+              </div>
+              <div class="form-group">
+                <label>Initial Stock Quantity</label>
+                <input
+                  type="number"
+                  name="stock_quantity"
+                  value="0"
+                  min="0"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Assign to Godown</label>
+                <select name="godown_id" id="godown-select">
+                  <option value="">-- No Godown --</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Product Description</label>
+                <textarea name="description" rows="3" required></textarea>
+              </div>
+              <div class="form-group">
+                <label>Product Photo</label>
+                <input type="file" name="photo" accept="image/*" required />
+              </div>
+              <button type="submit" class="btn">Upload Product</button>
             </form>
-            <p id="godown-message" style="margin-top: 10px;"></p>
+            <p id="seller-message"></p>
+          </div>
 
-            <h3 style="margin-top: 30px;">Existing Godowns</h3>
-            <div id="godown-list" class="scroll-table" style="max-height: 200px; overflow-y: auto;">
-                <p>Loading...</p>
+          <!-- Inventory List -->
+          <div class="card inventory-section">
+            <h2>My Inventory</h2>
+            <div id="inventory-list" class="scroll-table">
+              <p>Loading inventory...</p>
             </div>
-        </div>
-    </div>
-</main>
+          </div>
 
-<script src="js/theme.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/seller.js"></script>
-</body>
+          <!-- Orders Received -->
+          <div class="card orders-section">
+            <h2>Recent Orders Received</h2>
+            <div id="orders-list" class="scroll-table">
+              <p>Loading orders...</p>
+            </div>
+          </div>
+
+          <!-- Warehouse & Stock Management -->
+          <div class="card warehouse-section">
+            <h2>Warehouse & Stock Management</h2>
+            <div class="warehouse-stats">
+              <div class="stat-item">
+                <label>Storage Type:</label>
+                <span id="storage-type-display">Loading...</span>
+              </div>
+              <div class="stat-item">
+                <label>Warehouse Option:</label>
+                <span id="warehouse-option-display">Loading...</span>
+              </div>
+            </div>
+            <hr />
+            <div class="stock-actions">
+              <button
+                class="btn btn-secondary-sm"
+                onclick="alert('Coming Soon...')"
+              >
+                Import Warehouse Stock
+              </button>
+              <button class="btn btn-secondary-sm" onclick="openGodownModal()">
+                Manage Godowns
+              </button>
+            </div>
+          </div>
+
+          <!-- Customer Reviews -->
+          <div class="card reviews-section" style="grid-column: 1 / -1">
+            <h2>Customer Feedback & Reviews</h2>
+            <div id="seller-reviews-list">
+              <p>Loading feedback...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Godown Management Modal -->
+      <div
+        id="godown-modal"
+        class="modal"
+        style="
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 1000;
+          justify-content: center;
+          align-items: center;
+        "
+      >
+        <div
+          class="modal-content card"
+          style="width: 90%; max-width: 600px; position: relative"
+        >
+          <span
+            class="close"
+            onclick="closeGodownModal()"
+            style="
+              position: absolute;
+              right: 20px;
+              top: 20px;
+              font-size: 24px;
+              cursor: pointer;
+            "
+            >&times;</span
+          >
+          <h2>Manage Godowns</h2>
+
+          <form
+            id="add-godown-form"
+            onsubmit="handleAddGodown(event)"
+            style="margin-top: 20px"
+          >
+            <div class="form-group">
+              <label>Godown Name</label>
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder="e.g. Main Warehouse"
+              />
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <input
+                type="text"
+                name="location"
+                placeholder="e.g. Mumbai North"
+              />
+            </div>
+            <div class="form-group">
+              <label>Capacity (units)</label>
+              <input type="number" name="capacity" min="0" />
+            </div>
+            <button type="submit" class="btn">Add Godown</button>
+          </form>
+          <p id="godown-message" style="margin-top: 10px"></p>
+
+          <h3 style="margin-top: 30px">Existing Godowns</h3>
+          <div
+            id="godown-list"
+            class="scroll-table"
+            style="max-height: 200px; overflow-y: auto"
+          >
+            <p>Loading...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/seller.js"></script>
+  </body>
 </html>

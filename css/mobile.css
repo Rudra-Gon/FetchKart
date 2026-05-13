@@ -28,8 +28,15 @@
     transition: var(--transition);
 }
 
-.hamburger::before { top: -8px; left: 0; }
-.hamburger::after { bottom: -8px; left: 0; }
+.hamburger::before {
+    top: -8px;
+    left: 0;
+}
+
+.hamburger::after {
+    bottom: -8px;
+    left: 0;
+}
 
 /* Animated State */
 .mobile-nav-toggle.active .hamburger {
@@ -104,16 +111,18 @@
 
 /* Responsive Visibility */
 @media (max-width: 768px) {
+
     /* Enforce no horizontal scroll */
-    html, body {
+    html,
+    body {
         overflow-x: hidden !important;
         width: 100% !important;
         position: relative !important;
     }
 
     /* Hide the burger menu and side menu entirely as requested */
-    .mobile-nav-toggle, 
-    .mobile-nav, 
+    .mobile-nav-toggle,
+    .mobile-nav,
     .mobile-nav-overlay,
     .hamburger {
         display: none !important;

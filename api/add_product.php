@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
         $file_tmp = $_FILES['photo']['tmp_name'];
         $file_name = time() . '_' . basename($_FILES['photo']['name']);
-        
+
         $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
         if (!in_array($ext, $allowed)) {

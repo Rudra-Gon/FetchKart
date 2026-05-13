@@ -19,23 +19,23 @@ if ($action === 'stats') {
     try {
         // Total Users
         $userCount = $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
-        
+
         // Total Products
         $productCount = $pdo->query('SELECT COUNT(*) FROM products')->fetchColumn();
-        
+
         // Total Orders
         $orderCount = $pdo->query('SELECT COUNT(*) FROM orders')->fetchColumn();
-        
+
         // Pending Orders
         $pendingCount = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Pending'")->fetchColumn();
 
         echo json_encode([
             'success' => true,
             'stats' => [
-                'total_users' => (int)$userCount,
-                'total_products' => (int)$productCount,
-                'total_orders' => (int)$orderCount,
-                'pending_orders' => (int)$pendingCount
+                'total_users' => (int) $userCount,
+                'total_products' => (int) $productCount,
+                'total_orders' => (int) $orderCount,
+                'pending_orders' => (int) $pendingCount
             ]
         ]);
     } catch (PDOException $e) {
