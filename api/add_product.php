@@ -36,14 +36,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($upload_error !== UPLOAD_ERR_OK) {
             $error_msg = "Upload error: ";
             switch ($upload_error) {
-                case UPLOAD_ERR_INI_SIZE: $error_msg .= "File exceeds upload_max_filesize in php.ini."; break;
-                case UPLOAD_ERR_FORM_SIZE: $error_msg .= "File exceeds MAX_FILE_SIZE directive in HTML form."; break;
-                case UPLOAD_ERR_PARTIAL: $error_msg .= "File was only partially uploaded."; break;
-                case UPLOAD_ERR_NO_FILE: $error_msg .= "No file was uploaded."; break;
-                case UPLOAD_ERR_NO_TMP_DIR: $error_msg .= "Missing temporary folder on server."; break;
-                case UPLOAD_ERR_CANT_WRITE: $error_msg .= "Failed to write file to disk."; break;
-                case UPLOAD_ERR_EXTENSION: $error_msg .= "A PHP extension stopped the file upload."; break;
-                default: $error_msg .= "Unknown error code " . $upload_error; break;
+                case UPLOAD_ERR_INI_SIZE:
+                    $error_msg .= "File exceeds upload_max_filesize in php.ini.";
+                    break;
+                case UPLOAD_ERR_FORM_SIZE:
+                    $error_msg .= "File exceeds MAX_FILE_SIZE directive in HTML form.";
+                    break;
+                case UPLOAD_ERR_PARTIAL:
+                    $error_msg .= "File was only partially uploaded.";
+                    break;
+                case UPLOAD_ERR_NO_FILE:
+                    $error_msg .= "No file was uploaded.";
+                    break;
+                case UPLOAD_ERR_NO_TMP_DIR:
+                    $error_msg .= "Missing temporary folder on server.";
+                    break;
+                case UPLOAD_ERR_CANT_WRITE:
+                    $error_msg .= "Failed to write file to disk.";
+                    break;
+                case UPLOAD_ERR_EXTENSION:
+                    $error_msg .= "A PHP extension stopped the file upload.";
+                    break;
+                default:
+                    $error_msg .= "Unknown error code " . $upload_error;
+                    break;
             }
             echo json_encode(['success' => false, 'message' => $error_msg]);
             exit;
