@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms of Service - FetchKart</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="logo"> FetchKart </a>
+      <nav id="main-nav">
+        <a href="index.html"> Home </a>
+        <a href="shop.html"> Shop </a>
+        <a href="cart.html">Cart <span class="cart-count" id="cart-counter">0</span></a>
+        <button id="theme-btn" class="theme-toggle" onclick="themeToggle()">🌙</button>
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation"><span class="hamburger"></span></button>
+      </nav>
+      <div class="mobile-nav-overlay"></div>
+      <div class="mobile-nav">
+        <div class="mobile-nav-links"></div>
+      </div>
+    </header>
+
+    <main style="max-width: 800px; margin: 4rem auto; padding: 2rem;">
+      <h1 class="page-title">Terms of Service</h1>
+      <div class="content-box" style="background: var(--surface); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); line-height: 1.8;">
+        <p><strong>Effective Date:</strong> January 1, 2026</p>
+        <br>
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using FetchKart ("the Platform"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+        <br>
+        <h2>2. User Accounts</h2>
+        <p>To use certain features of the Platform, you must register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate. You are responsible for safeguarding your password and for all activities that occur under your account.</p>
+        <br>
+        <h2>3. Prohibited Conduct</h2>
+        <p>You agree not to use the Platform to:</p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>Violate any local, state, national, or international law.</li>
+          <li>Infringe the rights of any third party, including intellectual property rights.</li>
+          <li>Distribute viruses or any other technologies that may harm the Platform or its users.</li>
+          <li>Engage in any fraudulent or deceptive practices.</li>
+        </ul>
+        <br>
+        <h2>4. Purchases and Payments</h2>
+        <p>All prices are listed in the applicable currency and are subject to change without notice. We reserve the right to refuse or cancel any orders placed for products listed at the incorrect price.</p>
+        <br>
+        <h2>5. Limitation of Liability</h2>
+        <p>In no event shall FetchKart, its directors, employees, or agents, be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in any way connected with the use of the Platform.</p>
+        <br>
+        <h2>6. Changes to Terms</h2>
+        <p>We reserve the right to modify these Terms of Service at any time. We will notify you of any changes by posting the new Terms on this page. Your continued use of the Platform after any such changes constitutes your acceptance of the new Terms.</p>
+      </div>
+    </main>
+
+    <footer style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 2rem; background: var(--surface); border-top: 1px solid var(--border);">
+      <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+        <a href="about.html" style="color: var(--text-muted); text-decoration: none;">About Us</a>
+        <a href="contact.html" style="color: var(--text-muted); text-decoration: none;">Contact Us</a>
+        <a href="privacy.html" style="color: var(--text-muted); text-decoration: none;">Privacy Policy</a>
+        <a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms of Service</a>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">© 2026 FetchKart. All rights reserved.</p>
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/mobile.js"></script>
+  </body>
+</html>
