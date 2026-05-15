@@ -291,6 +291,25 @@
           behavior: "smooth",
         });
       }
+      let c = 0;
+
+      document.querySelectorAll(".feature-icon")[1].onclick = () => {
+        if (
+          document.body.classList.contains("dark-mode") ||
+          document.documentElement.classList.contains("dark-mode")
+        )
+          return;
+
+        c++;
+
+        if (c >= 33) {
+          c = 0;
+
+          console.warn("[legacy] containment stable");
+
+          alert("rollback avoided \nchangelog:- v1.2");
+        }
+      };
     </script>
   </body>
 </html>
