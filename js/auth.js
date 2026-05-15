@@ -22,10 +22,11 @@ function registerPWA() {
       navigator.serviceWorker
         .register("sw.js")
         .then((reg) => console.log("SW Registered"))
-        .catch((err) => console.log("SW Reg Failed", err));
+        .catch((err) => console.error("SW Registration Failed:", err));
     });
   }
 }
+
 // Inject mobile bottom navigation bar on vertical screens
 function injectMobileBottomNav() {
   if (document.getElementById("mobile-bottom-nav")) return;

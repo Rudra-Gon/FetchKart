@@ -1,5 +1,7 @@
 // sw.js
-const CACHE_NAME = "fetchkart-v3"; // Incremented version
+
+const CACHE_NAME = "fetchkart-v3"; // Incremented cache version
+
 const ASSETS = [
   "/",
   "index.html",
@@ -11,15 +13,24 @@ const ASSETS = [
   "favicon.png",
 ];
 
-// Install Event - Caching basic assets
+
+// ========================================
+// Install Event - Cache essential assets
+// ========================================
 self.addEventListener("install", (event) => {
   self.skipWaiting();
+
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)),
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    }),
   );
 });
 
-// Activate Event - Cleaning up old caches
+
+// ========================================
+// Activate Event - Remove old caches
+// ========================================
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -32,36 +43,70 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch Event - Network first for CSS/JS, Cache first for others
+
+// ========================================
+// Fetch Event
+//
+// Network First Strategy:
+// - HTML
+// - CSS
+// - JS
+//
+// Cache First Strategy:
+// - Images
+// - Other static assets
+// ========================================
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  // Use Network First strategy for CSS and JS to ensure latest updates
-  if (
+  // Detect dynamic assets
+  const isDynamicAsset =
     url.pathname.endsWith(".css") ||
     url.pathname.endsWith(".js") ||
     url.pathname.endsWith(".html") ||
-    url.pathname === "/"
-  ) {
+    url.pathname === "/";
+
+  // ====================================
+  // Network First for dynamic files
+  // Ensures latest updates are fetched
+  // ====================================
+  if (isDynamicAsset) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
+          // Clone response before caching
           const clonedResponse = response.clone();
-          caches
-            .open(CACHE_NAME)
-            .then((cache) => cache.put(event.request, clonedResponse));
+
+          // Update cache with latest version
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, clonedResponse);
+          });
+
           return response;
         })
-        .catch(() => caches.match(event.request)),
+
+        // If offline, fallback to cache
+        .catch(() => {
+          return caches.match(event.request);
+        }),
     );
-  } else {
-    // Default: Cache first, falling back to network
-    event.respondWith(
-      caches
-        .match(event.request)
-        .then((response) => response || fetch(event.request)),
-    );
+
+    return;
   }
+
+  // ====================================
+  // Cache First for static assets
+  // Faster loading for images/files
+  // ====================================
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      return cachedResponse || fetch(event.request);
+    }),
+  );
 });
 
-// Developed by Rudra-Gon for Microtech Internship Evaluation
+
+// ========================================
+// Developed by Rudra-Gon
+// Microtech Internship Evaluation Project
+// ========================================

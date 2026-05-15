@@ -22,17 +22,8 @@ function initMobileNav() {
 }
 
 function setupTouchTargets() {
-  // Ensure all buttons and links are easily tappable
-  const interactiveElements = document.querySelectorAll(
-    'button, a, input[type="submit"], select',
-  );
-  interactiveElements.forEach((el) => {
-    const rect = el.getBoundingClientRect();
-    if (rect.width < 48 || rect.height < 48) {
-      // We apply a minimal padding or margin logic if needed via CSS,
-      // but this helper can log issues or apply dynamic fixes.
-    }
-  });
+  // Touch target sizing is handled via CSS (min-height: 48px on interactive elements).
+  // This function is reserved for any future dynamic touch target adjustments.
 }
 
 function initStickyAddToCart() {
@@ -62,34 +53,16 @@ function initStickyAddToCart() {
   }, 1000);
 }
 
-// Swipe to dismiss notifications/modals (Simplified)
+// Swipe gesture detection — reserved for future modal/drawer dismiss support
 let touchstartX = 0;
 let touchendX = 0;
 
-document.addEventListener(
-  "touchstart",
-  (e) => {
-    touchstartX = e.changedTouches[0].screenX;
-  },
-  false,
-);
+document.addEventListener("touchstart", (e) => {
+  touchstartX = e.changedTouches[0].screenX;
+}, { passive: true });
 
-document.addEventListener(
-  "touchend",
-  (e) => {
-    touchendX = e.changedTouches[0].screenX;
-    handleGesture();
-  },
-  false,
-);
-
-function handleGesture() {
-  if (touchendX - touchstartX > 100) {
-    // Swipe Right
-  }
-  if (touchstartX - touchendX > 100) {
-    // Swipe Left
-  }
-}
+document.addEventListener("touchend", (e) => {
+  touchendX = e.changedTouches[0].screenX;
+}, { passive: true });
 
 // Developed by Rudra-Gon for Microtech Internship Evaluation

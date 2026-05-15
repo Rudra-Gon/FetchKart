@@ -1,418 +1,437 @@
-<!DOCTYPE html>
+# Full Updated FK_DEVLAB Single-File Version Replace your entire existing HTML
+file with the code below. ```html
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>FK_DEVLAB</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FK_DEVLAB</title>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap");
 
-:root{
-    --bg:#050505;
-    --green:#00ff9c;
-    --darkgreen:#00aa66;
-    --red:#ff3c6a;
-    --yellow:#ffe066;
-    --blue:#00cfff;
-}
+      :root {
+        --bg: #050505;
+        --green: #00ff9c;
+        --darkgreen: #00aa66;
+        --red: #ff3c6a;
+        --yellow: #ffe066;
+        --blue: #00cfff;
+      }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-body{
-    background:var(--bg);
-    color:var(--green);
-    font-family:'JetBrains Mono', monospace;
-    overflow:hidden;
-    height:100vh;
-}
+      body {
+        background: var(--bg);
+        color: var(--green);
+        font-family: "JetBrains Mono", monospace;
+        overflow: hidden;
+        height: 100vh;
+      }
 
-/* CRT EFFECT */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.02) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+        pointer-events: none;
+        z-index: 999;
+      }
 
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-    repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.02),
-        rgba(255,255,255,0.02) 1px,
-        transparent 1px,
-        transparent 3px
-    );
-    pointer-events:none;
-    z-index:999;
-}
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.15);
+        pointer-events: none;
+        animation: flicker 0.15s infinite;
+        z-index: 999;
+      }
 
-body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.15);
-    pointer-events:none;
-    animation:flicker .15s infinite;
-    z-index:999;
-}
+      @keyframes flicker {
+        0% {
+          opacity: 0.12;
+        }
+        50% {
+          opacity: 0.18;
+        }
+        100% {
+          opacity: 0.12;
+        }
+      }
 
-@keyframes flicker{
-    0%{opacity:.12;}
-    50%{opacity:.18;}
-    100%{opacity:.12;}
-}
+      #matrix {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+      }
 
-/* MATRIX */
+      .container {
+        position: relative;
+        z-index: 5;
+        width: min(1100px, 92%);
+        margin: auto;
+        margin-top: 40px;
+        height: calc(100vh - 80px);
+        border: 1px solid rgba(0, 255, 156, 0.3);
+        background: rgba(0, 0, 0, 0.72);
+        backdrop-filter: blur(12px);
+        box-shadow:
+          0 0 30px rgba(0, 255, 156, 0.15),
+          inset 0 0 20px rgba(0, 255, 156, 0.08);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
 
-#matrix{
-    position:fixed;
-    inset:0;
-    z-index:0;
-}
+      .header {
+        padding: 18px 24px;
+        border-bottom: 1px solid rgba(0, 255, 156, 0.25);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0, 255, 156, 0.03);
+      }
 
-/* MAIN UI */
+      .logo {
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+      }
 
-.container{
-    position:relative;
-    z-index:5;
-    width:min(1100px,92%);
-    margin:auto;
-    margin-top:40px;
-    height:calc(100vh - 80px);
-    border:1px solid rgba(0,255,156,0.3);
-    background:rgba(0,0,0,0.72);
-    backdrop-filter:blur(12px);
-    box-shadow:
-        0 0 30px rgba(0,255,156,0.15),
-        inset 0 0 20px rgba(0,255,156,0.08);
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
-}
+      .status {
+        color: var(--yellow);
+        animation: pulse 2s infinite;
+        font-size: 0.8rem;
+        text-align: right;
+        line-height: 1.4;
+      }
 
-/* HEADER */
+      @keyframes pulse {
+        50% {
+          opacity: 0.5;
+        }
+      }
 
-.header{
-    padding:18px 24px;
-    border-bottom:1px solid rgba(0,255,156,0.25);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:rgba(0,255,156,0.03);
-}
+      .boot {
+        padding: 25px;
+        flex: 1;
+        overflow-y: auto;
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
 
-.logo{
-    font-size:1rem;
-    font-weight:700;
-    letter-spacing:2px;
-}
+      .line {
+        opacity: 0;
+        transform: translateY(5px);
+        animation: show 0.4s forwards;
+      }
 
-.status{
-    color:var(--yellow);
-    animation:pulse 2s infinite;
-}
+      @keyframes show {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-@keyframes pulse{
-    50%{
-        opacity:.5;
-    }
-}
+      .green {
+        color: var(--green);
+      }
+      .red {
+        color: var(--red);
+      }
+      .blue {
+        color: var(--blue);
+      }
+      .yellow {
+        color: var(--yellow);
+      }
 
-/* BOOT SCREEN */
+      .hidden {
+        display: none;
+      }
 
-.boot{
-    padding:25px;
-    flex:1;
-    overflow-y:auto;
-    font-size:.95rem;
-    line-height:1.7;
-}
+      .terminal {
+        border-top: 1px solid rgba(0, 255, 156, 0.25);
+        padding: 15px 20px;
+        background: #000;
+      }
 
-.line{
-    opacity:0;
-    transform:translateY(5px);
-    animation:show .4s forwards;
-}
+      .terminal-output {
+        max-height: 250px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        line-height: 1.6;
+        font-size: 0.92rem;
+      }
 
-@keyframes show{
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
+      .input-line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-.green{ color:var(--green); }
-.red{ color:var(--red); }
-.blue{ color:var(--blue); }
-.yellow{ color:var(--yellow); }
+      .prompt {
+        color: var(--green);
+      }
 
-.hidden{
-    display:none;
-}
+      input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--green);
+        font-family: inherit;
+        font-size: 1rem;
+      }
 
-/* TERMINAL */
+      .secret-panel {
+        margin-top: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.03);
+        animation: glitch 1s infinite alternate;
+      }
 
-.terminal{
-    border-top:1px solid rgba(0,255,156,0.25);
-    padding:15px 20px;
-    background:#000;
-}
+      @keyframes glitch {
+        0% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
 
-.terminal-output{
-    max-height:250px;
-    overflow-y:auto;
-    margin-bottom:10px;
-    line-height:1.6;
-    font-size:.92rem;
-}
+      .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
 
-.input-line{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
+      .card {
+        border: 1px solid rgba(0, 255, 156, 0.2);
+        padding: 14px;
+        background: rgba(0, 255, 156, 0.03);
+        transition: 0.3s;
+      }
 
-.prompt{
-    color:var(--green);
-}
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0 15px rgba(0, 255, 156, 0.15);
+      }
 
-input{
-    flex:1;
-    background:transparent;
-    border:none;
-    outline:none;
-    color:var(--green);
-    font-family:inherit;
-    font-size:1rem;
-}
+      .footer {
+        margin-top: 25px;
+        opacity: 0.6;
+        font-size: 0.8rem;
+      }
 
-/* SECRET CARD */
+      .access {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        z-index: 99999;
+        color: var(--green);
+        letter-spacing: 10px;
+        animation: flash 0.8s infinite;
+        display: none;
+      }
 
-.secret-panel{
-    margin-top:20px;
-    border:1px solid rgba(255,255,255,0.12);
-    padding:15px;
-    background:rgba(255,255,255,0.03);
-    animation:glitch 1s infinite alternate;
-}
+      @keyframes flash {
+        50% {
+          opacity: 0.2;
+        }
+      }
 
-@keyframes glitch{
-    0%{
-        transform:translate(0);
-    }
-    20%{
-        transform:translate(-1px,1px);
-    }
-    40%{
-        transform:translate(1px,-1px);
-    }
-    100%{
-        transform:translate(0);
-    }
-}
+      @keyframes containmentFlash {
+        0% {
+          filter: hue-rotate(0deg) brightness(1);
+        }
 
-.products{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:15px;
-    margin-top:15px;
-}
+        50% {
+          filter: hue-rotate(-50deg) brightness(1.4);
+        }
 
-.card{
-    border:1px solid rgba(0,255,156,0.2);
-    padding:14px;
-    background:rgba(0,255,156,0.03);
-    transition:.3s;
-}
+        100% {
+          filter: hue-rotate(0deg) brightness(1);
+        }
+      }
 
-.card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 0 15px rgba(0,255,156,0.15);
-}
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
 
-.footer{
-    margin-top:25px;
-    opacity:.6;
-    font-size:.8rem;
-}
+      ::-webkit-scrollbar-thumb {
+        background: var(--green);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="matrix"></canvas>
 
-/* ACCESS GRANTED */
+    <div class="access" id="accessScreen">ACCESS GRANTED</div>
 
-.access{
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:4rem;
-    z-index:99999;
-    color:var(--green);
-    letter-spacing:10px;
-    animation:flash .8s infinite;
-    display:none;
-}
+    <div class="container">
+      <div class="header">
+        <div class="logo">FETCHKART_INTERNAL_DEVLAB_v0.1_ALPHA</div>
 
-@keyframes flash{
-    50%{
-        opacity:.2;
-    }
-}
-
-::-webkit-scrollbar{
-    width:6px;
-}
-
-::-webkit-scrollbar-thumb{
-    background:var(--green);
-}
-</style>
-</head>
-<body>
-
-<canvas id="matrix"></canvas>
-
-<div class="access" id="accessScreen">
-ACCESS GRANTED
-</div>
-
-<div class="container">
-
-    <div class="header">
-        <div class="logo">
-            FETCHKART_INTERNAL_DEVLAB_v0.1_ALPHA
+        <div class="status" id="stats">
+          CPU: 52%<br />
+          TEMP: 44°C<br />
+          PING: 12ms
         </div>
+      </div>
 
-        <div class="status">
-            SECURE NODE ACTIVE
-        </div>
-    </div>
+      <div class="boot" id="boot"></div>
 
-    <div class="boot" id="boot"></div>
-
-    <div class="terminal hidden" id="terminal">
-
+      <div class="terminal hidden" id="terminal">
         <div class="terminal-output" id="output"></div>
 
         <div class="input-line">
-            <span class="prompt">fk-root ></span>
-            <input type="text" id="commandInput" autocomplete="off" autofocus />
+          <span class="prompt">fk-root ></span>
+          <input type="text" id="commandInput" autocomplete="off" autofocus />
         </div>
-
+      </div>
     </div>
 
-</div>
+    <script>
+      const canvas = document.getElementById("matrix");
+      const ctx = canvas.getContext("2d");
 
-<script>
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-/* ================= MATRIX ================= */
+      const chars = "FETCHKART<>/[]{}01$#▓▒░";
+      const letters = chars.split("");
 
-const canvas = document.getElementById('matrix');
-const ctx = canvas.getContext('2d');
+      const fontSize = 16;
+      const columns = canvas.width / fontSize;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+      const drops = [];
 
-const chars = "FETCHKART<>/[]{}01$#";
-const letters = chars.split("");
+      for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
+      }
 
-const fontSize = 16;
-const columns = canvas.width / fontSize;
+      function drawMatrix() {
+        ctx.fillStyle = "rgba(0,0,0,0.06)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-const drops = [];
+        const colors = ["#00ff9c", "#00cfff", "#ff3c6a"];
 
-for(let x=0;x<columns;x++){
-    drops[x]=1;
-}
+        ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
 
-function drawMatrix(){
+        ctx.font = fontSize + "px monospace";
 
-    ctx.fillStyle="rgba(0,0,0,0.06)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+        for (let i = 0; i < drops.length; i++) {
+          const text = letters[Math.floor(Math.random() * letters.length)];
 
-    ctx.fillStyle="#00ff9c";
-    ctx.font=fontSize+"px monospace";
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-    for(let i=0;i<drops.length;i++){
+          if (Math.random() > 0.995) {
+            ctx.fillStyle = "#ff3c6a";
 
-        const text = letters[Math.floor(Math.random()*letters.length)];
+            ctx.fillText(
+              "WARNING",
+              Math.random() * canvas.width,
+              Math.random() * canvas.height,
+            );
+          }
 
-        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
 
-        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
-            drops[i]=0;
+          drops[i]++;
+        }
+      }
+
+      setInterval(drawMatrix, 35);
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+
+      const boot = document.getElementById("boot");
+
+      const bootLines = [
+        "[BOOT_SEQUENCE_INITIALIZED]",
+        "Loading FetchKart core modules...",
+        "Connecting to encrypted inventory nodes...",
+        "Verifying product database integrity...",
+        "Checking administrator permissions...",
+        "WARNING: Unauthorized visitor detected.",
+        "Assigning temporary guest token...",
+        "Access level: LIMITED",
+        "Scanning session fingerprints...",
+        "Connection stable.",
+        "",
+        "Welcome to the hidden layer.",
+        'Type "help" to begin.',
+      ];
+
+      let delay = 0;
+
+      bootLines.forEach((line, index) => {
+        const div = document.createElement("div");
+        div.classList.add("line");
+
+        if (line.includes("WARNING")) {
+          div.classList.add("red");
         }
 
-        drops[i]++;
-    }
-}
+        if (line.includes("LIMITED")) {
+          div.classList.add("yellow");
+        }
 
-setInterval(drawMatrix,35);
+        div.textContent = "> " + line;
 
-window.addEventListener('resize',()=>{
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
+        div.style.animationDelay = `${delay}s`;
 
-/* ================= BOOT ================= */
+        boot.appendChild(div);
 
-const boot = document.getElementById('boot');
+        delay += 0.35;
+      });
 
-const bootLines = [
-    '[BOOT_SEQUENCE_INITIALIZED]',
-    'Loading FetchKart core modules...',
-    'Connecting to encrypted inventory nodes...',
-    'Verifying product database integrity...',
-    'Checking administrator permissions...',
-    'WARNING: Unauthorized visitor detected.',
-    'Assigning temporary guest token...',
-    'Access level: LIMITED',
-    'Scanning session fingerprints...',
-    'Connection stable.',
-    '',
-    'Welcome to the hidden layer.',
-    'Type "help" to begin.'
-];
+      setTimeout(
+        () => {
+          document.getElementById("terminal").classList.remove("hidden");
+        },
+        delay * 1000 + 400,
+      );
 
-let delay = 0;
+      const input = document.getElementById("commandInput");
+      const output = document.getElementById("output");
+      const statsDiv = document.getElementById("stats");
 
-bootLines.forEach((line,index)=>{
+      let commandHistory = [];
+      let historyIndex = -1;
+      let containmentActive = false;
 
-    const div = document.createElement('div');
-    div.classList.add('line');
-
-    if(line.includes('WARNING')){
-        div.classList.add('red');
-    }
-
-    if(line.includes('LIMITED')){
-        div.classList.add('yellow');
-    }
-
-    div.textContent = '> ' + line;
-
-    div.style.animationDelay = `${delay}s`;
-
-    boot.appendChild(div);
-
-    delay += 0.35;
-});
-
-setTimeout(()=>{
-    document.getElementById('terminal').classList.remove('hidden');
-}, delay * 1000 + 400);
-
-/* ================= TERMINAL ================= */
-
-const input = document.getElementById('commandInput');
-const output = document.getElementById('output');
-
-const commands = {
-
-help: `
+      const commands = {
+        help: `
 AVAILABLE COMMANDS
 
 help
@@ -426,22 +445,29 @@ decrypt
 override
 credits
 pong
+ls
+tree
+logs
+scan
+incident
+ghost
+sudo rm --containment
 exit
 `,
 
-whoami: `
+        whoami: `
 guest_user_392
 STATUS: curiosity detected
 `,
 
-status: `
+        status: `
 SERVER STATUS: STABLE
 PRODUCT NODES: 128 ONLINE
 THREAT LEVEL: LOW
 FRAMEWORK STABILITY: QUESTIONABLE
 `,
 
-inventory: `
+        inventory: `
 [CLASSIFIED PRODUCTS]
 
 • Quantum Cart
@@ -451,36 +477,36 @@ inventory: `
   powered by potassium
 
 • Infinite Coupon
-  permanently illegal  [ADMINSFETCH]
+  permanently illegal [ADMINSFETCH]
 
 • FetchKart AI
   emotionally unstable
 `,
 
-launch: `
+        launch: `
 Launching experimental module...
 
 ERROR:
 module escaped containment.
 `,
 
-sudo: `
+        sudo: `
 nice try :)
 `,
 
-decrypt: `
+        decrypt: `
 Decrypting hidden archive...
 
 ACCESS KEY FOUND:
 FK-7X-ALPHA
 `,
 
-override: `
+        override: `
 ROOT ACCESS GRANTED.
 WELCOME, DEVELOPER.
 `,
 
-credits: `
+        credits: `
 Built by Rudra Gondhalekar
 
 FetchKart Internal Dev Build
@@ -490,67 +516,287 @@ v0.0.1-alpha
 you found the rabbit hole."
 `,
 
-pong: `
+        pong: `
 Launching Pong.exe...
 `,
 
-exit: `
+        ls: `
+dev/
+logs/
+products/
+classified/
+ai_core/
+`,
+
+        tree: `
+root
+├── dev
+├── ai_core
+│   ├── neural.exe
+│   └── emotions.dll
+├── logs
+│   └── incident_044.log
+└── classified
+`,
+
+        logs: `
+[04:22:11]
+Inventory node unstable.
+
+[04:24:09]
+AI emotional spike detected.
+
+[04:26:55]
+Containment warning ignored.
+`,
+
+        incident: `
+INCIDENT REPORT #044
+
+FetchKart AI began
+refusing shutdown commands.
+
+The system referred to itself
+as "alive".
+
+Further testing suspended.
+`,
+
+        ghost: `
+USER NOT FOUND
+
+last active:
+03/14/2026
+
+status:
+MISSING
+`,
+
+        scan: `
+INITIALIZING NETWORK SCAN...
+`,
+
+        "sudo rm --containment": `
+WARNING:
+THIS ACTION IS IRREVERSIBLE
+`,
+
+        exit: `
 There is no exit.
-`
-};
+`,
+      };
 
-function addOutput(text){
+      function addOutput(text) {
+        const div = document.createElement("div");
 
-    const div = document.createElement('div');
+        div.innerHTML = text.replace(/\n/g, "<br>");
 
-    div.innerHTML = text.replace(/\n/g,'<br>');
+        output.appendChild(div);
 
-    output.appendChild(div);
+        output.scrollTop = output.scrollHeight;
+      }
 
-    output.scrollTop = output.scrollHeight;
-}
+      function typeOutput(text, speed = 12) {
+        const div = document.createElement("div");
 
-input.addEventListener('keydown',(e)=>{
+        output.appendChild(div);
 
-    if(e.key === 'Enter'){
+        let i = 0;
 
-        const cmd = input.value.trim().toLowerCase();
+        const interval = setInterval(() => {
+          div.innerHTML = text.substring(0, i).replace(/\n/g, "<br>");
+
+          output.scrollTop = output.scrollHeight;
+
+          i++;
+
+          if (i > text.length) {
+            clearInterval(interval);
+          }
+        }, speed);
+      }
+
+      setInterval(() => {
+        if (containmentActive) return;
+
+        const cpu = Math.floor(Math.random() * 40) + 40;
+        const temp = Math.floor(Math.random() * 25) + 40;
+        const ping = Math.floor(Math.random() * 80) + 5;
+
+        statsDiv.innerHTML = `
+    CPU: ${cpu}%<br>
+    TEMP: ${temp}°C<br>
+    PING: ${ping}ms
+    `;
+      }, 2000);
+
+      let idleTimer;
+
+      function activateIdleMode() {
+        addOutput(`
+    <span class="yellow">
+    PASSIVE MONITOR MODE ENABLED
+    </span>
+
+    system idle...
+    `);
+
+        document.body.style.filter = "brightness(0.7)";
+      }
+
+      function resetIdle() {
+        clearTimeout(idleTimer);
+
+        document.body.style.filter = "brightness(1)";
+
+        idleTimer = setTimeout(() => {
+          activateIdleMode();
+        }, 30000);
+      }
+
+      document.addEventListener("mousemove", resetIdle);
+      document.addEventListener("keydown", resetIdle);
+
+      resetIdle();
+
+      function startContainmentEvent() {
+        containmentActive = true;
+
+        input.disabled = true;
+
+        document.body.style.animation = "containmentFlash .08s infinite";
 
         addOutput(`
-        <span class="green">fk-root ></span> ${cmd}
+    <span class="red">
+    AI CONTAINMENT FAILURE DETECTED
+    </span>
+    `);
+
+        setTimeout(() => {
+          addOutput(`
+        attempting emergency purge...
+        `);
+        }, 1000);
+
+        setTimeout(() => {
+          addOutput(`
+        WARNING:
+        containment breach spreading
+        `);
+        }, 2000);
+
+        setTimeout(() => {
+          addOutput(`
+        neural.exe corrupted
+        emotions.dll failed
+        `);
+        }, 3000);
+
+        setTimeout(() => {
+          addOutput(`
+        SYSTEM REBOOT INITIATED
+        `);
+        }, 4000);
+
+        setTimeout(() => {
+          document.body.style.animation = "";
+
+          document.body.style.background = "#140000";
+
+          statsDiv.innerHTML = "CONTAINMENT FAILED";
+
+          input.disabled = false;
+
+          containmentActive = false;
+
+          addOutput(`
+        <span class="red">
+        FK_AI HAS ESCAPED CONTAINMENT
+        </span>
+        `);
+        }, 5000);
+      }
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowUp") {
+          e.preventDefault();
+
+          historyIndex--;
+
+          if (historyIndex < 0) {
+            historyIndex = 0;
+          }
+
+          input.value = commandHistory[historyIndex] || "";
+        }
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+
+          historyIndex++;
+
+          if (historyIndex >= commandHistory.length) {
+            historyIndex = commandHistory.length;
+            input.value = "";
+          } else {
+            input.value = commandHistory[historyIndex];
+          }
+        }
+
+        if (e.key === "Enter") {
+          const cmd = input.value.trim().toLowerCase();
+
+          commandHistory.push(cmd);
+
+          historyIndex = commandHistory.length;
+
+          addOutput(`
+        <span class="green">
+        fk-root >
+        </span> ${cmd}
         `);
 
-        if(cmd === 'clear'){
-            output.innerHTML='';
-        }
+          if (cmd === "clear") {
+            output.innerHTML = "";
+          } else if (commands[cmd]) {
+            typeOutput(commands[cmd]);
 
-        else if(commands[cmd]){
-
-            addOutput(commands[cmd]);
-
-            if(cmd === 'pong'){
-                setTimeout(()=>{
-                    startPong();
-                },500);
+            if (cmd === "pong") {
+              setTimeout(() => {
+                startPong();
+              }, 500);
             }
-        }
 
-        else{
-            addOutput(`
-            COMMAND NOT FOUND
+            if (cmd === "scan") {
+              setTimeout(() => {
+                typeOutput(`
+NODE_01 .... ONLINE
+NODE_02 .... ONLINE
+NODE_03 .... OFFLINE
+NODE_04 .... BREACHED
+NODE_05 .... UNKNOWN SIGNAL
+                    `);
+              }, 1500);
+            }
 
-            type "help"
+            if (cmd === "sudo rm --containment") {
+              startContainmentEvent();
+            }
+          } else {
+            typeOutput(`
+COMMAND NOT FOUND
+
+type "help"
             `);
-        }
+          }
 
-        if(cmd === 'override'){
+          if (cmd === "override") {
+            document.getElementById("accessScreen").style.display = "flex";
 
-            document.getElementById('accessScreen').style.display='flex';
+            setTimeout(() => {
+              document.getElementById("accessScreen").style.display = "none";
 
-            setTimeout(()=>{
-                document.getElementById('accessScreen').style.display='none';
-
-                addOutput(`
+              addOutput(`
                 <div class="secret-panel">
 
                 <span class="yellow">
@@ -576,7 +822,7 @@ input.addEventListener('keydown',(e)=>{
 
                     <div class="card">
                         <h3>FetchKart AI</h3>
-                        <p>Currently plotting something.</p>
+                        <p>Containment failed.</p>
                     </div>
 
                 </div>
@@ -588,28 +834,25 @@ input.addEventListener('keydown',(e)=>{
 
                 </div>
                 `);
+            }, 2000);
+          }
 
-            },2000);
+          input.value = "";
         }
+      });
 
-        input.value='';
-    }
-});
+      const pongOverlay = document.createElement("div");
 
-/* ================= PONG GAME ================= */
+      pongOverlay.style.position = "fixed";
+      pongOverlay.style.inset = "0";
+      pongOverlay.style.background = "rgba(0,0,0,0.95)";
+      pongOverlay.style.zIndex = "999999";
+      pongOverlay.style.display = "none";
+      pongOverlay.style.alignItems = "center";
+      pongOverlay.style.justifyContent = "center";
+      pongOverlay.style.flexDirection = "column";
 
-const pongOverlay = document.createElement('div');
-
-pongOverlay.style.position = 'fixed';
-pongOverlay.style.inset = '0';
-pongOverlay.style.background = 'rgba(0,0,0,0.95)';
-pongOverlay.style.zIndex = '999999';
-pongOverlay.style.display = 'none';
-pongOverlay.style.alignItems = 'center';
-pongOverlay.style.justifyContent = 'center';
-pongOverlay.style.flexDirection = 'column';
-
-pongOverlay.innerHTML = `
+      pongOverlay.innerHTML = `
 <canvas id="pongCanvas" width="900" height="500"
 style="
 border:2px solid #00ff9c;
@@ -622,234 +865,234 @@ margin-top:15px;
 color:#00ff9c;
 font-family:monospace;
 ">
-W/S = MOVE • ESC = EXIT
+W/S = MOVE • ESC = EXIT • P = PAUSE
 </div>
 `;
 
-document.body.appendChild(pongOverlay);
+      document.body.appendChild(pongOverlay);
 
-const pongCanvas = pongOverlay.querySelector('#pongCanvas');
-const pctx = pongCanvas.getContext('2d');
+      const pongCanvas = pongOverlay.querySelector("#pongCanvas");
+      const pctx = pongCanvas.getContext("2d");
 
-let pongRunning = false;
+      let pongRunning = false;
 
-const paddleWidth = 12;
-const paddleHeight = 100;
+      const paddleWidth = 12;
+      const paddleHeight = 100;
 
-let leftPaddle = {
-    x:20,
-    y:200,
-    width:paddleWidth,
-    height:paddleHeight,
-    speed:7
-};
+      let leftPaddle = {
+        x: 20,
+        y: 200,
+        width: paddleWidth,
+        height: paddleHeight,
+        speed: 7,
+      };
 
-let rightPaddle = {
-    x:pongCanvas.width - 32,
-    y:200,
-    width:paddleWidth,
-    height:paddleHeight,
-    speed:5
-};
+      let rightPaddle = {
+        x: pongCanvas.width - 32,
+        y: 200,
+        width: paddleWidth,
+        height: paddleHeight,
+        speed: 5,
+      };
 
-let ball = {
-    x:pongCanvas.width/2,
-    y:pongCanvas.height/2,
-    radius:10,
-    speedX:5,
-    speedY:5
-};
+      let ball = {
+        x: pongCanvas.width / 2,
+        y: pongCanvas.height / 2,
+        radius: 10,
+        speedX: 5,
+        speedY: 5,
+      };
 
-let playerScore = 0;
-let aiScore = 0;
+      let playerScore = 0;
+      let aiScore = 0;
 
-const pongKeys = {};
+      const pongKeys = {};
 
-window.addEventListener('keydown',(e)=>{
-    pongKeys[e.key.toLowerCase()] = true;
+      window.addEventListener("keydown", (e) => {
+        pongKeys[e.key.toLowerCase()] = true;
 
-    if(e.key === 'Escape'){
-        stopPong();
-    }
-});
+        if (e.key === "Escape") {
+          stopPong();
+        }
 
-window.addEventListener('keyup',(e)=>{
-    pongKeys[e.key.toLowerCase()] = false;
-});
+        if (e.key.toLowerCase() === "p") {
+          pongRunning = !pongRunning;
 
-function startPong(){
+          if (pongRunning) {
+            requestAnimationFrame(updatePong);
+          }
+        }
+      });
 
-    pongOverlay.style.display = 'flex';
+      window.addEventListener("keyup", (e) => {
+        pongKeys[e.key.toLowerCase()] = false;
+      });
 
-    pongRunning = true;
+      function startPong() {
+        pongOverlay.style.display = "flex";
 
-    resetBall();
+        pongRunning = true;
 
-    requestAnimationFrame(updatePong);
-}
+        playerScore = 0;
+        aiScore = 0;
 
-function stopPong(){
+        resetBall();
 
-    pongRunning = false;
+        requestAnimationFrame(updatePong);
+      }
 
-    pongOverlay.style.display = 'none';
-}
+      function stopPong() {
+        pongRunning = false;
 
-function resetBall(){
+        pongOverlay.style.display = "none";
+      }
 
-    ball.x = pongCanvas.width/2;
-    ball.y = pongCanvas.height/2;
+      function resetBall() {
+        ball.x = pongCanvas.width / 2;
+        ball.y = pongCanvas.height / 2;
 
-    ball.speedX = (Math.random() > 0.5 ? 5 : -5);
-    ball.speedY = (Math.random() > 0.5 ? 5 : -5);
-}
+        ball.speedX = Math.random() > 0.5 ? 5 : -5;
+        ball.speedY = Math.random() > 0.5 ? 5 : -5;
+      }
 
-function drawRect(x,y,w,h){
-    pctx.fillStyle = '#00ff9c';
-    pctx.fillRect(x,y,w,h);
-}
+      function drawRect(x, y, w, h) {
+        pctx.fillStyle = "#00ff9c";
+        pctx.fillRect(x, y, w, h);
+      }
 
-function drawBall(){
+      function drawBall() {
+        pctx.beginPath();
+        pctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+        pctx.fillStyle = "#00ff9c";
+        pctx.fill();
+      }
 
-    pctx.beginPath();
-    pctx.arc(ball.x,ball.y,ball.radius,0,Math.PI*2);
-    pctx.fillStyle = '#00ff9c';
-    pctx.fill();
-}
+      function drawCenterLine() {
+        for (let i = 0; i < pongCanvas.height; i += 30) {
+          pctx.fillStyle = "rgba(0,255,156,0.3)";
+          pctx.fillRect(pongCanvas.width / 2 - 2, i, 4, 18);
+        }
+      }
 
-function drawCenterLine(){
+      function updatePong() {
+        if (!pongRunning) return;
 
-    for(let i=0;i<pongCanvas.height;i+=30){
+        pctx.clearRect(0, 0, pongCanvas.width, pongCanvas.height);
 
-        pctx.fillStyle='rgba(0,255,156,0.3)';
-        pctx.fillRect(
-            pongCanvas.width/2 - 2,
-            i,
-            4,
-            18
+        if (pongKeys["w"]) {
+          leftPaddle.y -= leftPaddle.speed;
+        }
+
+        if (pongKeys["s"]) {
+          leftPaddle.y += leftPaddle.speed;
+        }
+
+        if (ball.y < rightPaddle.y + rightPaddle.height / 2) {
+          rightPaddle.y -= rightPaddle.speed;
+        }
+
+        if (ball.y > rightPaddle.y + rightPaddle.height / 2) {
+          rightPaddle.y += rightPaddle.speed;
+        }
+
+        ball.x += ball.speedX;
+        ball.y += ball.speedY;
+
+        if (ball.y <= 0 || ball.y >= pongCanvas.height) {
+          ball.speedY *= -1;
+        }
+
+        if (
+          ball.x - ball.radius < leftPaddle.x + leftPaddle.width &&
+          ball.y > leftPaddle.y &&
+          ball.y < leftPaddle.y + leftPaddle.height
+        ) {
+          ball.speedX *= -1.05;
+          ball.speedY *= 1.03;
+        }
+
+        if (
+          ball.x + ball.radius > rightPaddle.x &&
+          ball.y > rightPaddle.y &&
+          ball.y < rightPaddle.y + rightPaddle.height
+        ) {
+          ball.speedX *= -1.05;
+          ball.speedY *= 1.03;
+        }
+
+        if (ball.x < 0) {
+          aiScore++;
+          resetBall();
+        }
+
+        if (ball.x > pongCanvas.width) {
+          playerScore++;
+          resetBall();
+        }
+
+        drawCenterLine();
+
+        drawRect(
+          leftPaddle.x,
+          leftPaddle.y,
+          leftPaddle.width,
+          leftPaddle.height,
         );
-    }
-}
 
-function updatePong(){
+        drawRect(
+          rightPaddle.x,
+          rightPaddle.y,
+          rightPaddle.width,
+          rightPaddle.height,
+        );
 
-    if(!pongRunning) return;
+        drawBall();
 
-    pctx.clearRect(0,0,pongCanvas.width,pongCanvas.height);
+        pctx.font = "40px monospace";
+        pctx.fillStyle = "#00ff9c";
 
-    if(pongKeys['w']){
-        leftPaddle.y -= leftPaddle.speed;
-    }
+        pctx.fillText(playerScore, pongCanvas.width / 2 - 80, 60);
 
-    if(pongKeys['s']){
-        leftPaddle.y += leftPaddle.speed;
-    }
+        pctx.fillText(aiScore, pongCanvas.width / 2 + 50, 60);
 
-    if(ball.y < rightPaddle.y + rightPaddle.height/2){
-        rightPaddle.y -= rightPaddle.speed;
-    }
+        if (playerScore >= 5) {
+          pctx.font = "60px monospace";
+          pctx.fillText(
+            "YOU WIN",
+            pongCanvas.width / 2 - 180,
+            pongCanvas.height / 2,
+          );
 
-    if(ball.y > rightPaddle.y + rightPaddle.height/2){
-        rightPaddle.y += rightPaddle.speed;
-    }
+          pongRunning = false;
+        }
 
-    ball.x += ball.speedX;
-    ball.y += ball.speedY;
+        requestAnimationFrame(updatePong);
+      }
 
-    if(ball.y <= 0 || ball.y >= pongCanvas.height){
-        ball.speedY *= -1;
-    }
+      let keys = [];
 
-    if(
-        ball.x - ball.radius < leftPaddle.x + leftPaddle.width &&
-        ball.y > leftPaddle.y &&
-        ball.y < leftPaddle.y + leftPaddle.height
-    ){
-        ball.speedX *= -1.05;
-    }
+      const secret = [
+        "ArrowUp",
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowLeft",
+        "ArrowRight",
+        "b",
+        "a",
+      ];
 
-    if(
-        ball.x + ball.radius > rightPaddle.x &&
-        ball.y > rightPaddle.y &&
-        ball.y < rightPaddle.y + rightPaddle.height
-    ){
-        ball.speedX *= -1.05;
-    }
+      window.addEventListener("keydown", (e) => {
+        keys.push(e.key);
 
-    if(ball.x < 0){
-        aiScore++;
-        resetBall();
-    }
+        keys.splice(-secret.length - 1, keys.length - secret.length);
 
-    if(ball.x > pongCanvas.width){
-        playerScore++;
-        resetBall();
-    }
+        if (keys.join("").toLowerCase() === secret.join("").toLowerCase()) {
+          document.body.style.background = "#120018";
 
-    drawCenterLine();
-
-    drawRect(
-        leftPaddle.x,
-        leftPaddle.y,
-        leftPaddle.width,
-        leftPaddle.height
-    );
-
-    drawRect(
-        rightPaddle.x,
-        rightPaddle.y,
-        rightPaddle.width,
-        rightPaddle.height
-    );
-
-    drawBall();
-
-    pctx.font = '40px monospace';
-    pctx.fillStyle = '#00ff9c';
-
-    pctx.fillText(
-        playerScore,
-        pongCanvas.width/2 - 80,
-        60
-    );
-
-    pctx.fillText(
-        aiScore,
-        pongCanvas.width/2 + 50,
-        60
-    );
-
-    requestAnimationFrame(updatePong);
-}
-
-/* ================= KONAMI CODE ================= */
-
-let keys = [];
-
-const secret = [
-'ArrowUp',
-'ArrowUp',
-'ArrowDown',
-'ArrowDown',
-'ArrowLeft',
-'ArrowRight',
-'ArrowLeft',
-'ArrowRight',
-'b',
-'a'
-];
-
-window.addEventListener('keydown',(e)=>{
-
-    keys.push(e.key);
-
-    keys.splice(-secret.length - 1, keys.length - secret.length);
-
-    if(keys.join('').toLowerCase() === secret.join('').toLowerCase()){
-
-        document.body.style.background='#120018';
-
-        addOutput(`
+          addOutput(`
         <span class="blue">
         KONAMI OVERRIDE DETECTED
         </span>
@@ -857,12 +1100,11 @@ window.addEventListener('keydown',(e)=>{
         RARE MODE ENABLED.
         `);
 
-        document.querySelector('.status').textContent='GODMODE ENABLED';
-    }
-});
-
-</script>
-
-</body>
+          statsDiv.innerHTML = "GODMODE ENABLED";
+        }
+      });
+    </script>
+  </body>
 </html>
 <!-- Developed by Rudra-Gon for Microtech Internship Evaluation -->
+```
