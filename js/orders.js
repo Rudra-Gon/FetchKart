@@ -111,7 +111,7 @@ async function loadCustomerOrders() {
                                 <h3 class="item-name">${order.product_name}</h3>
                                 <p class="item-desc">${order.description ? order.description.substring(0, 100) + "..." : ""}</p>
                                 <div class="item-actions">
-                                    <button class="btn btn-secondary-sm">Return or replace items</button>
+                                    <button class="btn btn-secondary-sm" onclick="openComingSoonModal()">Return or replace items</button>
                                     <button class="btn btn-secondary-sm" onclick="openReviewModal(${order.product_id})">Write a product review</button>
                                 </div>
                             </div>
@@ -168,6 +168,16 @@ function closeReviewModal() {
     s.classList.remove("fas");
     s.classList.add("far");
   });
+}
+
+function openComingSoonModal() {
+  document.getElementById("coming-soon-modal").style.display = "flex";
+  document.body.classList.add("modal-open");
+}
+
+function closeComingSoonModal() {
+  document.getElementById("coming-soon-modal").style.display = "none";
+  document.body.classList.remove("modal-open");
 }
 
 async function submitReview(event) {
