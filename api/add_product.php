@@ -12,6 +12,11 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'seller') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // If the POST body is empty but content-type is multipart, it usually means post_max_size was exceeded
+    if (empty($_POST) && empty($_FILES) && strpos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') !== false) {
+        echo json_encode(['success' => false, 'message' => 'The file you are trying to upload is too large for the server.']);
+        exit;
+    }
     $name = $_POST['name'] ?? '';
     $price = $_POST['price'] ?? 0;
     $description = $_POST['description'] ?? '';
@@ -26,7 +31,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $image_url = null;
-    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+    if (isset($_FILES['photo'])) {
+        $upload_error = $_FILES['photo']['error'];
+        if ($upload_error !== UPLOAD_ERR_OK) {
+            $error_msg = "Upload error: ";
+            switch ($upload_error) {
+                case UPLOAD_ERR_INI_SIZE: $error_msg .= "File exceeds upload_max_filesize in php.ini."; break;
+                case UPLOAD_ERR_FORM_SIZE: $error_msg .= "File exceeds MAX_FILE_SIZE directive in HTML form."; break;
+                case UPLOAD_ERR_PARTIAL: $error_msg .= "File was only partially uploaded."; break;
+                case UPLOAD_ERR_NO_FILE: $error_msg .= "No file was uploaded."; break;
+                case UPLOAD_ERR_NO_TMP_DIR: $error_msg .= "Missing temporary folder on server."; break;
+                case UPLOAD_ERR_CANT_WRITE: $error_msg .= "Failed to write file to disk."; break;
+                case UPLOAD_ERR_EXTENSION: $error_msg .= "A PHP extension stopped the file upload."; break;
+                default: $error_msg .= "Unknown error code " . $upload_error; break;
+            }
+            echo json_encode(['success' => false, 'message' => $error_msg]);
+            exit;
+        }
+
         $file_tmp = $_FILES['photo']['tmp_name'];
         $file_name = time() . '_' . basename($_FILES['photo']['name']);
 
@@ -37,13 +59,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $target_dir = "../uploads/";
+        $target_dir = dirname(__DIR__) . "/uploads/";
         $target_file = $target_dir . $file_name;
+
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
 
         if (move_uploaded_file($file_tmp, $target_file)) {
             $image_url = 'uploads/' . $file_name;
         } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to upload image.']);
+            $error = error_get_last();
+            echo json_encode(['success' => false, 'message' => 'Failed to upload image. Server error: ' . ($error['message'] ?? 'Check directory permissions and file size limits.')]);
             exit;
         }
     }

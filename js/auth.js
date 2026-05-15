@@ -1,9 +1,9 @@
 // js/auth.js
 
 document.addEventListener("DOMContentLoaded", () => {
+  injectMobileBottomNav();
   checkUserSession();
   initAnimations();
-  injectMobileBottomNav();
   registerPWA();
 });
 
@@ -62,6 +62,9 @@ function injectMobileBottomNav() {
   // Load mobile.js dynamically
   const script = document.createElement("script");
   script.src = "js/mobile.js";
+  script.onload = () => {
+    if (typeof initMobileNav === "function") initMobileNav();
+  };
   document.body.appendChild(script);
 }
 
@@ -159,24 +162,62 @@ async function checkUserSession() {
       mobileNavLinks.innerHTML = getNavContent(true);
     }
 
-    // Update mobile bottom nav auth link
-    const mobileAuthLink = document.getElementById("mobile-nav-auth");
-    if (mobileAuthLink) {
+    // Update mobile bottom nav dynamically
+    const bottomNav = document.getElementById("mobile-bottom-nav");
+    if (bottomNav) {
+      let bottomLinks = `
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="shop.html" class="nav-item">
+                    <i class="fas fa-search"></i>
+                    <span>Shop</span>
+                </a>
+                <a href="cart.html" class="nav-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Cart <span class="cart-count" id="cart-counter-mobile">0</span></span>
+                </a>
+            `;
+
       if (data.logged_in) {
-        mobileAuthLink.href = "#";
-        mobileAuthLink.onclick = (e) => logout(e);
-        mobileAuthLink.innerHTML = `
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
+        bottomLinks += `
+                    <a href="orders.html" class="nav-item">
+                        <i class="fas fa-box"></i>
+                        <span>Orders</span>
+                    </a>
+                `;
+        if (data.user.role === "seller") {
+          bottomLinks += `
+                        <a href="seller.html" class="nav-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    `;
+        }
+        bottomLinks += `
+                    <a href="#" onclick="logout(event)" class="nav-item" id="mobile-nav-auth">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
                 `;
       } else {
-        mobileAuthLink.href = "login.html";
-        mobileAuthLink.onclick = null;
-        mobileAuthLink.innerHTML = `
-                    <i class="fas fa-user"></i>
-                    <span>Login</span>
+        bottomLinks += `
+                    <a href="orders.html" class="nav-item">
+                        <i class="fas fa-box"></i>
+                        <span>Orders</span>
+                    </a>
+                    <a href="login.html" class="nav-item" id="mobile-nav-auth">
+                        <i class="fas fa-user"></i>
+                        <span>Login</span>
+                    </a>
                 `;
       }
+      bottomNav.innerHTML = bottomLinks;
+
+      // Re-initialize active state and cart counter for mobile
+      if (typeof initMobileNav === "function") initMobileNav();
+      if (typeof updateCartCounter === "function") updateCartCounter();
     }
 
     // Always try to update theme icon if theme.js is present

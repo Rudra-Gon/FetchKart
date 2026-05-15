@@ -418,10 +418,10 @@ async function updateCartCounter() {
   try {
     const response = await fetch("api/cart_actions.php?action=count");
     const data = await response.json();
-    const counter = document.getElementById("cart-counter");
-    if (counter) {
+    const counters = document.querySelectorAll(".cart-count");
+    counters.forEach((counter) => {
       counter.textContent = data.count || 0;
-    }
+    });
     // Also update drawer if it's open
     if (document.querySelector(".cart-drawer.active")) {
       loadDrawerItems();
