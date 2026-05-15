@@ -958,6 +958,10 @@ footer {
     position: relative;
 }
 
+footer {
+    position: relative;
+}
+
 footer::before {
     content: '';
     position: absolute;
@@ -967,7 +971,7 @@ footer::before {
     height: 4px;
     background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--primary));
     background-size: 300% 100%;
-    animation: gradientShift 5s linear infinite;
+    animation: gradientShift 8s ease-in-out infinite alternate;
 }
 
 @keyframes gradientShift {

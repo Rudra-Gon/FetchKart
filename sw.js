@@ -1,5 +1,5 @@
 // sw.js
-const CACHE_NAME = "fetchkart-v2"; // Incremented version
+const CACHE_NAME = "fetchkart-v3"; // Incremented version
 const ASSETS = [
   "/",
   "index.html",
@@ -40,7 +40,8 @@ self.addEventListener("fetch", (event) => {
   if (
     url.pathname.endsWith(".css") ||
     url.pathname.endsWith(".js") ||
-    url.pathname.includes("shop.html")
+    url.pathname.endsWith(".html") ||
+    url.pathname === "/"
   ) {
     event.respondWith(
       fetch(event.request)
