@@ -1,3 +1,6 @@
+✅ Verified that the steps mentioned in the readme for installation works. ✅
+
+
 (Prompting list)
 The website should be fully functional with basic features
 -Live product updates
