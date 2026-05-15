@@ -16,6 +16,8 @@ The project focuses on delivering a premium shopping experience with seller mana
 - Coupon support
 - Order tracking system
 - Dark / Light mode support
+- Low stock alerts for items running out
+- Working Help & Support contact page
 
 ### Seller
 
@@ -59,6 +61,13 @@ The project focuses on delivering a premium shopping experience with seller mana
 - Password hashing using PHP hashing functions
 - CAPTCHA integration using Cloudflare Turnstile
 - Role-based access control
+
+---
+
+# Performance & Design
+
+- **Fast Loading (PWA):** Uses Service Workers to cache files so the site loads instantly, even on slow networks.
+- **Responsive Layout:** Automatically scales text and spacing to look great on phones, tablets, and desktops.
 
 ---
 
@@ -124,6 +133,18 @@ The project focuses on delivering a premium shopping experience with seller mana
 
 ---
 
+## Help & Support System
+
+![Contact Us](./Screenshots/contact-us.png)
+
+---
+
+## Low Stock Alerts
+
+![Low Stock Alerts](./Screenshots/low-stock.png)
+
+---
+
 # Installation
 
 ## 1. Clone Repository
@@ -177,7 +198,8 @@ http://localhost/FetchKart
 ---
 
 # Coupons
-The coupons that you can use for discounts during check out 
+
+The coupons that you can use for discounts during check out
 
 ![Coupons](./Screenshots/coupons.png)
 
