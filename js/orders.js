@@ -43,7 +43,7 @@ async function loadCustomerOrders() {
                             <div class="progress-steps">
                                 <div class="step ${progress >= 10 ? "completed" : ""}">Ordered</div>
                                 <div class="step ${progress >= 40 ? "completed" : ""}">Shipped</div>
-                                <div class="step ${progress >= 80 ? "completed" : ""}">Out for Delivery</div>
+                                <div class="step ${progress >= 75 ? "completed" : ""}">Out for Delivery</div>
                                 <div class="step ${progress >= 100 ? "completed" : ""}">Delivered</div>
                             </div>
                             <p class="tracking-status-msg" style="font-size: 0.8rem; margin-top: 10px; color: var(--accent);">
