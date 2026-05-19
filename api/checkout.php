@@ -36,7 +36,7 @@ if (!empty($_SESSION['cart'])) {
             $updateStmt->execute([$item['quantity'], $id]);
 
             // Insert order record
-            $tracking_type = (rand(0, 1) == 0) ? 'local' : 'intercity';
+            $tracking_type = 'intercity';
             $stmt->execute([$customer_id, $id, $item['quantity'], $payment_method, $address, $expected_date, $tracking_type]);
         }
 

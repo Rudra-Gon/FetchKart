@@ -15,7 +15,7 @@ $customer_id = $_SESSION['user']['id'];
 try {
     try {
         $stmt = $pdo->prepare('
-            SELECT o.*, p.name as product_name, p.image_url, p.description
+            SELECT o.*, p.name as product_name, p.image_url, p.description, p.price
             FROM orders o
             JOIN products p ON o.product_id = p.id
             WHERE o.customer_id = ?
@@ -26,7 +26,7 @@ try {
         // Fallback for old schema (missing address/status/etc)
         $stmt = $pdo->prepare('
             SELECT o.id, o.customer_id, o.product_id, o.quantity, o.payment_method, o.order_date, 
-                   p.name as product_name, p.image_url, p.description
+                   p.name as product_name, p.image_url, p.description, p.price
             FROM orders o
             JOIN products p ON o.product_id = p.id
             WHERE o.customer_id = ?

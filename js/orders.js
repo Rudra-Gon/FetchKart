@@ -32,10 +32,8 @@ async function loadCustomerOrders() {
       const status = order.status || "Pending";
 
       // Tracking logic
-      let trackingHtml = "";
-      if (order.tracking_type === "intercity") {
-        const progress = getIntercityProgress(status);
-        trackingHtml = `
+      const progress = getIntercityProgress(status);
+      const trackingHtml = `
                     <div class="tracking-section intercity">
                         <h4>Intercity Tracking</h4>
                         <div class="progress-wrapper">
@@ -54,26 +52,8 @@ async function loadCustomerOrders() {
                         </div>
                     </div>
                 `;
-      } else {
-        trackingHtml = `
-                    <div class="tracking-section local">
-                        <h4>Local Tracking (Real-time Map)</h4>
-                        <div class="map-view">
-                                <div class="driver-info">
-                                <span class="driver-icon">🚚</span>
-                                <div>
-                                    <p><strong>Delivery Partner</strong></p>
-                                    <p class="small text-muted">${order.current_location || "Out for delivery to " + (order.address || "your location").split(",")[0]}</p>
-                                </div>
-                            </div>
-                            <div class="map-placeholder">
-                                <div class="map-pulse"></div>
-                                <span class="map-pin">📍</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-      }
+
+      const totalPrice = (parseFloat(order.price || 0) * parseInt(order.quantity || 1)).toFixed(2);
 
       html += `
                 <div class="order-card">
@@ -85,7 +65,7 @@ async function loadCustomerOrders() {
                             </div>
                             <div class="header-item">
                                 <label>TOTAL PAYMENT</label>
-                                <span>${order.payment_method}</span>
+                                <span>₹${totalPrice} <small style="color: var(--text-muted); font-size: 0.75rem;">(${order.payment_method})</small></span>
                             </div>
                             <div class="header-item">
                                 <label>SHIP TO</label>

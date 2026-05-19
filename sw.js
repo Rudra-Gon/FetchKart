@@ -1,6 +1,6 @@
 // sw.js
 
-const CACHE_NAME = "fetchkart-v3"; // Incremented cache version
+const CACHE_NAME = "fetchkart-v4"; // Incremented cache version
 
 const ASSETS = [
   "/",

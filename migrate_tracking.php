@@ -14,6 +14,10 @@ try {
         echo "Column 'current_location' already exists.\n";
     }
 
+    echo "Updating existing orders to 'intercity' tracking type...\n";
+    $count = $pdo->exec("UPDATE orders SET tracking_type = 'intercity'");
+    echo "Success: Updated $count orders to 'intercity'.\n";
+
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
 }
